@@ -1,0 +1,61 @@
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+export default function Bar() {
+    return (
+        <div className="select-none flex items-center justify-center gap-[4rem] w-[45rem] p-5 px-[2rem] bg-[#313338] rounded-[7px]">
+            <div className="flex items-center flex-col flex-1">
+                <h1 className="text-[#EDEEF0] font-bold text-[24px] mt-7 mb-2">
+                    Welcome back!
+                </h1>
+                <p className="text-[#A2A6AD] mb-[19px]">
+                    We&apos;re so excited to see you again!
+                </p>
+                <div className="flex flex-col gap-2 w-full mb-4">
+                    <Input
+                        required
+                        type="email"
+                        name="email"
+                        className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black`}
+                    />
+                    <Input
+                        required
+                        type="password"
+                        name="password"
+                        className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black focus:text-black`}
+                    />
+                </div>
+                <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">
+                    Forgot your password?
+                </h1>
+                <Button className="w-full rounded-[0] mb-2">login</Button>
+
+                <h1 className="text-[#A2A6AD] text-[0.9rem] w-full flex items-end">Need an account? <span className="text-[#00A8FC] cursor-pointer hover:underline mx-1"><Link href="/register">Register</Link></span></h1>
+            </div>
+            <div>
+                <AnotherOption />
+            </div>
+        </div>
+    );
+}
+
+function AnotherOption() {
+    return <div className="flex flex-col items-center gap-2 flex-1">
+        <div className="w-fit bg-white p-2 rounded-[4px] mb-6">
+            <Image
+                src="/svgs/loginSvgs/qrCode.svg"
+                width={150}
+                height={150}
+                alt="qrCode"
+                draggable="false"
+            />
+
+        </div >
+        <div className="flex flex-col items-center gap-2">
+            <h1 className="text-[#EDEEF0] font-bold text-[1.5rem]">Log in with QR code</h1>
+            <p className="text-[#A2A6AD] text-center w-[250px]">Scan this with the <strong>Discord mobile app</strong> to log in instantly</p>
+        </div>
+    </div>;
+}
