@@ -26,7 +26,7 @@ export default function Home() {
 						Download for windows
 					</Button>
 					<Button className="w-fit text-xl py-3 h-26 px-6">
-						open discord in your browser
+					Open discord in your browser
 					</Button>
 				</div>
 			</div>
