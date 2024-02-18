@@ -1,9 +1,34 @@
-import { Input } from "@/components/ui/input";
+"use client"
 import Image from "next/image";
 import Link from "next/link";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
+import { FormEvent } from "react";
+import { redirect, useRouter } from "next/navigation";
+
 
 export default function Bar() {
+    const router = useRouter()
+    const supabase = createClientComponentClient()
+
+    const signInHandler = async (e: FormEvent) => {
+        e.preventDefault()
+        const formData = new FormData(e.target as HTMLFormElement)
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: formData.get("email") as string,
+            password: formData.get("pass") as string
+        })
+
+
+        router.refresh()
+    }
+    supabase.auth.onAuthStateChange(async (_, session) => {
+        if (session?.access_token) {
+            router.push("/channels")
+        } else {
+            console.log("are not found!")
+        }
+    })
     return (
         <div className="select-none flex items-center justify-center gap-[4rem] w-[45rem] p-5 px-[2rem] bg-[#313338] rounded-[7px]">
             <div className="flex items-center flex-col flex-1">
@@ -13,31 +38,34 @@ export default function Bar() {
                 <p className="text-[#A2A6AD] mb-[19px]">
                     We&apos;re so excited to see you again!
                 </p>
-                <div className="flex flex-col gap-2 w-full mb-4">
-                    <Input
-                        required
-                        type="email"
-                        name="email"
-                        className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black`}
-                    />
-                    <Input
-                        required
-                        type="password"
-                        name="password"
-                        className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black focus:text-black`}
-                    />
-                </div>
-                <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">
-                    Forgot your password?
-                </h1>
-                <Button className="w-full rounded-[0] mb-2">login</Button>
+                <form onSubmit={signInHandler} className="w-full">
+                    <div className="flex flex-col gap-2 w-full mb-4">
+                        <input
+                            required
+                            type="email"
+                            name="email"
+                            className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black`}
+                        />
+                        <input
+                            required
+                            type="password"
+                            name="pass"
+                            className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black focus:text-black`}
+                        />
+                    </div>
+                    <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">
+                        Forgot your password?
+                    </h1>
+                    <Button className="w-full rounded-[0] mb-2">login</Button>
+                </form>
+
 
                 <h1 className="text-[#A2A6AD] text-[0.9rem] w-full flex items-end">Need an account? <span className="text-[#00A8FC] cursor-pointer hover:underline mx-1"><Link href="/register">Register</Link></span></h1>
             </div>
             <div>
                 <AnotherOption />
             </div>
-        </div>
+        </div >
     );
 }
 

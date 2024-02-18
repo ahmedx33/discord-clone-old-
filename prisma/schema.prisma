@@ -6,6 +6,91 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  imgUrl String @db.Text
+
+  email String @unique
+  name  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  servers Server[]
+  Member  Member[]
+}
+
+model Server {
+  id String @id @default(uuid())
+
+  imgUrl String @db.Text
+
+  name String
+
+  autherId String
+  auther   User      @relation(fields: [autherId], references: [id], onDelete: Cascade)
+  channels Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Member    Member[]
+
+  @@index([autherId])
+}
+
+model Channel {
+  id String @id @default(uuid())
+
+  name String
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  Message   Message[]
+
+  @@index([serverId])
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  autherId String
+  auther   User   @relation(fields: [autherId], references: [id], onDelete: Cascade)
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  Message   Message[]
+
+  @@index([autherId])
+  @@index([serverId])
+}
+
+model Message {
+  id    String @id @default(uuid())
+  title String @db.Text
+
+  memberId String
+  memeber  Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([memberId])
+  @@index([channelId])
 }
