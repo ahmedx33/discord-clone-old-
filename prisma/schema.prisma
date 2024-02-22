@@ -44,10 +44,17 @@ model Server {
   @@index([autherId])
 }
 
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
 model Channel {
   id String @id @default(uuid())
-
   name String
+
+  type ChannelType @default(TEXT)
 
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)

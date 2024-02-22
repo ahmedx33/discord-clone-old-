@@ -1,4 +1,4 @@
-import { createUser } from "@/db/user";
+import { createUser } from "@/db/db";
 import { NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {

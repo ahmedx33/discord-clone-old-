@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Bar from "./_components/Bar";
+import RegisterForm from "./_components/registerForm";
 
 interface RegisterPageInterface {
     goBackBtn?: boolean
@@ -15,7 +15,7 @@ export default function RegisterPage({ goBackBtn }: RegisterPageInterface) {
                 alt="background"
             />
             <div className="z-[99] w-full h-screen flex items-center justify-center">
-                <Bar goBackButton={goBackBtn} />
+                <RegisterForm goBackButton={goBackBtn} />
             </div>
         </div>
     )

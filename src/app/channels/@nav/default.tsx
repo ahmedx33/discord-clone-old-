@@ -1,12 +1,9 @@
-import ChannelsList from "../_components/nav/ChannelsList";
-import InfoNav from "../_components/nav/InfoNav";
+import ServersList from "../_components/sidebar/ServersList";
 
 export default function page() {
-
-    return (
-        <div className="flex items-center">
-            <ChannelsList />
-            <InfoNav />
-        </div>
-    );
+      return (
+            <div className="flex items-end">
+                  <ServersList />
+            </div>
+      );
 }

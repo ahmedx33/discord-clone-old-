@@ -1,10 +1,7 @@
 "use client"
 import Image from "next/image";
-import { useState } from "react";
 
-
-
-interface Props {
+interface ServerInterface {
     className?: string
     icon: string
     name: string
@@ -14,9 +11,9 @@ interface Props {
     defaultBg?: boolean
 }
 
-export function Channel({ className, icon, name, width, defaultBg, height, fill }: Props) {
+export function ServerS({ className, icon, name, width, defaultBg, height, fill }: ServerInterface) {
     return (
-        <div  className={`flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden ${className} ${defaultBg ? "bg-[#313338]" : "bg-white"} `}>
+        <div className={`flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden ${className} ${defaultBg ? "bg-[#313338]" : "bg-white"} `}>
             <Image
                 className="absolute"
                 src={icon}

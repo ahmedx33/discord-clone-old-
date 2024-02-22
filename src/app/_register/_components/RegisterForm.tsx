@@ -12,7 +12,7 @@ interface BarInterface {
     goBackButton?: boolean
 }
 
-export default function Bar({ goBackButton }: BarInterface) {
+export default function RegisterForm({ goBackButton }: BarInterface) {
     const router = useRouter()
     const supabase = createClientComponentClient()
 
