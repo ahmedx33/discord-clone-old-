@@ -5,8 +5,8 @@ import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Toaster, toast } from 'sonner'
 
 interface BarInterface {
     goBackButton?: boolean
@@ -15,30 +15,27 @@ interface BarInterface {
 export default function Bar({ goBackButton }: BarInterface) {
     const router = useRouter()
     const supabase = createClientComponentClient()
-    const signUpHandler = async (e: FormEvent) => {
-        e.preventDefault()
-        const formData = new FormData(e.target as HTMLFormElement)
-        const { data, error } = await supabase.auth.signUp({
+
+    const signUpHandler = async (formData: FormData) => {
+        const res = {
             email: formData.get("email") as string,
             password: formData.get("pass") as string,
             options: {
                 data: {
-                    displayName: formData.get("name") as string,
+                    DisplayName: formData.get("name") as string,
                     userName: formData.get("username") as string
-                }
+                },
 
+                emailRedirectTo: `${location.origin}/auth/callback`
             }
-        })
-        console.log(data)
+        }
 
+        const { data, error } = await supabase.auth.signUp(res)
+        toast.error(error?.message)
     }
 
-    supabase.auth.onAuthStateChange(async (event) => {
-        if (event === "SIGNED_IN") {
-            router.push("/channels")
-        } else {
-            console.log("are not found!")
-        }
+    supabase.auth.onAuthStateChange(async (_, session) => {
+        if (session?.access_token) router.push("/channels")
     })
 
     return (
@@ -48,7 +45,7 @@ export default function Bar({ goBackButton }: BarInterface) {
                 <h1 className="text-[#EDEEF0] font-bold text-[24px] mt-7 mb-2">
                     Create an account
                 </h1>
-                <form onSubmit={signUpHandler} className="w-full flex flex-col">
+                <form action={signUpHandler} className="w-full flex flex-col">
                     <input
                         required
                         type="email"
@@ -84,6 +81,7 @@ export default function Bar({ goBackButton }: BarInterface) {
 
                 <div className="w-fit text-[#00A8FC] text-[1rem] cursor-pointer hover:underline my-2"><Link href={"/login"}>Alread have an account?</Link></div>
             </div>
+            <Toaster richColors />
         </div>
     )
 }

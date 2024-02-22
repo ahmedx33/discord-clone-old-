@@ -11,18 +11,18 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-
+  id String @id 
   imgUrl String @db.Text
 
-  email String @unique
-  name  String
+  email String 
+  displayName  String
+  userName String 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   servers Server[]
-  Member  Member[]
+  members  Member[]
 }
 
 model Server {
@@ -32,14 +32,14 @@ model Server {
 
   name String
 
-  autherId String
   auther   User      @relation(fields: [autherId], references: [id], onDelete: Cascade)
+  autherId String
   channels Channel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Member    Member[]
+  members    Member[]
 
   @@index([autherId])
 }
@@ -55,7 +55,7 @@ model Channel {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  Message   Message[]
+  messages   Message[]
 
   @@index([serverId])
 }
@@ -72,7 +72,7 @@ model Member {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  Message   Message[]
+  messages   Message[]
 
   @@index([autherId])
   @@index([serverId])

@@ -1,25 +1,45 @@
 "use client"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServer } from "@/db/user";
+import { createServerComponentClient, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
     const supabase = createClientComponentClient()
-    const router = useRouter()
-    const signOutHandler = async () => {
-        await supabase.auth.signOut()
+    // const router = useRouter()
+
+    // const signOut = async () => {
+    //     const { user } = (await supabase.auth.getUser()).data
+    //     await supabase.auth.signOut()
+    //
+    // }
+    //
+    // supabase.auth.onAuthStateChange((_, session) => {
+    //     if (!session) {
+    //         router.push("/login")
+    //     }
+    // })
+    async function test(formData: FormData) {
+        const { user } = (await supabase.auth.getUser()).data
+        const res = {
+            autherId: user?.id as string,
+            name: formData.get("name") as string,
+            imgUrl: formData.get("imgUrl") as string
+        }
+
+        await fetch("/auth/server/api/", { method: "POST", body: JSON.stringify(res) })
+
     }
 
-    supabase.auth.onAuthStateChange((_, session) => {
-        if (!session?.access_token) {
-            router.push("/login")
-        } else {
-            console.log("in channels")
-        }
-    })
-
     return (
-        <div>
-            <button onClick={signOutHandler}>sign out</button>
+        <div className="flex items-start">
+            <form action={test}>
+                <input name="name" type="text" />
+                <input name="imgUrl" type="text" />
+                <button>create</button>
+            </form>
+            <button onClick={() => supabase.auth.signOut()}>signOut</button>
         </div>
     );
 }

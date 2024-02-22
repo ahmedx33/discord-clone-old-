@@ -3,7 +3,8 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "imgUrl" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "displayName" TEXT NOT NULL,
+    "userName" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -55,9 +56,6 @@ CREATE TABLE "Message" (
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE INDEX "Server_autherId_idx" ON "Server"("autherId");

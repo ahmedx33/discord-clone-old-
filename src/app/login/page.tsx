@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Bar from "./_compoenents/Bar";
+import { createUser } from "@/db/user";
 
-export default function Page() {
+export default async function Page() {
     return (
         <div className="select-none">
             <Image

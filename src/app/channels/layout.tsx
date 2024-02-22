@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
-import { ChannelsList } from "./_components/nav/ChannelsList";
 
-export default function layout({ children }: { children: ReactNode }) {
+export default function layout({ children, nav }: { children: ReactNode, nav: ReactNode }) {
     return (
         <div className="flex">
-            <ChannelsList />
+            {nav}
             {children}
         </div>
     )

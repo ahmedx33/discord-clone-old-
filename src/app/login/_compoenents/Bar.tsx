@@ -3,30 +3,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
-import { FormEvent } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { toast, Toaster } from "sonner";
+import { createUser } from "@/db/user";
 
 
 export default function Bar() {
     const router = useRouter()
     const supabase = createClientComponentClient()
 
-    const signInHandler = async (e: FormEvent) => {
-        e.preventDefault()
-        const formData = new FormData(e.target as HTMLFormElement)
-        const { data, error } = await supabase.auth.signInWithPassword({
+    const signUpHandler = async (formData: FormData) => {
+        const res = {
             email: formData.get("email") as string,
             password: formData.get("pass") as string
+        }
+
+        const { data, error } = await supabase.auth.signInWithPassword(res)
+
+        const { user } = (await supabase.auth.getUser()).data
+        await fetch("/auth/login/api/", {
+            method: "POST",
+            body: JSON.stringify({
+                userId: user?.id,
+                email: formData.get("email") as string,
+                displayName: "",
+                userName: ""
+            })
         })
-
-
-        router.refresh()
+        toast.error(error?.message)
     }
+
     supabase.auth.onAuthStateChange(async (_, session) => {
         if (session?.access_token) {
             router.push("/channels")
-        } else {
-            console.log("are not found!")
         }
     })
     return (
@@ -38,7 +47,7 @@ export default function Bar() {
                 <p className="text-[#A2A6AD] mb-[19px]">
                     We&apos;re so excited to see you again!
                 </p>
-                <form onSubmit={signInHandler} className="w-full">
+                <form action={signUpHandler} className="w-full">
                     <div className="flex flex-col gap-2 w-full mb-4">
                         <input
                             required
@@ -56,8 +65,10 @@ export default function Bar() {
                     <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">
                         Forgot your password?
                     </h1>
-                    <Button className="w-full rounded-[0] mb-2">login</Button>
+
+                    <Button onClick={() => fetch("/api/auth/route.ts", {})} className="w-full rounded-[0] mb-2">login</Button>
                 </form>
+
 
 
                 <h1 className="text-[#A2A6AD] text-[0.9rem] w-full flex items-end">Need an account? <span className="text-[#00A8FC] cursor-pointer hover:underline mx-1"><Link href="/register">Register</Link></span></h1>
@@ -65,6 +76,7 @@ export default function Bar() {
             <div>
                 <AnotherOption />
             </div>
+            <Toaster richColors className="absolute " />
         </div >
     );
 }
