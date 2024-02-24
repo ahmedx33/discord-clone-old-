@@ -38,11 +38,23 @@ export const getChannels = unstable_cache(cache(async ({ serverId }: { serverId:
 }), ["channel"])
 
 export const getServers = unstable_cache(cache(async ({ authorId }: { authorId: string }) => {
-    const data = await prisma.server.findMany({
-        where: {
-            autherId: authorId
-        }
-    })
+    const data = await prisma.server.findMany()
     return data
 }), ["server"])
 
+
+export const getMemeberInServer = unstable_cache(cache(async ({ autherId, serverId }: { autherId?: string, serverId?: string }) => {
+    const data = await prisma.member.findMany()
+
+    console.log(data)
+}), ["member"])
+
+export const createMessage = async ({ title, memberId, channelId }: { title: string, memberId: string, channelId: string }) => {
+    const data = await prisma.message.create({
+        data: {
+            memberId: memberId,
+            channelId: channelId,
+            title: title
+        }
+    })
+} 
