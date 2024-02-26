@@ -16,6 +16,15 @@ export async function createUser({ userId = '', email, userName, displayName }: 
     })
 }
 
+export const getUser = unstable_cache(cache(async ({ userId }: { userId: string }) => {
+    const data = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    })
+    return data
+}), ["user", "userId"])
+
 
 export async function createServer({ name, imgUrl, autherId }: { name: string, imgUrl: string, autherId: string }) {
     const data = await prisma.server.create({
@@ -43,18 +52,44 @@ export const getServers = unstable_cache(cache(async ({ authorId }: { authorId: 
 }), ["server"])
 
 
-export const getMemeberInServer = unstable_cache(cache(async ({ autherId, serverId }: { autherId?: string, serverId?: string }) => {
-    const data = await prisma.member.findMany()
+export const getServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+    const data = await prisma.server.findUnique({
+        where: {
+            id: serverId
+        }
+    })
+    return data
+}), ["server", "serverId"])
 
-    console.log(data)
+
+export const getMemeber = unstable_cache(cache(async ({ autherId }: { autherId?: string }) => {
+    const data = await prisma.member.findFirst({
+        where: {
+            autherId: autherId
+        }
+    })
+
+    return data
+
 }), ["member"])
 
 export const createMessage = async ({ title, memberId, channelId }: { title: string, memberId: string, channelId: string }) => {
     const data = await prisma.message.create({
         data: {
-            memberId: memberId,
             channelId: channelId,
+            memberId: memberId,
             title: title
         }
     })
-} 
+}
+
+
+export const getMessages = async ({ channelId }: { channelId: string }) => {
+    const data = await prisma.message.findMany({
+        where: {
+            channelId: channelId
+        }
+    })
+
+    return data
+}

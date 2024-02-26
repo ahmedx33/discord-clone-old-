@@ -46,7 +46,7 @@ model Server {
 
 enum ChannelType {
   TEXT
-  AUDIO
+  VOICE
   VIDEO
 }
 
