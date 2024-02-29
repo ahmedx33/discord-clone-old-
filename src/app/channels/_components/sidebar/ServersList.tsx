@@ -6,6 +6,7 @@ import { getServers } from "@/db/db";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { headers } from "next/headers";
+import Channels from "@/app/_components/landing/sections/channels";
 
 export default async function ServersList() {
     const supabase = createServerComponentClient({ cookies: cookies })
@@ -20,7 +21,7 @@ export default async function ServersList() {
             <Separator className="py-[1px] rounded-full bg-[#313338]" />
             <div className="channels">
                 <ul className="flex flex-col gap-2">
-                    {channels.map((channel) => <li key={channel.id}><Link href={`/channels/${channel.id}/`}><ServerS className={`${pathname === `/channels/${channel.id}` ? "!rounded-[17px]" : ""}`} icon={channel.img} name={channel.name} width={60} height={60} /></Link></li>)}
+                    {channels.map((channel) => <li key={channel.id}><Link href={`/channels/${channel.id}/`}><ServerS className={`${pathname === `/channels/${channel.id}` ? "!rounded-[17px]" : ""}`} icon={"/voll.png"} name={channel.name} width={60} height={60} /></Link></li>)}
                     <li>
                         <ServerS defaultBg className="main-green" icon="/svgs/addServer.svg" name="General" width={25} height={25} />
                     </li>

@@ -5,7 +5,6 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
-import { createUser } from "@/db/user";
 
 
 export default function Bar() {

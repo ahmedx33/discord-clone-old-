@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Bar from "./_compoenents/Bar";
-import { createUser } from "@/db/user";
 
 export default async function Page() {
     return (
