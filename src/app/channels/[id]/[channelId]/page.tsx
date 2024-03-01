@@ -1,20 +1,18 @@
-import { getMessages, getUser } from "@/db/db";
-import MessageField from "./components/MessagesField";
+import { getChannel, getMessages, getUsers } from "@/db/db";
 import { Suspense } from "react";
 import Message from "./components/Message";
-import MessagesProvider from "./components/MessagesProvider";
+import Chat from "./components/Chat";
+import Header from "./components/Header";
 
 export default async function Page({ params: { channelId } }: { params: { channelId: string } }) {
-    const messages = await getMessages({ channelId: channelId })
+    const users = await getUsers()
+    const dbMessages = await getMessages({ channelId })
+    const channel = await getChannel({ channelId })
 
     return (
-        <div className="flex flex-col">
-            {
-                messages.map(message => <Message key={message.id} {...message} />)
-            }
-            <Suspense fallback="loading...">
-                <MessageField channelId={channelId} />
-            </Suspense>
+        <div className="flex flex-col w-full">
+            <Header channel={channel} />
+            <Chat users={users} channelId={channelId} dbMessages={dbMessages} channel={channel} />
         </div>
     )
 }

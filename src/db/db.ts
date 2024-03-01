@@ -16,12 +16,8 @@ export async function createUser({ userId = '', email, userName, displayName }: 
     })
 }
 
-export const getUser = unstable_cache(cache(async ({ userId }: { userId: string }) => {
-    const data = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    })
+export const getUsers = unstable_cache(cache(async () => {
+    const data = await prisma.user.findMany()
     return data
 }), ["user", "userId"])
 
@@ -45,6 +41,17 @@ export const getChannels = unstable_cache(cache(async ({ serverId }: { serverId:
 
     return data
 }), ["channel"])
+
+
+export const getChannel = unstable_cache(cache(async ({ channelId }: { channelId: string }) => {
+    const data = await prisma.channel.findUnique({
+        where: {
+            id: channelId
+        }
+    })
+
+    return data
+}))
 
 export const getServers = unstable_cache(cache(async ({ authorId }: { authorId: string }) => {
     const data = await prisma.server.findMany()

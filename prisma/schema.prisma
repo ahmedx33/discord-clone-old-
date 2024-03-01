@@ -44,6 +44,7 @@ model Server {
   @@index([autherId])
 }
 
+
 enum ChannelType {
   TEXT
   VOICE
