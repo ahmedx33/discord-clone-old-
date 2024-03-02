@@ -2,6 +2,8 @@ import GetIconProvider from "@/Providers/GetIconProvider";
 import Image from "next/image";
 import Link from "next/link";
 
+export const revalidate = 5
+
 export default function Channel({ id, serverId, name, type }: { id: string, serverId: string, name: string, type: string }) {
 
     return <div className="flex flex-col justify-center ">

@@ -4,7 +4,7 @@ interface MessageInterFace {
     memberId: string
     channelId: string
     title: string
-    isGrouped: boolean
+    isGrouped?: boolean
     createdAt: Date
     updatedAt: Date
 }

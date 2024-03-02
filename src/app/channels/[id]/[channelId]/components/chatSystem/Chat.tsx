@@ -14,36 +14,45 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
     const [socket, setSocket] = useState<any>(null);
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
 
-    const groupedMessages = messages.map((message, idx) => {
+    const groupedMessages = []
+
+    for (let idx = 0; idx < messages.length; idx++) {
+        const firstMessage = messages[idx]
         const secondMessage = messages[idx + 1]
 
-        if (idx === messages.length) return
+        if (!secondMessage) break
 
-        if (idx === 0) {
-            return {
-                ...message,
-                isGrouped: true
+        const isOwner = secondMessage?.memberId === firstMessage.memberId
+        const diff = isOwner && differenceInMinutes(secondMessage.createdAt, firstMessage.createdAt) < 6
+
+        groupedMessages.push(idx === 0 ?
+            {
+                ...firstMessage,
+                isGrouped: false
             }
-        } else {
-            return {
-                ...message,
-                isGrouped: secondMessage?.memberId !== message?.memberId && differenceInMinutes(secondMessage?.createdAt, message.createdAt) < 3
+            :
+            {
+                ...secondMessage,
+                isGrouped: diff
             }
-        }
-    })
+        )
 
+    }
 
-    console.log(groupedMessages)
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
         const supabase = createClientComponentClient();
         const { user } = (await supabase.auth.getUser()).data;
 
+        if (value === "") return
+
         const data = {
             memberId: user?.id as string,
             channelId: channelId,
             title: value,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         };
         socket?.emit("message", data);
         setValue("");
