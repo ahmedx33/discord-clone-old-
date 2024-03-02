@@ -1,4 +1,5 @@
-import { createServer, getMessages } from "@/db/db";
+import { getMessages } from "@/db/message";
+import { createServer } from "@/db/server";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 

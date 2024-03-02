@@ -4,6 +4,7 @@ interface MessageInterFace {
     memberId: string
     channelId: string
     title: string
+    isGrouped: boolean
     createdAt: Date
     updatedAt: Date
 }
@@ -27,4 +28,14 @@ interface ChannelInterFace {
     type: ChannelType
     createdAt: Date
     updatedAt: Date
+}
+
+interface ServerInterface {
+    className?: string
+    icon: string
+    name: string
+    width?: number
+    height?: number
+    fill?: boolean
+    defaultBg?: boolean
 }

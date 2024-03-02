@@ -1,12 +1,9 @@
 import AccordionBeta from "@/components/AccordionBeta";
-import { getChannels } from "@/db/db";
-import Channel from "./Channel";
+import Channel from "../channel/Channel";
+import { getChannels } from "@/db/channel";
 
-
-
-
-export default async function ServerData({ title, serverId }: { title: string, serverId: string }) {
-    const chanels = await getChannels({ serverId })
+export default async function ServerData({ title, serverId }: { title: string; serverId: string }) {
+    const chanels = await getChannels({ serverId });
 
     return (
         <div className="select-none">
@@ -15,13 +12,11 @@ export default async function ServerData({ title, serverId }: { title: string, s
             </div>
             <div className="px-3">
                 <AccordionBeta>
-                    {chanels.map((channel) => <Channel key={channel.id} id={channel.id} serverId={serverId} name={channel.name} type={channel.type} />)}
+                    {chanels.map((channel) => (
+                        <Channel key={channel.id} id={channel.id} serverId={serverId} name={channel.name} type={channel.type} />
+                    ))}
                 </AccordionBeta>
             </div>
         </div>
-    )
+    );
 }
-
-
-
-

@@ -1,9 +1,8 @@
-
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { getServers } from "@/db/db";
-import ServerData from "./components/ServerData";
+import ServerData from "./components/server/ServerData";
+import { getServers } from "@/db/server";
 
 export default async function SideBarInfo({ serverId }: { serverId?: string }) {
     const supabase = createServerComponentClient({ cookies: cookies });

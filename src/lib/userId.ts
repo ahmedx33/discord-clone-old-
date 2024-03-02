@@ -1,4 +1,4 @@
-import { createClientComponentClient, createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 
 export const getUserId = async () => {
@@ -8,4 +8,3 @@ export const getUserId = async () => {
 
     return userId
 }
-

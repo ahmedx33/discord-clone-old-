@@ -1,4 +1,4 @@
-import GetIconProvider from "@/components/GetIconProvider";
+import GetIconProvider from "@/Providers/GetIconProvider";
 import Image from "next/image";
 import Link from "next/link";
 
