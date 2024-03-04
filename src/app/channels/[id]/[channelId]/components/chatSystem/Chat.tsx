@@ -13,35 +13,23 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<any>(null);
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const groupedMessages = []
+    const groupedMessages = messages.map((message, idx) => {
+        const oldMessage = messages[idx - 1]
 
-    for (let idx = 0; idx < messages.length; idx++) {
-        const firstMessage = messages[idx]
-        const secondMessage = messages[idx + 1]
+        const isOwner = oldMessage?.memberId === message.memberId
+        const diff = isOwner && differenceInMinutes(oldMessage.createdAt, message.createdAt) < 5
 
-        if (!secondMessage) break
-
-        const isOwner = secondMessage?.memberId === firstMessage.memberId
-        const diff = isOwner && differenceInMinutes(secondMessage.createdAt, firstMessage.createdAt) < 6
-
-        groupedMessages.push(idx === 0 ?
-            {
-                ...firstMessage,
-                isGrouped: false
-            }
-            :
-            {
-                ...secondMessage,
-                isGrouped: diff
-            }
-        )
-
-    }
-
+        return {
+            ...message,
+            isGrouped: diff,
+        }
+    })
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
+        setIsLoading(true)
         const supabase = createClientComponentClient();
         const { user } = (await supabase.auth.getUser()).data;
 
@@ -54,10 +42,13 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
             createdAt: new Date(),
             updatedAt: new Date(),
         };
+
         socket?.emit("message", data);
         setValue("");
         await fetch("/auth/message/api/", { method: "POST", body: JSON.stringify(data) });
+        setIsLoading(false)
     };
+
 
     useEffect(() => {
         const socketInit = ioHandler();
@@ -86,6 +77,7 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
                         onChange={(e) => {
                             setValue(e.target.value);
                         }}
+
                         value={value}
                         name="message"
                         type="text"
