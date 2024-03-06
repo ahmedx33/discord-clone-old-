@@ -4,12 +4,13 @@ import { cache } from "react"
 
 
 
-export const createMessage = async ({ title, memberId, channelId }: { title: string, memberId: string, channelId: string }) => {
+export const createMessage = async ({ title, memberId, channelId, replyTo }: MessageInterFace) => {
     const data = await prisma.message.create({
         data: {
-            channelId: channelId,
-            memberId: memberId,
-            title: title
+            channelId,
+            memberId,
+            title,
+            replyTo
         }
     })
 }

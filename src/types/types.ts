@@ -5,6 +5,7 @@ interface MessageInterFace {
     channelId: string
     title: string
     isGrouped?: boolean
+    replyTo: string
     createdAt: Date
     updatedAt: Date
 }

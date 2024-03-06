@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ChannelType" AS ENUM ('TEXT', 'AUDIO', 'VIDEO');
+CREATE TYPE "ChannelType" AS ENUM ('TEXT', 'VOICE', 'VIDEO');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -57,6 +57,7 @@ CREATE TABLE "Message" (
     "channelId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "replyTo" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
