@@ -48,9 +48,10 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
             updatedAt: new Date(),
         };
 
-        socket?.emit("message", data);
         setValue("");
+        socket?.emit("message", data);
         setIsReplying(false)
+        setReplyTo(undefined)
         await fetch("/auth/message/api/", { method: "POST", body: JSON.stringify(data) });
         setIsLoading(false)
     };
@@ -73,7 +74,7 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message key={message?.id} message={message} userData={users} setReplyTo={setReplyTo} isReplying={replyTo?.id === message.id} setIsReplying={setIsReplying} />
+                    <Message key={message?.id} message={message} userData={users} setReplyTo={setReplyTo} isReplied={replyTo?.id === message.id} setIsReplying={setIsReplying} messages={messages} />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-[95%] relative bg-[#2B2D31]">
@@ -81,7 +82,10 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
                     <span className="text-[#B5BAC1] text-[14px]">
                         Replying to <span className="font-bold cursor-pointer">{users?.find((user: MessageInterFace) => user.id === replyTo?.memberId)?.userName}</span>
                     </span>
-                    <IoIosCloseCircle size={18} className="text-[#B5BAC1] cursor-pointer ml-auto hover:text-[#DBDEE1]" onClick={() => setIsReplying(false)} />
+                    <IoIosCloseCircle size={18} className="text-[#B5BAC1] cursor-pointer ml-auto hover:text-[#DBDEE1]" onClick={() => {
+                        setIsReplying(false)
+                        setReplyTo(undefined)
+                    }} />
                 </div>}
                 <form onSubmit={handleMessage}>
                     <FaCirclePlus className="absolute bottom-[44px] left-[25px] translate-x-1/2 translate-y-1/2 z-50 text-[1.5rem] text-[#B5BAC1] cursor-pointer hover:text-[#DBDEE1]" />
