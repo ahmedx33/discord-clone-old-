@@ -3,40 +3,39 @@
 import { FormEvent, Suspense, unstable_useCacheRefresh, useEffect, useRef, useState } from "react";
 import { ioHandler } from "@/lib/io";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Message from "../message/Message";
+import Message from "../message/components/message/Message";
 import MessagesGroup from "../message/components/MessagesGroup";
 import { FaCirclePlus } from "react-icons/fa6";
-import { differenceInMinutes } from "date-fns"
+import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
-
 
 export default function Chat({ channelId, users, dbMessages, channel }: { channelId: string; users: any; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<any>(null);
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
-    const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>()
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isReplying, setIsReplying] = useState<boolean>(false)
+    const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isReplying, setIsReplying] = useState<boolean>(false);
 
     const groupedMessages = messages.map((message, idx) => {
-        const oldMessage = messages[idx - 1]
-        const isOwner = oldMessage?.memberId === message.memberId
-        const diff = isOwner && differenceInMinutes(oldMessage.createdAt, message.createdAt) < 5
+        const oldMessage = messages[idx - 1];
+        const isOwner = oldMessage?.memberId === message.memberId;
+        const diff = isOwner && differenceInMinutes(oldMessage.createdAt, message.createdAt) < 5;
 
         return {
             ...message,
             isGrouped: diff,
-            isOwner
-        }
-    })
+            isOwner,
+        };
+    });
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
-        setIsLoading(true)
+        setIsLoading(true);
         const supabase = createClientComponentClient();
         const { user } = (await supabase.auth.getUser()).data;
 
-        if (value === "") return
+        if (value === "") return;
 
         const data = {
             id: crypto.randomUUID(),
@@ -50,12 +49,11 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
 
         setValue("");
         socket?.emit("message", data);
-        setIsReplying(false)
-        setReplyTo(undefined)
+        setIsReplying(false);
+        setReplyTo(undefined);
         await fetch("/auth/message/api/", { method: "POST", body: JSON.stringify(data) });
-        setIsLoading(false)
+        setIsLoading(false);
     };
-
 
     useEffect(() => {
         const socketInit = ioHandler();
@@ -74,19 +72,25 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message key={message?.id} message={message} userData={users} setReplyTo={setReplyTo} isReplied={replyTo?.id === message.id} setIsReplying={setIsReplying} messages={messages} />
+                    <Message key={message?.id} message={message} userData={users} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-[95%] relative bg-[#2B2D31]">
-                {isReplying && <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
-                    <span className="text-[#B5BAC1] text-[14px]">
-                        Replying to <span className="font-bold cursor-pointer">{users?.find((user: MessageInterFace) => user.id === replyTo?.memberId)?.userName}</span>
-                    </span>
-                    <IoIosCloseCircle size={18} className="text-[#B5BAC1] cursor-pointer ml-auto hover:text-[#DBDEE1]" onClick={() => {
-                        setIsReplying(false)
-                        setReplyTo(undefined)
-                    }} />
-                </div>}
+                {isReplying && (
+                    <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
+                        <span className="text-[#B5BAC1] text-[14px]">
+                            Replying to <span className="font-bold cursor-pointer">{users?.find((user: MessageInterFace) => user.id === replyTo?.memberId)?.userName}</span>
+                        </span>
+                        <IoIosCloseCircle
+                            size={18}
+                            className="text-[#B5BAC1] cursor-pointer ml-auto hover:text-[#DBDEE1]"
+                            onClick={() => {
+                                setIsReplying(false);
+                                setReplyTo(undefined);
+                            }}
+                        />
+                    </div>
+                )}
                 <form onSubmit={handleMessage}>
                     <FaCirclePlus className="absolute bottom-[44px] left-[25px] translate-x-1/2 translate-y-1/2 z-50 text-[1.5rem] text-[#B5BAC1] cursor-pointer hover:text-[#DBDEE1]" />
                     <input

@@ -1,0 +1,17 @@
+.highlight {
+    background-color: #393B48 !important;
+    animation: fade 0.9s forwards;
+    -webkit-animation: fade 0.9s forwards;
+}
+
+
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.5;
+    }
+
+}
