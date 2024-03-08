@@ -8,6 +8,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaFaceSmile, FaPen } from "react-icons/fa6";
 import { Dispatch, SetStateAction, useState } from "react";
 import RepliedMessage from "./components/RepliedMessage";
+import "./index.css"
 
 export default function Message({
     message,
@@ -37,7 +38,7 @@ export default function Message({
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${isHovering ? "before:absolute before:bg-blue-500" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
