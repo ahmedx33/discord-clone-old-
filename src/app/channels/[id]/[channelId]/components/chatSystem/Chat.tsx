@@ -9,13 +9,15 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
 
-export default function Chat({ channelId, users, dbMessages, channel }: { channelId: string; users: any; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null }) {
+export default function Chat({ channelId, user, dbMessages, channel , users}: { channelId: string; user: UserInterFace; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<any>(null);
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
+    
+    const repliedUser: UserInterFace | undefined =  user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -32,8 +34,6 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        const supabase = createClientComponentClient();
-        const { user } = (await supabase.auth.getUser()).data;
 
         if (value === "") return;
 
@@ -67,19 +67,19 @@ export default function Chat({ channelId, users, dbMessages, channel }: { channe
     socket?.on("receive", (message: MessageInterFace) => {
         setMessages([...messages, message]);
     });
-
+    console.log(user)
     return (
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message key={message?.id} message={message} userData={users} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} />
+                    <Message key={message?.id} message={message} userData={user} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} users={users} />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-[95%] relative bg-[#2B2D31]">
                 {isReplying && (
                     <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
                         <span className="text-[#B5BAC1] text-[14px]">
-                            Replying to <span className="font-bold cursor-pointer">{users?.find((user: MessageInterFace) => user.id === replyTo?.memberId)?.userName}</span>
+                            Replying to <span className="font-bold cursor-pointer">{repliedUser?.userName}</span>
                         </span>
                         <IoIosCloseCircle
                             size={18}

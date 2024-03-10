@@ -14,8 +14,17 @@ export async function createUser({ userId = '', email, userName, displayName }: 
     })
 }
 
-export const getUsers = unstable_cache(cache(async () => {
-    const data = await prisma.user.findMany()
+export const getUser = unstable_cache(cache(async ({userId}: {userId: string}) => {
+    const data = await prisma.user.findUnique({
+        where:{
+            id: userId
+        }
+    })
     return data
 }), ["user", "userId"])
 
+
+export const getUsers = unstable_cache(cache(async () => {
+    const data = await prisma.user.findMany()
+    return data
+}), ["users", "useriddd"])

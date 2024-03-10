@@ -1,19 +1,19 @@
 import Image from "next/image";
 import "../index.css";
 
-export default function RepliedMessage({ message, users }: { message: MessageInterFace | undefined; users?: UserInterFace[] }) {
-    const getRepliedMember = users?.find((user) => user.id === message?.memberId);
+export default function RepliedMessage({ message, user , users}: { message: MessageInterFace | undefined; user: UserInterFace | undefined, users: UserInterFace[] }) {
+    const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
     const element = document.getElementById(message?.id as string);
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            entry.target.classList.remove("highlight");
-        });
-    });
-
-    if (element && element instanceof Element) {
-        observer.observe(element);
-    }
+    // const observer = new IntersectionObserver((entries) => {
+    //     entries.forEach((entry) => {
+    //         entry.target.classList.remove("highlight");
+    //     });
+    // });
+    //
+    // if (element && element instanceof Element) {
+    //     observer.observe(element);
+    // }
     return (
         <div className="flex items-center gap-2 select-none mb-2">
             <div className={"flex items-center justify-center  pl-5  h-fit w-fit  hover:shadow-black cursor-pointer select-none"}>
@@ -24,7 +24,7 @@ export default function RepliedMessage({ message, users }: { message: MessageInt
                 className="text-[#949BA4] hover:text-[#F2ECDD]  cursor-pointer"
                 onClick={() => {
                     element?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    element?.classList.add("highlight");
+                    // element?.classList.add("highlight");
                 }}
             >
                 {message?.title}

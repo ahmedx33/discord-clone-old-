@@ -1,7 +1,6 @@
 .highlight {
-    background-color: #393B48 !important;
     animation: fade 0.9s forwards;
-    -webkit-animation: fade 0.9s forwards;
+    -webkit-animation: fade 1.5s forwards;
 }
 
 
@@ -9,26 +8,45 @@
     background-color: #393B48 !important;
     position: relative;
 }
-.hovering::before {
+
+.hovering:hover {
+    background-color: #35384B !important;
+}
+
+.highlighted {
+    background-color: #454037 !important;
+}
+
+.highlighted:hover {
+    background-color: #403D38 !important;
+}
+
+.hovering::before, .highlighted::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 3px;
+    width: 2px;
     height: 100%;
-    background-color: #5865F2;
     opacity: 0.5;
 }
 
-@keyframes fade {
-    from {
-        opacity: 1;
-    }
+.hovering::before {
+    background-color: #5865F2;
+}
 
-    to {
-        opacity: 0.5;
-    }
-
+.highlighted::before {
+    background-color: #F0B132;
 }
 
 
+@keyframes fade {
+    from {
+        background-color: #393B48
+    }
+
+    to {
+        background-color: transparent;
+    }
+
+}

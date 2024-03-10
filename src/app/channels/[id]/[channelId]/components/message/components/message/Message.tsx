@@ -13,49 +13,52 @@ import "./index.css"
 export default function Message({
     message,
     userData,
-    setReplyTo,
-    setIsReplying,
     messages,
     isHovering,
+    users,
+    setReplyTo,
+    setIsReplying,
 }: {
     message: MessageInterFace & {
         isGrouped: boolean;
         isLoading?: boolean;
         isOwner: boolean;
     };
-    userData?: UserInterFace[];
-    setReplyTo?: Dispatch<SetStateAction<MessageInterFace | undefined>>;
-    setIsReplying?: Dispatch<SetStateAction<boolean>>;
+    userData: UserInterFace;
     isHovering: boolean;
     messages?: MessageInterFace[];
+    users: UserInterFace[]
+    setReplyTo?: Dispatch<SetStateAction<MessageInterFace | undefined>>;
+    setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }) {
-    const getUser = userData && userData.find((user) => user.id === message?.memberId);
+    const user = userData?.id === message?.memberId ? userData : users?.find((user) => user.id === message?.memberId);
+    const currentUser = userData?.id === message?.memberId ? userData : undefined
     const messageDate = format(message?.createdAt, "h:mm a");
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
-    const isOwner = getUser?.id === message.memberId;
+    const isOwner = currentUser?.id === message.memberId
 
     return (
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${isHovering ? "hovering" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(currentUser?.id !== message.memberId && message.replyTo) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
                 <div className="flex items-center gap-x-3">
                     <div className={"flex items-start overflow-hidden pl-5 w-[60px] h-fit hover:shadow-black cursor-pointer select-none"}>
-                        <Image src={getUser?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
+                        <Image src={user?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
                     </div>
                 </div>
             )}
 
             <div className="flex flex-col justify-center w-[90%]">
-                {message.replyTo && <RepliedMessage message={repliedMessage} users={userData} />}
+                {message.replyTo && <RepliedMessage message={repliedMessage} user={userData} users={users} />}
 
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (
                         <div className="flex items-center">
-                            <div className="text-white hover:underline cursor-pointer w-fi relative -top-[0.2rem] ">{getUser?.userName}</div>
+                            <div className="text-white hover:underline cursor-pointer w-fi relative -top-[0.2rem] ">{user?.userName}</div>
                             <span className="text-[#949BA4] mx-2 text-[0.8rem] cursor-default">
                                 {isToday(message.createdAt) ? "Today" : format(message.createdAt, "eeee")} at {messageDate}
                             </span>
@@ -79,9 +82,8 @@ export default function Message({
 
                     <div
                         className={cn(
-                            `w-fit h-fit absolute right-0 ${
-                                message.isGrouped || message.replyTo ? "top-[-6px]" : "top-[-30px]"
-                            } -translate-y-1/2 bg-[#313338] border border-[#27292D] rounded-[4px] overflow-hidden hidden  items-center  group-hover:flex cursor-pointer z-50`
+                            `w-fit h-fit absolute right-0 ${message.isGrouped || message.replyTo ? "top-[-6px]" : "top-[-30px]"
+                            } -translate-y-1/2 bg-[#313338] border border-[#27292D] rounded-[4px] overflow-hidden hidden  items-center  group-hover:flex cursor-pointer z-50 ${message.replyTo ? "top-[-60px]" : ""}`
                         )}
                     >
                         <FaFaceSmile color="#D8DBDE" className="hover:bg-[#393C41] p-1" size={30} />
