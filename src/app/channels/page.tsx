@@ -1,7 +1,6 @@
 "use client"
 import { createServerComponentClient, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
+import axios from "axios";
 
 export default function Page() {
     const supabase = createClientComponentClient();
@@ -21,12 +20,12 @@ export default function Page() {
 
     async function test(formData: FormData) {
         const { user } = (await supabase.auth.getUser()).data;
-        const res = {
+        const data = {
             autherId: user?.id as string,
             name: formData.get("name") as string,
             imgUrl: formData.get("imgUrl") as string,
         };
-        await fetch("/auth/server/api/", { method: "POST", body: JSON.stringify(res) });
+        await axios.post("/auth/server/api/", data);
     }
     return (
         <div className="flex items-start">

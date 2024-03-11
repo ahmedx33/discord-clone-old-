@@ -15,7 +15,7 @@ export default function RepliedMessage({ message, user , users}: { message: Mess
     //     observer.observe(element);
     // }
     return (
-        <div className="flex items-center gap-2 select-none mb-2">
+        <div className="flex items-center gap-2 select-none mb-2 relative repliedPath">
             <div className={"flex items-center justify-center  pl-5  h-fit w-fit  hover:shadow-black cursor-pointer select-none"}>
                 <Image src={getRepliedMember?.imgUrl as string} width={20} height={20} alt="profile" className="rounded-[50%]  " />
             </div>

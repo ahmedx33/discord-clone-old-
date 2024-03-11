@@ -8,16 +8,17 @@ import MessagesGroup from "../message/components/MessagesGroup";
 import { FaCirclePlus } from "react-icons/fa6";
 import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
+import axios from "axios"
 
-export default function Chat({ channelId, user, dbMessages, channel , users}: { channelId: string; user: UserInterFace; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
+export default function Chat({ channelId, user, dbMessages, channel, users }: { channelId: string; user: UserInterFace; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<any>(null);
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
-    
-    const repliedUser: UserInterFace | undefined =  user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
+
+    const repliedUser: UserInterFace | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -25,7 +26,7 @@ export default function Chat({ channelId, user, dbMessages, channel , users}: { 
         const diff = isOwner && differenceInMinutes(oldMessage.createdAt, message.createdAt) < 5;
 
         return {
-            ...message,
+           ...message,
             isGrouped: diff,
             isOwner,
         };
@@ -51,7 +52,7 @@ export default function Chat({ channelId, user, dbMessages, channel , users}: { 
         socket?.emit("message", data);
         setIsReplying(false);
         setReplyTo(undefined);
-        await fetch("/auth/message/api/", { method: "POST", body: JSON.stringify(data) });
+        await axios.post("/auth/message/api/",  data);
         setIsLoading(false);
     };
 
@@ -79,7 +80,10 @@ export default function Chat({ channelId, user, dbMessages, channel , users}: { 
                 {isReplying && (
                     <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
                         <span className="text-[#B5BAC1] text-[14px]">
-                            Replying to <span className="font-bold cursor-pointer">{repliedUser?.userName}</span>
+                            Replying to <span className="font-bold cursor-pointer" onClick={() => {
+                                const element = document.getElementById(replyTo?.id as string)
+                                element?.scrollIntoView({ behavior: "smooth", block: "center" });
+                            }}>{repliedUser?.userName}</span>
                         </span>
                         <IoIosCloseCircle
                             size={18}

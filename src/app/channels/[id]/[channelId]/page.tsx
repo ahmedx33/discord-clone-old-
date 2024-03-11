@@ -14,7 +14,7 @@ export default async function Page({ params: { id, channelId } }: { params: { id
     const users = await getUsers()
     const dbMessages = await getMessages({ channelId });
     const channel = await getChannel({ channelId });
-console.log(users)
+
     revalidatePath(`/channels/${id}/${channelId}`)
 
     return (

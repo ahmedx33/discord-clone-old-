@@ -8,6 +8,15 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaFaceSmile, FaPen } from "react-icons/fa6";
 import { Dispatch, SetStateAction, useState } from "react";
 import RepliedMessage from "./components/RepliedMessage";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import "./index.css"
 
 export default function Message({
@@ -41,12 +50,12 @@ export default function Message({
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(currentUser?.id !== message.memberId && message.replyTo) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(message.replyTo && !currentUser?.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
                 <div className="flex items-center gap-x-3">
-                    <div className={"flex items-start overflow-hidden pl-5 w-[60px] h-fit hover:shadow-black cursor-pointer select-none"}>
+                    <div className={"flex items-start overflow-hidden pl-5 w-[60px] h-fit hover:shadow-black cursor-pointer select-none z-10"}>
                         <Image src={user?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
                     </div>
                 </div>
@@ -97,7 +106,20 @@ export default function Message({
                                 setReplyTo!(message);
                             }}
                         />
-                        <BsThreeDots color="#D8DBDE" className="hover:bg-[#393C41] p-1" size={30} />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <BsThreeDots color="#D8DBDE" className="hover:bg-[#393C41] p-1" size={30} />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>Profile</DropdownMenuItem>
+                                <DropdownMenuItem>Billing</DropdownMenuItem>
+                                <DropdownMenuItem>Team</DropdownMenuItem>
+                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
                     </div>
                 </div>
             </div>

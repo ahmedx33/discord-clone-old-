@@ -21,7 +21,8 @@
     background-color: #403D38 !important;
 }
 
-.hovering::before, .highlighted::before {
+.hovering::before,
+.highlighted::before {
     content: "";
     position: absolute;
     top: 0;
@@ -39,6 +40,21 @@
     background-color: #F0B132;
 }
 
+.repliedPath::before {
+    content: "";
+    position: absolute;
+    border: 2px solid;
+    border-top-color: #4E5058;
+    border-left-color: #4E5058;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    top: 9px;
+    left: -22px;
+    width: 42px;
+    height: 67%;
+    border-top-left-radius: 8px;
+    z-index: 1;
+}
 
 @keyframes fade {
     from {

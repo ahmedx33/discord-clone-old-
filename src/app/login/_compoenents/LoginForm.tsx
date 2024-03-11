@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
+import axios from "axios";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -19,17 +20,14 @@ export default function LoginForm() {
         const { data, error } = await supabase.auth.signInWithPassword(res);
 
         const { user } = (await supabase.auth.getUser()).data;
-        await fetch("/auth/login/api/", {
-            method: "POST",
-            body: JSON.stringify({
-                userId: user?.id,
-                email: formData.get("email") as string,
-                imgUrl: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
-                displayName: "",
-                userName: "",
-            }),
-        });
-        toast.error(error?.message);
+        await axios.post("/auth/login/api/", {
+            userId: user?.id,
+            email: formData.get("email") as string,
+            imgUrl: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
+            displayName: "",
+            userName: "",
+        }),
+            toast.error(error?.message);
     };
 
     supabase.auth.onAuthStateChange(async (_, session) => {
