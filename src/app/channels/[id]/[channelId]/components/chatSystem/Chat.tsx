@@ -9,14 +9,18 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
 import axios from "axios"
+import { SocketOptions } from "dgram";
+import { Socket } from "socket.io-client";
 
 export default function Chat({ channelId, user, dbMessages, channel, users }: { channelId: string; user: UserInterFace; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
     const [value, setValue] = useState("");
-    const [socket, setSocket] = useState<any>(null);
+    const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
+    const [isTyping, setIsTyping] = useState<boolean>(false)
+    const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
 
     const repliedUser: UserInterFace | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
 
@@ -26,7 +30,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
         const diff = isOwner && differenceInMinutes(oldMessage.createdAt, message.createdAt) < 5;
 
         return {
-           ...message,
+            ...message,
             isGrouped: diff,
             isOwner,
         };
@@ -49,10 +53,10 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
         };
 
         setValue("");
-        socket?.emit("message", data);
+        socket?.emit("server/message", data, channelId);
         setIsReplying(false);
         setReplyTo(undefined);
-        await axios.post("/auth/message/api/",  data);
+        await axios.post("/auth/message/api/", data);
         setIsLoading(false);
     };
 
@@ -65,10 +69,14 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
         };
     }, []);
 
-    socket?.on("receive", (message: MessageInterFace) => {
+    socket?.on("server/receive", (message: MessageInterFace) => {
         setMessages([...messages, message]);
     });
-    console.log(user)
+
+    socket?.on("server/receiveTyping", (isTyping: boolean) => {
+        setIsTyping(isTyping)
+    })
+
     return (
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
@@ -101,6 +109,31 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         onChange={(e) => {
                             setValue(e.target.value);
                         }}
+
+                        onKeyDown={(e) => {
+                            if (value !== "") {
+                                setIsTyping(true)
+                                socket?.emit("server/typing", isTyping)
+                                clearTimeout(timeOutRef.current)
+                            }
+
+                            if (value === "") {
+                                setIsTyping(false)
+                                socket?.emit("server/typing", isTyping)
+                            }
+                        }}
+
+                        onKeyUp={() => {
+                            timeOutRef.current = setTimeout(() => {
+                                setIsTyping(false)
+                                console.log("wsp")
+                                socket?.emit("server/typing", isTyping)
+                            }, 2000)
+
+
+
+                        }}
+
                         value={value}
                         name="message"
                         type="text"
@@ -108,6 +141,8 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         style={{ borderRadius: "7px" }}
                         placeholder={`Message #${channel?.name}`}
                     />
+
+                    {isTyping ? "typing" : ""}
                 </form>
             </div>
         </div>

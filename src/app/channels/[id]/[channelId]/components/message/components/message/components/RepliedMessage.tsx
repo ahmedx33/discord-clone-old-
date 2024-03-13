@@ -1,7 +1,7 @@
 import Image from "next/image";
 import "../index.css";
 
-export default function RepliedMessage({ message, user , users}: { message: MessageInterFace | undefined; user: UserInterFace | undefined, users: UserInterFace[] }) {
+export default function RepliedMessage({ message, user, users }: { message: MessageInterFace | undefined; user: UserInterFace | undefined, users: UserInterFace[] }) {
     const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
     const element = document.getElementById(message?.id as string);
 
@@ -16,9 +16,9 @@ export default function RepliedMessage({ message, user , users}: { message: Mess
     // }
     return (
         <div className="flex items-center gap-2 select-none mb-2 relative repliedPath">
-            <div className={"flex items-center justify-center  pl-5  h-fit w-fit  hover:shadow-black cursor-pointer select-none"}>
+            {message?.id ? <div className={"flex items-center justify-center  pl-5  h-fit w-fit  hover:shadow-black cursor-pointer select-none"}>
                 <Image src={getRepliedMember?.imgUrl as string} width={20} height={20} alt="profile" className="rounded-[50%]  " />
-            </div>
+            </div> : "Original message was deleted"}
             <div className="text-[#9FA0A4] font-bold text-[14px] hover:underline cursor-pointer">{getRepliedMember?.userName}</div>
             <div
                 className="text-[#949BA4] hover:text-[#F2ECDD]  cursor-pointer"
