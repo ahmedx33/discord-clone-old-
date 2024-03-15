@@ -40,3 +40,8 @@ interface ServerInterface {
     fill?: boolean
     defaultBg?: boolean
 }
+
+interface TypingInterface {
+    isTyping: boolean
+    userId: string
+}

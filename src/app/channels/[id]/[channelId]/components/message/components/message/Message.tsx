@@ -25,6 +25,7 @@ export default function Message({
     messages,
     isHovering,
     users,
+    scrollToLastMessageById,
     setReplyTo,
     setIsReplying,
 }: {
@@ -36,7 +37,8 @@ export default function Message({
     userData: UserInterFace;
     isHovering: boolean;
     messages?: MessageInterFace[];
-    users: UserInterFace[]
+    users: UserInterFace[];
+    scrollToLastMessageById: string;
     setReplyTo?: Dispatch<SetStateAction<MessageInterFace | undefined>>;
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -44,12 +46,15 @@ export default function Message({
     const messageDate = format(message?.createdAt, "h:mm a");
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
     const isOwner = userData?.id === message.memberId
-
+    const lastMessage = window.document.getElementById(scrollToLastMessageById)
+    if (lastMessage) {
+        lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
+    }
     return (
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${( repliedMessage?.memberId === userData?.id && repliedMessage.memberId !== user.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(repliedMessage?.memberId === userData?.id && repliedMessage.memberId !== user.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (

@@ -23,6 +23,7 @@ model User {
 
     servers Server[]
     members Member[]
+    Rule    Rule[]
 }
 
 model Server {
@@ -41,6 +42,7 @@ model Server {
 
     members  Member[]
     Category Category[]
+    Rule     Rule[]
 
     @@index([autherId])
 }
@@ -81,8 +83,22 @@ model Member {
     updatedAt DateTime @updatedAt
 
     messages Message[]
+    rules    Rule[]
 
     @@index([autherId])
+    @@index([serverId])
+}
+
+model Rule {
+    id       String @id @default(uuid())
+    name     String
+    Member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    memberId String
+
+    serverId String
+    server   Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+    @@index([memberId])
     @@index([serverId])
 }
 
@@ -110,6 +126,6 @@ model Category {
     serverId String
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
-
     @@index([serverId])
 }
+

@@ -20,6 +20,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false)
+    const [userTyping, setUserTyping] = useState<boolean>()
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
 
     const repliedUser: UserInterFace | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
@@ -35,6 +36,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
             isOwner,
         };
     });
+
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
@@ -73,15 +75,20 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
         setMessages([...messages, message]);
     });
 
-    socket?.on("server/receiveTyping", (isTyping: boolean) => {
-        setIsTyping(isTyping)
-    })
+    socket?.on("server/message/startTyping", (userId) => {
+        setUserTyping(true);
+    });
+
+    socket?.on("server/message/stopTyping", (userId) => {
+        setUserTyping(false);
+    });
+
 
     return (
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message key={message?.id} message={message} userData={user} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} users={users} />
+                    <Message key={message?.id} message={message} userData={user} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} users={users} scrollToLastMessageById={messages.at(-1)?.id as string} />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-[95%] relative bg-[#2B2D31]">
@@ -110,39 +117,57 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                             setValue(e.target.value);
                         }}
 
+
                         onKeyDown={(e) => {
-                            if (value !== "") {
-                                setIsTyping(true)
-                                socket?.emit("server/typing", isTyping)
-                                clearTimeout(timeOutRef.current)
+                            if (!isTyping) {
+                                socket?.emit(
+                                    "server/message/startTyping",
+                                    channelId,
+                                    user.id,
+                                );
+                                setIsTyping(true);
                             }
 
-                            if (value === "") {
-                                setIsTyping(false)
-                                socket?.emit("server/typing", isTyping)
-                            }
-                        }}
+                            if (timeOutRef?.current) clearTimeout(timeOutRef.current);
 
-                        onKeyUp={() => {
+
                             timeOutRef.current = setTimeout(() => {
-                                setIsTyping(false)
-                                console.log("wsp")
-                                socket?.emit("server/typing", isTyping)
-                            }, 2000)
+                                socket?.emit(
+                                    "server/message/stopTyping",
+                                    channelId,
+                                    user.id,
+                                );
+                                setIsTyping(false);
+                            }, 2000);
 
+                            if (e.currentTarget.value === "") {
+                                setIsTyping(false);
+                                socket?.emit(
+                                    "server/message/stopTyping",
+                                    channelId,
+                                    user.id,
+                                );
+                            }
 
-
+                            if (e.key === "Enter") {
+                                socket?.emit(
+                                    "server/message/stopTyping",
+                                    channelId,
+                                    user.id,
+                                )
+                            }
                         }}
 
                         value={value}
                         name="message"
                         type="text"
                         className="w-full h-[30px] mb-[20px] bg-[#383A40] placeholder:text-[#949BA4] outline-none caret-white px-4 pl-[3.25rem] py-6 text-white absolute bottom-0 "
-                        style={{ borderRadius: "7px" }}
+                        style={{ borderRadius: "7px" }
+                        }
                         placeholder={`Message #${channel?.name}`}
                     />
 
-                    {isTyping ? "typing" : ""}
+                    {(isTyping && userTyping !== user?.id) ? ` is typing...` : ""}
                 </form>
             </div>
         </div>
