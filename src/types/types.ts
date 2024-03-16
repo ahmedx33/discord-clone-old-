@@ -32,8 +32,9 @@ interface ChannelInterFace {
 }
 
 interface ServerInterface {
+    id?: string
     className?: string
-    icon: string
+    icon?: string
     name: string
     width?: number
     height?: number

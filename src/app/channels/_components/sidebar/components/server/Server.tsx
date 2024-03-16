@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function ServerS({ className, icon, name, width, defaultBg, height, fill }: ServerInterface) {
+export function Server({ className, icon, name, width, defaultBg, height, fill }: ServerInterface) {
     return (
         <div
             className={`flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden ${className} ${

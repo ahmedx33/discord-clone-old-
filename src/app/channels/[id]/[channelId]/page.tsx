@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-export default async function Page({ params: { id, channelId } }: { params: { id: string, channelId: string } }) {
+export default async function MainServerPage({ params: { id, channelId } }: { params: { id: string, channelId: string } }) {
     const supabase = createServerComponentClient({cookies: cookies});
     const { user } = (await supabase.auth.getUser()).data;
     const currentUser = await getUser({userId: user?.id as string});

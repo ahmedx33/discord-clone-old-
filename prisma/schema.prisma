@@ -10,6 +10,13 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum Status {
+    ONLINE
+    IDLE
+    DONT_DISTURB
+    OFFLINE
+}
+
 model User {
     id     String @id
     imgUrl String @db.Text
@@ -17,13 +24,13 @@ model User {
     email       String
     displayName String
     userName    String
+    Status      Status @default(ONLINE)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     servers Server[]
     members Member[]
-    Rule    Rule[]
 }
 
 model Server {
@@ -95,8 +102,17 @@ model Rule {
     Member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
     memberId String
 
-    serverId String
-    server   Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+    ViewChannel     String
+    CanBan          Boolean
+    CanKick         Boolean
+    CanMute         Boolean
+    CanDeaf         Boolean
+    CanManageServer Boolean
+
+    serverId  String
+    server    Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([memberId])
     @@index([serverId])
@@ -128,4 +144,3 @@ model Category {
 
     @@index([serverId])
 }
-

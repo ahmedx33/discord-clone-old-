@@ -167,7 +167,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         placeholder={`Message #${channel?.name}`}
                     />
 
-                    {(isTyping && userTyping !== user?.id) ? ` is typing...` : ""}
+                    {(isTyping && userTyping) ? ` is typing...` : ""}
                 </form>
             </div>
         </div>
