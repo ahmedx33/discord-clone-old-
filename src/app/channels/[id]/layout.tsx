@@ -5,6 +5,7 @@ export default function layout({ params: { id }, children }: { params: { id: str
         <div className="flex w-full overflow-hidden">
             <SideBarInfo serverId={id} />
             {children}
+            <div id="sidebar"></div>
         </div>
     );
 }

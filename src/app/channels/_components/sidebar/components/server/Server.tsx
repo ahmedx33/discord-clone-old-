@@ -7,7 +7,7 @@ export function Server({ className, icon, name, width, defaultBg, height, fill }
                 defaultBg ? "bg-[#313338]" : "bg-white"
             } `}
         >
-            <Image className="absolute" src={icon} alt="icon" draggable={false} fill={fill} width={width} height={height} />
+            <Image className="absolute" src={icon as string} alt="icon" draggable={false} fill={fill} width={width} height={height} />
         </div>
     );
 }

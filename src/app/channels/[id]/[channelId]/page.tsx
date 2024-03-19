@@ -13,13 +13,13 @@ export default async function MainServerPage({ params: { id, channelId } }: { pa
     const currentUser = await getUser({userId: user?.id as string});
     const users = await getUsers()
     const dbMessages = await getMessages({ channelId });
-    const channel = await getChannel({ channelId });
+    const channel = await getChannel({ channelId }) ;
 
     revalidatePath(`/channels/${id}/${channelId}`)
 
     return (
         <div className="flex flex-col w-full">
-            <Header channel={channel} />
+            <Header channel={channel} serverId={channelId}/>
             <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users}/>
         </div>
     );

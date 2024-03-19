@@ -50,17 +50,18 @@ export default function Message({
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
     }
+
     return (
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(repliedMessage?.memberId === userData?.id && repliedMessage.memberId !== user.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(repliedMessage?.memberId === userData?.id && repliedMessage.memberId !== user?.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
                 <div className="flex items-center gap-x-3">
                     <div className={"flex items-start overflow-hidden pl-5 w-[60px] h-fit hover:shadow-black cursor-pointer select-none z-10"}>
-                        <Image src={userData?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
+                        <Image src={user?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
                     </div>
                 </div>
             )}

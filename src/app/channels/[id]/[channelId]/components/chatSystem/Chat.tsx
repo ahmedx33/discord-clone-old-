@@ -12,7 +12,7 @@ import axios from "axios"
 import { SocketOptions } from "dgram";
 import { Socket } from "socket.io-client";
 
-export default function Chat({ channelId, user, dbMessages, channel, users }: { channelId: string; user: UserInterFace; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
+export default function Chat({ channelId, user, dbMessages, channel, users }: { channelId: string; user: UserInterFace | null; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
@@ -23,7 +23,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
     const [userTyping, setUserTyping] = useState<boolean>()
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
 
-    const repliedUser: UserInterFace | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
+    const repliedUser: UserInterFace | null | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -82,7 +82,6 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
     socket?.on("server/message/stopTyping", (userId) => {
         setUserTyping(false);
     });
-
 
     return (
         <div className="w-full h-full flex flex-col justify-between">
@@ -167,7 +166,6 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         placeholder={`Message #${channel?.name}`}
                     />
 
-                    {(isTyping && userTyping) ? ` is typing...` : ""}
                 </form>
             </div>
         </div>

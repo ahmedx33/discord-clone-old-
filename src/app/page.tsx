@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 
 export default function Home() {
     const supabase = createServerComponentClient({ cookies: cookies });
-    const router = useRouter();
 
     supabase.auth.onAuthStateChange((_, session) => {
         if (!session) {

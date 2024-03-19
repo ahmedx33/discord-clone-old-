@@ -20,7 +20,7 @@ interface UserInterFace {
     updatedAt: Date
 }
 
-type ChannelType = "TEXT" | "AUDIO" | "VIDEO"
+type ChannelType = "TEXT" | "VOICE" | "VIDEO"
 
 interface ChannelInterFace {
     id: string

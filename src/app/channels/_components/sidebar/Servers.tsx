@@ -7,7 +7,6 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 
 export default function Servers({ servers }: { servers: ServerInterface[] }) {
     const pathname = usePathname()
-    console.log(pathname)
     return (
         <>
 

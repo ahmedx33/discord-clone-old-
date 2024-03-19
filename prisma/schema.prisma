@@ -24,13 +24,30 @@ model User {
     email       String
     displayName String
     userName    String
-    Status      Status @default(ONLINE)
+    Status      Status  @default(ONLINE)
+    color       String
+    haveNitro   Boolean @default(false)
+
+    servers     Server[]
+    friendShips FriendShip[]
+    Member      Member[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model FriendShip {
+    id       String @id @default(uuid())
+    status   Status @default(ONLINE)
+    friendId String
+    userId   String
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    servers Server[]
-    members Member[]
+    @@index([friendId])
+    @@index([userId])
 }
 
 model Server {
@@ -44,12 +61,12 @@ model Server {
     autherId String
     channels Channel[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
     members  Member[]
     Category Category[]
     Rule     Rule[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([autherId])
 }
@@ -67,12 +84,11 @@ model Channel {
     type ChannelType @default(TEXT)
 
     categoryId String
-    category   Server @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    category   Server    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    messages   Message[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    messages Message[]
 
     @@index([categoryId])
 }
@@ -86,31 +102,36 @@ model Member {
     serverId String
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
     messages Message[]
     rules    Rule[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([autherId])
     @@index([serverId])
 }
 
 model Rule {
-    id       String @id @default(uuid())
-    name     String
-    Member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
-    memberId String
+    id              String  @id @default(uuid())
+    name            String
+    Member          Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    memberId        String
+    color           String
+    CanViewChannels Boolean @default(false)
+    CanBan          Boolean @default(false)
 
-    ViewChannel     String
-    CanBan          Boolean
-    CanKick         Boolean
-    CanMute         Boolean
-    CanDeaf         Boolean
-    CanManageServer Boolean
+    CanKick Boolean @default(false)
 
-    serverId  String
-    server    Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+    CanMute Boolean @default(false)
+
+    CanDeaf Boolean @default(false)
+
+    CanManageServer Boolean @default(false)
+
+    serverId String
+    server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -127,10 +148,10 @@ model Message {
 
     channelId String
     channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+    replyTo   String  @default("")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    replyTo   String   @default("")
 
     @@index([memberId])
     @@index([channelId])
@@ -141,6 +162,9 @@ model Category {
     title    String
     serverId String
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([serverId])
 }
