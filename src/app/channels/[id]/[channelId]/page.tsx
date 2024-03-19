@@ -19,7 +19,7 @@ export default async function MainServerPage({ params: { id, channelId } }: { pa
 
     return (
         <div className="flex flex-col w-full">
-            <Header channel={channel} serverId={channelId}/>
+            <Header channel={channel} serverId={id}/>
             <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users}/>
         </div>
     );

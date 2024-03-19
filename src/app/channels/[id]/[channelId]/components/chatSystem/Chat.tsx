@@ -90,7 +90,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                     <Message key={message?.id} message={message} userData={user} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} users={users} scrollToLastMessageById={messages.at(-1)?.id as string} />
                 ))}
             </MessagesGroup>
-            <div className="px-5 w-[95%] relative bg-[#2B2D31]">
+            <div className="px-5 w-full relative bg-[#313338]">
                 {isReplying && (
                     <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
                         <span className="text-[#B5BAC1] text-[14px]">
@@ -122,7 +122,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                                 socket?.emit(
                                     "server/message/startTyping",
                                     channelId,
-                                    user.id,
+                                    user?.id,
                                 );
                                 setIsTyping(true);
                             }
@@ -134,7 +134,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                                 socket?.emit(
                                     "server/message/stopTyping",
                                     channelId,
-                                    user.id,
+                                    user?.id,
                                 );
                                 setIsTyping(false);
                             }, 2000);
@@ -144,7 +144,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                                 socket?.emit(
                                     "server/message/stopTyping",
                                     channelId,
-                                    user.id,
+                                    user?.id,
                                 );
                             }
 
@@ -152,7 +152,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                                 socket?.emit(
                                     "server/message/stopTyping",
                                     channelId,
-                                    user.id,
+                                    user?.id,
                                 )
                             }
                         }}
@@ -160,7 +160,7 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         value={value}
                         name="message"
                         type="text"
-                        className="w-full h-[30px] mb-[20px] bg-[#383A40] placeholder:text-[#949BA4] outline-none caret-white px-4 pl-[3.25rem] py-6 text-white absolute bottom-0 "
+                        className="w-full h-[30px] mb-[20px] bg-[#383A40] placeholder:text-[#949BA4] outline-none caret-white px-4 pl-[3.25rem] py-6 text-white relative bottom-0 "
                         style={{ borderRadius: "7px" }
                         }
                         placeholder={`Message #${channel?.name}`}
