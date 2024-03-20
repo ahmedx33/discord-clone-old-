@@ -4,10 +4,10 @@ import { cache } from "react"
 
 
 
-export const getChannels = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+export const getChannels = unstable_cache(cache(async ({ categoryId }: { categoryId: string }) => {
     const data = await prisma.channel.findMany({
         where: {
-            serverId: serverId
+categoryId
         }
     })
 

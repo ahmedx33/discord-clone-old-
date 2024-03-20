@@ -21,7 +21,7 @@ export default async function MainServerPage({ params: { id, channelId } }: { pa
 
     return (
         <div className="flex flex-col w-full">
-            <Header channel={channel} members={members} />
+            <Header channel={channel} members={members} users={users}/>
             <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users} />
         </div>
     );

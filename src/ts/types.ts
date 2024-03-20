@@ -1,4 +1,3 @@
-
 interface MessageInterFace {
     id: string
     memberId: string
@@ -25,7 +24,7 @@ type ChannelType = "TEXT" | "VOICE" | "VIDEO"
 interface ChannelInterFace {
     id: string
     name: string
-    serverId: string
+    categoryId: string
     type: ChannelType
     createdAt: Date
     updatedAt: Date
@@ -54,4 +53,13 @@ interface MemberInterface {
     serverId: string
     createdAt: Date
     updatedAt: Date
+}
+
+
+interface MemberProfileInterface {
+    id: string
+    name: string
+    profileImg: string
+    createdAt?: Date
+    updatedAt?: Date
 }

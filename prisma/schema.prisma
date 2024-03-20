@@ -10,22 +10,16 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-enum Status {
-    ONLINE
-    IDLE
-    DONT_DISTURB
-    OFFLINE
-}
 
 model User {
     id     String @id
-    imgUrl String @db.Text
+    profileImg String @db.Text
 
     email       String
     displayName String
     userName    String
     Status      Status  @default(ONLINE)
-    color       String
+    color       String  @default("#000000")
     haveNitro   Boolean @default(false)
 
     servers     Server[]
@@ -36,6 +30,12 @@ model User {
     updatedAt DateTime @updatedAt
 }
 
+enum Status {
+    ONLINE
+        IDLE
+        DONT_DISTURB
+        OFFLINE
+}
 model FriendShip {
     id       String @id @default(uuid())
     status   Status @default(ONLINE)
@@ -119,6 +119,10 @@ model Rule {
     color           String
     CanViewChannels Boolean @default(false)
     CanBan          Boolean @default(false)
+
+    isOwner Boolean @default(false)
+
+    isAdmin Boolean @default(false)
 
     CanKick Boolean @default(false)
 
