@@ -46,3 +46,12 @@ interface TypingInterface {
     isTyping: boolean
     userId: string
 }
+
+
+interface MemberInterface {
+    id: string
+    autherId: string
+    serverId: string
+    createdAt: Date
+    updatedAt: Date
+}

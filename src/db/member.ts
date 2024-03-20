@@ -4,14 +4,12 @@ import { cache } from "react"
 
 
 
-export const getMemebers = unstable_cache(cache(async ({ serverId }: { serverId?: string }) => {
-    const data = await prisma.member.findFirst({
+
+export const getMembers = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+    const data = await prisma.member.findMany({
         where: {
             serverId
         }
     })
-
     return data
-
-}), ["member"])
-
+}), ["member", "memberId"])

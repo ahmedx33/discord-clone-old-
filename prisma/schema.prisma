@@ -59,7 +59,6 @@ model Server {
 
     auther   User      @relation(fields: [autherId], references: [id], onDelete: Cascade)
     autherId String
-    channels Channel[]
 
     members  Member[]
     Category Category[]
@@ -84,7 +83,7 @@ model Channel {
     type ChannelType @default(TEXT)
 
     categoryId String
-    category   Server    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    category   Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     messages   Message[]
 
     createdAt DateTime @default(now())
@@ -158,13 +157,13 @@ model Message {
 }
 
 model Category {
-    id       String @id @default(uuid())
-    title    String
-    serverId String
-    server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id        String    @id @default(uuid())
+    title     String
+    serverId  String
+    server    Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+    channels  Channel[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 
     @@index([serverId])
 }

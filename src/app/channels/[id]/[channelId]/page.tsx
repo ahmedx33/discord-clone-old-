@@ -6,21 +6,23 @@ import { getChannel } from "@/db/channel";
 import { revalidatePath } from "next/cache";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { getMembers } from "@/db/member";
 
 export default async function MainServerPage({ params: { id, channelId } }: { params: { id: string, channelId: string } }) {
-    const supabase = createServerComponentClient({cookies: cookies});
+    const supabase = createServerComponentClient({ cookies: cookies });
     const { user } = (await supabase.auth.getUser()).data;
-    const currentUser = await getUser({userId: user?.id as string});
+    const currentUser = await getUser({ userId: user?.id as string });
     const users = await getUsers()
     const dbMessages = await getMessages({ channelId });
-    const channel = await getChannel({ channelId }) ;
+    const channel = await getChannel({ channelId });
+    const members = await getMembers({ serverId: id })
 
     revalidatePath(`/channels/${id}/${channelId}`)
 
     return (
         <div className="flex flex-col w-full">
-            <Header channel={channel} serverId={id}/>
-            <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users}/>
+            <Header channel={channel} members={members} />
+            <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users} />
         </div>
     );
 }

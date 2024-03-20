@@ -26,3 +26,22 @@ export const getServer = unstable_cache(cache(async ({ serverId }: { serverId: s
     })
     return data
 }), ["server", "serverId"])
+
+
+export const deleteServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+    const data = await prisma.server.delete({
+        where: {
+            id: serverId
+        }
+    })
+    return data
+}), ["server", "serverId"])
+
+export const getMembers = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+    const data = await prisma.member.findMany({
+        where: {
+            serverId
+        }
+    })
+    return data
+}), ["server", "serverId"])
