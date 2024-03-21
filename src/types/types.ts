@@ -13,7 +13,7 @@ interface MessageInterFace {
 interface UserInterFace {
     id: string
     email: string
-    imgUrl: string
+    profileImg: string
     displayName: string
     userName: string
     createdAt: Date
@@ -68,7 +68,7 @@ interface MemberProfileInterface {
 interface RuleInterface {
     id: string
     name: string
-    memberId: string
+    members: string[]
     serverId?: string
     createdAt?: Date
     updatedAt?: Date

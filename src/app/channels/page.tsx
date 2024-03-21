@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { createServerComponentClient, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 
@@ -7,10 +7,9 @@ export default function Page() {
     // const router = useRouter()
 
     const signOut = async () => {
-        const { user } = (await supabase.auth.getUser()).data
-        await supabase.auth.signOut()
-
-    }
+        const { user } = (await supabase.auth.getUser()).data;
+        await supabase.auth.signOut();
+    };
     //
     // supabase.auth.onAuthStateChange((_, session) => {
     //     if (!session) {

@@ -9,14 +9,14 @@ export async function createUser({ userId = '', email, userName, displayName }: 
             email: email,
             userName: userName,
             displayName: displayName,
-            imgUrl: ""
+            profileImg: ""
         }
     })
 }
 
-export const getUser = unstable_cache(cache(async ({userId}: {userId: string}) => {
+export const getUser = unstable_cache(cache(async ({ userId }: { userId: string }) => {
     const data = await prisma.user.findUnique({
-        where:{
+        where: {
             id: userId
         }
     })

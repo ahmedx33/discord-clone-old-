@@ -12,7 +12,7 @@ datasource db {
 
 model User {
     id         String @id
-    profileImg String @db.Text
+    profileImg String @db.Text @default("https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png")
 
     email       String
     displayName String
@@ -23,7 +23,7 @@ model User {
 
     servers     Server[]
     friendShips FriendShip[]
-    Member      Member[]
+    members      Member[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -61,8 +61,8 @@ model Server {
     autherId String
 
     members  Member[]
-    Category Category[]
-    Rule     Rule[]
+    category Category[]
+    rules    Rule[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -102,25 +102,23 @@ model Member {
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
     messages Message[]
-    rules    Rule[]
+    rules    String[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
+   
     @@index([autherId])
     @@index([serverId])
 }
 
 model Rule {
-    id              String  @id @default(uuid())
+    id              String   @id @default(uuid())
     name            String
-    Member          Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
-    memberId        String
     color           String
-    CanViewChannels Boolean @default(false)
-    CanBan          Boolean @default(false)
-
-    isOwner Boolean @default(false)
+    CanViewChannels Boolean  @default(false)
+    CanBan          Boolean  @default(false)
+    Members         String[]
+    isOwner         Boolean  @default(false)
 
     isAdmin Boolean @default(false)
 
@@ -136,9 +134,7 @@ model Rule {
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([memberId])
+   
     @@index([serverId])
 }
 

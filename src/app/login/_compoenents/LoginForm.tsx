@@ -23,7 +23,7 @@ export default function LoginForm() {
         await axios.post("/auth/login/api/", {
             userId: user?.id,
             email: formData.get("email") as string,
-            imgUrl: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
+            profileImg: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
             displayName: "",
             userName: "",
         }),

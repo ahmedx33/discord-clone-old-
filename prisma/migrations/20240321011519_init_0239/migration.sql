@@ -7,12 +7,12 @@ CREATE TYPE "ChannelType" AS ENUM ('TEXT', 'VOICE', 'VIDEO');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "imgUrl" TEXT NOT NULL,
+    "profileImg" TEXT NOT NULL DEFAULT 'https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png',
     "email" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
     "userName" TEXT NOT NULL,
     "Status" "Status" NOT NULL DEFAULT 'ONLINE',
-    "color" TEXT NOT NULL,
+    "color" TEXT NOT NULL DEFAULT '#000000',
     "haveNitro" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -61,6 +61,7 @@ CREATE TABLE "Member" (
     "id" TEXT NOT NULL,
     "autherId" TEXT NOT NULL,
     "serverId" TEXT NOT NULL,
+    "rules" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -71,17 +72,18 @@ CREATE TABLE "Member" (
 CREATE TABLE "Rule" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "memberId" TEXT NOT NULL,
     "color" TEXT NOT NULL,
     "CanViewChannels" BOOLEAN NOT NULL DEFAULT false,
     "CanBan" BOOLEAN NOT NULL DEFAULT false,
+    "Members" TEXT[],
+    "isOwner" BOOLEAN NOT NULL DEFAULT false,
+    "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "CanKick" BOOLEAN NOT NULL DEFAULT false,
     "CanMute" BOOLEAN NOT NULL DEFAULT false,
     "CanDeaf" BOOLEAN NOT NULL DEFAULT false,
     "CanManageServer" BOOLEAN NOT NULL DEFAULT false,
     "serverId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Rule_pkey" PRIMARY KEY ("id")
 );
@@ -129,9 +131,6 @@ CREATE INDEX "Member_autherId_idx" ON "Member"("autherId");
 CREATE INDEX "Member_serverId_idx" ON "Member"("serverId");
 
 -- CreateIndex
-CREATE INDEX "Rule_memberId_idx" ON "Rule"("memberId");
-
--- CreateIndex
 CREATE INDEX "Rule_serverId_idx" ON "Rule"("serverId");
 
 -- CreateIndex
@@ -157,9 +156,6 @@ ALTER TABLE "Member" ADD CONSTRAINT "Member_autherId_fkey" FOREIGN KEY ("autherI
 
 -- AddForeignKey
 ALTER TABLE "Member" ADD CONSTRAINT "Member_serverId_fkey" FOREIGN KEY ("serverId") REFERENCES "Server"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Rule" ADD CONSTRAINT "Rule_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Rule" ADD CONSTRAINT "Rule_serverId_fkey" FOREIGN KEY ("serverId") REFERENCES "Server"("id") ON DELETE CASCADE ON UPDATE CASCADE;

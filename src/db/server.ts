@@ -54,4 +54,4 @@ export const getRules = unstable_cache(cache(async ({ serverId }: { serverId: st
         }
     })
     return data
-}), ["server", "serverId"])
+}), ["rule", "ruleId"])

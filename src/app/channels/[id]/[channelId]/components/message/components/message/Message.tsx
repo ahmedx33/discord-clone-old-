@@ -61,7 +61,7 @@ export default function Message({
             {(!message?.isGrouped || message.replyTo) && (
                 <div className="flex items-center gap-x-3">
                     <div className={"flex items-start overflow-hidden pl-5 w-[60px] h-fit hover:shadow-black cursor-pointer select-none z-10"}>
-                        <Image src={user?.imgUrl as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
+                        <Image src={user?.profileImg as string} width={40} height={40} alt="profile" className="rounded-[50%] h-[40px] bg-cover" />
                     </div>
                 </div>
             )}
