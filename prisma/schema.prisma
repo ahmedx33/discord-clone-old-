@@ -115,20 +115,20 @@ model Rule {
     id              String   @id @default(uuid())
     name            String
     color           String
-    CanViewChannels Boolean  @default(false)
-    CanBan          Boolean  @default(false)
-    Members         String[]
+    canViewChannels Boolean  @default(false)
+    canBan          Boolean  @default(false)
+    members         String[]
     isOwner         Boolean  @default(false)
 
     isAdmin Boolean @default(false)
 
-    CanKick Boolean @default(false)
+    canKick Boolean @default(false)
 
-    CanMute Boolean @default(false)
+    canMute Boolean @default(false)
 
-    CanDeaf Boolean @default(false)
+    canDeaf Boolean @default(false)
 
-    CanManageServer Boolean @default(false)
+    canManageServer Boolean @default(false)
 
     serverId String
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)

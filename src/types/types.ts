@@ -50,6 +50,7 @@ interface TypingInterface {
 
 interface MemberInterface {
     id: string
+    rules?: string[]
     autherId: string
     serverId: string
     createdAt: Date
@@ -68,7 +69,6 @@ interface MemberProfileInterface {
 interface RuleInterface {
     id: string
     name: string
-    members: string[]
     serverId?: string
     createdAt?: Date
     updatedAt?: Date

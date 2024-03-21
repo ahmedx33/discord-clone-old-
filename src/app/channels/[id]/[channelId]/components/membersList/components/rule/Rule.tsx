@@ -3,27 +3,16 @@ import MemberProfile from "../MemberProfile";
 
 export default function Rule({
     name,
-    members,
     users,
+    members,
+
 }: Omit<RuleInterface, "id"> & {
     users: UserInterFace[];
+    members: MemberInterface[]
 }) {
-    const [memeberId, setMemberId] = useState<string>()
-
-
-    useEffect(() => {
-        let isMount = true
-
-        if (isMount) {
-            members.map((member) => setMemberId(member));
-        }
-
-        return () => { isMount = false }
-    })
-
-    console.log(members)
-
-    const getMembersFromUsersIds = users?.filter((user) => user.id === memeberId);
+    const member = members?.filter((member) => member.rules?.find((rule) => rule === name))
+    const memberIds = member?.map((member) => member.autherId)
+    const getMembersFromUsersIds = users?.filter((user) => user.id === memberIds?.find((id) => id === user.id));
 
     return (
         <>
