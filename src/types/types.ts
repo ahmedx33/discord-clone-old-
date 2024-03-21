@@ -1,3 +1,4 @@
+
 interface MessageInterFace {
     id: string
     memberId: string
@@ -60,6 +61,15 @@ interface MemberProfileInterface {
     id: string
     name: string
     profileImg: string
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+interface RuleInterface {
+    id: string
+    name: string
+    memberId: string
+    serverId?: string
     createdAt?: Date
     updatedAt?: Date
 }

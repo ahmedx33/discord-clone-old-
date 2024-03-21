@@ -10,9 +10,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-
 model User {
-    id     String @id
+    id         String @id
     profileImg String @db.Text
 
     email       String
@@ -32,10 +31,11 @@ model User {
 
 enum Status {
     ONLINE
-        IDLE
-        DONT_DISTURB
-        OFFLINE
+    IDLE
+    DONT_DISTURB
+    OFFLINE
 }
+
 model FriendShip {
     id       String @id @default(uuid())
     status   Status @default(ONLINE)
@@ -57,7 +57,7 @@ model Server {
 
     name String
 
-    auther   User      @relation(fields: [autherId], references: [id], onDelete: Cascade)
+    auther   User   @relation(fields: [autherId], references: [id], onDelete: Cascade)
     autherId String
 
     members  Member[]
@@ -83,7 +83,7 @@ model Channel {
     type ChannelType @default(TEXT)
 
     categoryId String
-    category   Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     messages   Message[]
 
     createdAt DateTime @default(now())

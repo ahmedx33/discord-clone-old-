@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { getMembers } from "@/db/member";
+import { getRules } from "@/db/server";
 
 export default async function MainServerPage({ params: { id, channelId } }: { params: { id: string, channelId: string } }) {
     const supabase = createServerComponentClient({ cookies: cookies });
@@ -16,12 +17,13 @@ export default async function MainServerPage({ params: { id, channelId } }: { pa
     const dbMessages = await getMessages({ channelId });
     const channel = await getChannel({ channelId });
     const members = await getMembers({ serverId: id })
+    const rules = await getRules({ serverId: id })
 
     revalidatePath(`/channels/${id}/${channelId}`)
 
     return (
         <div className="flex flex-col w-full">
-            <Header channel={channel} members={members} users={users}/>
+            <Header channel={channel} members={members} users={users} rules={rules}/>
             <Chat user={currentUser} channelId={channelId} dbMessages={dbMessages} channel={channel} users={users} />
         </div>
     );

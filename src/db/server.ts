@@ -45,3 +45,13 @@ export const getMembers = unstable_cache(cache(async ({ serverId }: { serverId: 
     })
     return data
 }), ["server", "serverId"])
+
+
+export const getRules = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+    const data = await prisma.rule.findMany({
+        where: {
+            serverId
+        }
+    })
+    return data
+}), ["server", "serverId"])
