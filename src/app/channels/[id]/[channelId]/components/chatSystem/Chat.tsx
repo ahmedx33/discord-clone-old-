@@ -8,23 +8,38 @@ import MessagesGroup from "../message/components/MessagesGroup";
 import { FaCirclePlus } from "react-icons/fa6";
 import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
-import axios from "axios"
+import axios from "axios";
 import { SocketOptions } from "dgram";
 import { Socket } from "socket.io-client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
-export default function Chat({ channelId, user, dbMessages, channel, users }: { channelId: string; user: UserInterFace | null; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null, users: UserInterFace[] }) {
+export default function Chat({
+    channelId,
+    user,
+    dbMessages,
+    channel,
+    users,
+}: {
+    channelId: string;
+    user: UserInterFace | null;
+    dbMessages: MessageInterFace[];
+    channel: ChannelInterFace | null;
+    users: UserInterFace[];
+}) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
-    const [isTyping, setIsTyping] = useState<boolean>(false)
-    const [userTyping, setUserTyping] = useState<boolean>()
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [userTyping, setUserTyping] = useState<boolean>();
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
+    const reduxUser = useSelector((state: RootState) => state.user.value);
 
-    const repliedUser: UserInterFace | null | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId)
-
+    const repliedUser: UserInterFace | null | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
+    console.log(reduxUser);
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
         const isOwner = oldMessage?.memberId === message.memberId;
@@ -36,7 +51,6 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
             isOwner,
         };
     });
-
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
@@ -87,17 +101,33 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message key={message?.id} message={message} userData={user} setReplyTo={setReplyTo} setIsReplying={setIsReplying} messages={messages} isHovering={message.id === replyTo?.id} users={users} scrollToLastMessageById={messages.at(-1)?.id as string} />
+                    <Message
+                        key={message?.id}
+                        message={message}
+                        userData={user}
+                        setReplyTo={setReplyTo}
+                        setIsReplying={setIsReplying}
+                        messages={messages}
+                        isHovering={message.id === replyTo?.id}
+                        users={users}
+                        scrollToLastMessageById={messages.at(-1)?.id as string}
+                    />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-full relative bg-[#313338]">
                 {isReplying && (
                     <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
                         <span className="text-[#B5BAC1] text-[14px]">
-                            Replying to <span className="font-bold cursor-pointer" onClick={() => {
-                                const element = document.getElementById(replyTo?.id as string)
-                                element?.scrollIntoView({ behavior: "smooth", block: "center" });
-                            }}>{repliedUser?.userName}</span>
+                            Replying to{" "}
+                            <span
+                                className="font-bold cursor-pointer"
+                                onClick={() => {
+                                    const element = document.getElementById(replyTo?.id as string);
+                                    element?.scrollIntoView({ behavior: "smooth", block: "center" });
+                                }}
+                            >
+                                {repliedUser?.userName}
+                            </span>
                         </span>
                         <IoIosCloseCircle
                             size={18}
@@ -115,57 +145,35 @@ export default function Chat({ channelId, user, dbMessages, channel, users }: { 
                         onChange={(e) => {
                             setValue(e.target.value);
                         }}
-
-
                         onKeyDown={(e) => {
                             if (!isTyping) {
-                                socket?.emit(
-                                    "server/message/startTyping",
-                                    channelId,
-                                    user?.id,
-                                );
+                                socket?.emit("server/message/startTyping", channelId, user?.id);
                                 setIsTyping(true);
                             }
 
                             if (timeOutRef?.current) clearTimeout(timeOutRef.current);
 
-
                             timeOutRef.current = setTimeout(() => {
-                                socket?.emit(
-                                    "server/message/stopTyping",
-                                    channelId,
-                                    user?.id,
-                                );
+                                socket?.emit("server/message/stopTyping", channelId, user?.id);
                                 setIsTyping(false);
                             }, 2000);
 
                             if (e.currentTarget.value === "") {
                                 setIsTyping(false);
-                                socket?.emit(
-                                    "server/message/stopTyping",
-                                    channelId,
-                                    user?.id,
-                                );
+                                socket?.emit("server/message/stopTyping", channelId, user?.id);
                             }
 
                             if (e.key === "Enter") {
-                                socket?.emit(
-                                    "server/message/stopTyping",
-                                    channelId,
-                                    user?.id,
-                                )
+                                socket?.emit("server/message/stopTyping", channelId, user?.id);
                             }
                         }}
-
                         value={value}
                         name="message"
                         type="text"
                         className="w-full h-[30px] mb-[20px] bg-[#383A40] placeholder:text-[#949BA4] outline-none caret-white px-4 pl-[3.25rem] py-6 text-white relative bottom-0 "
-                        style={{ borderRadius: "7px" }
-                        }
+                        style={{ borderRadius: "7px" }}
                         placeholder={`Message #${channel?.name}`}
                     />
-
                 </form>
             </div>
         </div>

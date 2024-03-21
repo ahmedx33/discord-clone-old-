@@ -8,7 +8,7 @@ import { useLocalStoreage } from "@/hooks/useLocalStoreage";
 
 export default function Header({ channel, members, users, rules }: { channel: ChannelInterFace | null, members: MemberInterface[], users: UserInterFace[], rules: RuleInterface[] }) {
     const [storedValue, setValue] = useLocalStoreage("membersList", false)
-    const [toggleMembersList, setToggleMembersList] = useState<boolean>(storedValue)
+    const [toggleMembersList, setToggleMembersList] = useState<boolean>(false) 
 
     useEffect(() => {
         let mount = true

@@ -6,10 +6,14 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { mainUser } from "../../user/userSlice";
 
 export default function LoginForm() {
     const router = useRouter();
     const supabase = createClientComponentClient();
+    const dispatch = useDispatch();
 
     const signUpHandler = async (formData: FormData) => {
         const res = {
@@ -20,14 +24,15 @@ export default function LoginForm() {
         const { data, error } = await supabase.auth.signInWithPassword(res);
 
         const { user } = (await supabase.auth.getUser()).data;
-        await axios.post("/auth/login/api/", {
+        const userData = {
             userId: user?.id,
             email: formData.get("email") as string,
             profileImg: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
             displayName: "",
             userName: "",
-        }),
-            toast.error(error?.message);
+        };
+        dispatch(mainUser(userData));
+        await axios.post("/auth/login/api/", userData), toast.error(error?.message);
     };
 
     supabase.auth.onAuthStateChange(async (_, session) => {
