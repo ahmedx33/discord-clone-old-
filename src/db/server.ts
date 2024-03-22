@@ -12,7 +12,7 @@ export async function createServer({ name, imgUrl, autherId }: { name: string, i
     })
 }
 
-export const getServers = unstable_cache(cache(async ({ authorId }: { authorId: string }) => {
+export const getServers = unstable_cache(cache(async () => {
     const data = await prisma.server.findMany()
     return data
 }), ["server"])

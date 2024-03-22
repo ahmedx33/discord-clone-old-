@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import StoreProvider from "@/providers/StoreProvider";
 import { Toaster } from "sonner";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,14 +19,14 @@ export default async function RootLayout({
 }>) {
     return (
         <StoreProvider>
-            <html lang="en">
-                <body>
-                    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+                <html lang="en">
+                    <body>
                         {children}
-                    </ThemeProvider>
-                    <Toaster richColors />
-                </body>
-            </html>
+                        <Toaster richColors />
+                    </body>
+                </html>
+            </ThemeProvider>
         </StoreProvider>
     );
 }
