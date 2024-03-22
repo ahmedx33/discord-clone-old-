@@ -1,5 +1,5 @@
 "use client";
-import { createServerComponentClient, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import {  createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 
 export default function Page() {

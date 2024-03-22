@@ -8,7 +8,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { mainUser } from "../../user/userSlice";
 interface BarInterface {
     goBackButton?: boolean;
 }
@@ -16,6 +17,7 @@ interface BarInterface {
 export default function RegisterForm({ goBackButton }: BarInterface) {
     const router = useRouter();
     const supabase = createClientComponentClient();
+    const dispatch = useDispatch();
 
     const signUpHandler = async (formData: FormData) => {
         const res = {
@@ -41,8 +43,8 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
             userName: formData.get("username"),
         };
 
+       
         await axios.post("/auth/login/api/", userData);
-        console.log(data);
         if (error?.message) {
             toast.error("Somthing went wrong!");
         }

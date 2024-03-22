@@ -18,10 +18,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import "./index.css"
+import { RootState } from "@/app/store/store";
+import { useSelector } from "react-redux";
 
 export default function Message({
     message,
-    userData,
     messages,
     isHovering,
     users,
@@ -34,7 +35,6 @@ export default function Message({
         isLoading?: boolean;
         isOwner: boolean;
     };
-    userData: UserInterFace;
     isHovering: boolean;
     messages?: MessageInterFace[];
     users: UserInterFace[];
@@ -42,6 +42,8 @@ export default function Message({
     setReplyTo?: Dispatch<SetStateAction<MessageInterFace | undefined>>;
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }) {
+
+    const userData = useSelector((state: RootState) => state.user.value);
     const user = userData?.id === message?.memberId ? userData : users?.find((user) => user.id === message?.memberId);
     const messageDate = format(message?.createdAt, "h:mm a");
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
@@ -55,7 +57,7 @@ export default function Message({
         <div
             id={message.id}
             className={cn(
-                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(repliedMessage?.memberId === userData?.id && repliedMessage.memberId !== user?.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
+                `hover:bg-[#2E3035] w-full  relative group ${!message?.isGrouped && "my-2"} ${message.replyTo && "mt-4"} flex items-center ${(repliedMessage?.memberId === userData?.id && repliedMessage?.memberId !== user?.id) ? "highlighted" : ""}  ${isHovering ? "hovering" : ""}`
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
@@ -67,7 +69,7 @@ export default function Message({
             )}
 
             <div className="flex flex-col justify-center w-[90%]">
-                {message.replyTo && <RepliedMessage message={repliedMessage} user={userData} users={users} />}
+                {message.replyTo && <RepliedMessage message={repliedMessage} users={users} />}
 
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (

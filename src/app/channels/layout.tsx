@@ -1,10 +1,21 @@
+import { getUser } from "@/db/user";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import { ReactNode } from "react";
+import AddUserProvider from "@/providers/AddUserProvider";
 
-export default function layout({ children, nav }: { children: ReactNode; nav: ReactNode }) {
-      return (
-            <div className="flex bg-[#313338]">
-                  {nav}
-                  {children}
-            </div>
-      );
+
+export default async function layout({ children, nav }: { children: ReactNode; nav: ReactNode }) {
+    const supabase = createServerComponentClient({ cookies: cookies });
+    const { user } = (await supabase.auth.getUser()).data;
+    const currentUser = await getUser({ userId: user?.id as string });
+
+    return (
+        <div className="flex bg-[#313338]">
+
+            <AddUserProvider user={currentUser} />
+            {nav}
+            {children}
+        </div>
+    );
 }

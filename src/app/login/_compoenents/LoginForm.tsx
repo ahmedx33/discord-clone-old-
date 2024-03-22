@@ -23,17 +23,14 @@ export default function LoginForm() {
 
         const { data, error } = await supabase.auth.signInWithPassword(res);
 
-        const { user } = (await supabase.auth.getUser()).data;
         const userData = {
-            userId: user?.id,
-            email: formData.get("email") as string,
+            userId: data.user?.id,
+            email: data.user?.email,
             profileImg: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
-            displayName: "",
-            userName: "",
+            displayName: data.user?.user_metadata.DisplayName,
+            userName: data.user?.user_metadata.userName,
         };
-        dispatch(mainUser(userData));
-        await axios.post("/auth/login/api/", userData), toast.error(error?.message);
-    };
+           };
 
     supabase.auth.onAuthStateChange(async (_, session) => {
         if (session?.access_token) {
@@ -47,12 +44,19 @@ export default function LoginForm() {
                 <p className="text-[#A2A6AD] mb-[19px]">We&apos;re so excited to see you again!</p>
                 <form action={signUpHandler} className="w-full">
                     <div className="flex flex-col gap-2 w-full mb-4">
-                        <input required type="email" name="email" className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black`} />
+                        <label htmlFor="email" className="text-[#A1A5AC] font-bold uppercase text-[0.8rem]">
+                            Email
+                        </label>
+                        <input required id="email" type="email" name="email" className={`rounded-[2.5px] py-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC] `} />
+                        <label htmlFor="password" className="text-[#A1A5AC] font-bold uppercase text-[0.8rem]">
+                            Password
+                        </label>
                         <input
                             required
+                            id="password"
                             type="password"
                             name="pass"
-                            className={`rounded-[2.5px] bg-[#1E1F22] border-none caret-white text-[#C6C9CC] focus:bg-[#E8F0FE] focus:caret-black focus:text-black`}
+                            className={`rounded-[2.5px] py-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC]`}
                         />
                     </div>
                     <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">Forgot your password?</h1>
@@ -72,7 +76,6 @@ export default function LoginForm() {
             <div>
                 <AnotherOption />
             </div>
-            <Toaster richColors className="absolute " />
         </div>
     );
 }

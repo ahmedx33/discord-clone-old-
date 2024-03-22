@@ -1,7 +1,10 @@
 import Image from "next/image";
 import "../index.css";
+import { RootState } from "@/app/store/store";
+import { useSelector } from "react-redux";
 
-export default function RepliedMessage({ message, user, users }: { message: MessageInterFace | undefined; user: UserInterFace | undefined; users: UserInterFace[] }) {
+export default function RepliedMessage({ message, users }: { message: MessageInterFace | undefined, users: UserInterFace[] }) {
+    const user = useSelector((state: RootState) => state.user.value);
     const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
     const element = document.getElementById(message?.id as string);
 

@@ -16,13 +16,11 @@ import { RootState } from "@/app/store/store";
 
 export default function Chat({
     channelId,
-    user,
     dbMessages,
     channel,
     users,
 }: {
     channelId: string;
-    user: UserInterFace | null;
     dbMessages: MessageInterFace[];
     channel: ChannelInterFace | null;
     users: UserInterFace[];
@@ -36,10 +34,10 @@ export default function Chat({
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [userTyping, setUserTyping] = useState<boolean>();
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
-    const reduxUser = useSelector((state: RootState) => state.user.value);
+    const user = useSelector((state: RootState) => state.user.value);
 
     const repliedUser: UserInterFace | null | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
-    console.log(reduxUser);
+    console.log(user)
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
         const isOwner = oldMessage?.memberId === message.memberId;
@@ -104,7 +102,6 @@ export default function Chat({
                     <Message
                         key={message?.id}
                         message={message}
-                        userData={user}
                         setReplyTo={setReplyTo}
                         setIsReplying={setIsReplying}
                         messages={messages}
