@@ -15,7 +15,5 @@ export default function AddUserProvider({ user }: { user: UserInterFace | null }
         return () => { isMount = false }
     }, [user, dispatch])
 
-    return (
-        <></>
-    )
+    return null
 }
