@@ -49,6 +49,7 @@ export default function Message({
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
     const isOwner = userData?.id === message.memberId
     const lastMessage = window.document.getElementById(scrollToLastMessageById)
+
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
     }

@@ -8,6 +8,7 @@ export default function AddUserProvider({ user }: { user: UserInterFace | null }
 
     useEffect(() => {
         let isMount = true
+
         if (isMount)
             dispatch(mainUser(user))
 
