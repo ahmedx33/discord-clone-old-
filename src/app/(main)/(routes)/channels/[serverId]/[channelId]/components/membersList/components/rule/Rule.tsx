@@ -1,5 +1,5 @@
 import MemberProfile from "../MemberProfile";
-import { Member, Rule, User } from "@prisma/client";
+import { Member, User } from "@prisma/client";
 
 export default function ServerRule({
     name,

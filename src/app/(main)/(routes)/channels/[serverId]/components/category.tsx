@@ -1,6 +1,6 @@
 import AccordionBeta from "@/components/AccordionBeta";
 import { getChannels } from "@/db/channel";
-import Channel from "./Channel";
+import Channel from "./channel";
 
 interface ChannelProps {
     categoryId: string;

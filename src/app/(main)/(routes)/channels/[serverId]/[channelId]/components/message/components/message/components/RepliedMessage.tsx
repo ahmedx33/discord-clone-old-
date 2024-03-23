@@ -2,8 +2,9 @@ import Image from "next/image";
 import "../index.css";
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
+import { Message, User } from "@prisma/client";
 
-export default function RepliedMessage({ message, users }: { message: MessageInterFace | undefined; users: UserInterFace[] }) {
+export default function RepliedMessage({ message, users }: { message: Message; users: User[] }) {
     const user = useSelector((state: RootState) => state.user.value);
     const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
     const element = document.getElementById(message?.id as string);
@@ -26,7 +27,7 @@ export default function RepliedMessage({ message, users }: { message: MessageInt
             ) : (
                 "Original message was deleted"
             )}
-            <div className="text-[#9FA0A4] font-bold text-[14px] hover:underline cursor-pointer">{getRepliedMember?.userName}</div>
+            <div className="text-[#9FA0A4] font-bold text-[14px] hover:underline cursor-pointer">{getRepliedMember?.displayName}</div>
             <div
                 className="text-[#949BA4] hover:text-[#F2ECDD]  cursor-pointer"
                 onClick={() => {
