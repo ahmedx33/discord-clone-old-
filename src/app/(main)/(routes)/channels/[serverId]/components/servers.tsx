@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+
+import { usePathname } from "next/navigation";
+
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Server } from "@prisma/client";
+
+
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();

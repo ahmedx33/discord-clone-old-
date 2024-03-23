@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import Profile from "./Profile";
+import Profile from "./profile";
 import ServerCategory from "./category";
 import { prisma } from "@/db/prisma";
 
@@ -34,13 +34,8 @@ export default async function ServerSidebar({ serverId }: { serverId: string }) 
         },
     });
 
-    console.log(
-        server?.category.map((category) => {
-            return category.channels;
-        })
-    );
 
-    if (!server) redirect("/channels/");
+    if (!server) return redirect("/channels/");
 
     const categories = server.category;
 

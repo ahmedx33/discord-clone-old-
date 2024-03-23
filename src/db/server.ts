@@ -16,31 +16,3 @@ export const getServers = unstable_cache(cache(async () => {
     const data = await prisma.server.findMany()
     return data
 }), ["server"])
-
-export const deleteServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
-    const data = await prisma.server.delete({
-        where: {
-            id: serverId
-        }
-    })
-    return data
-}), ["server", "serverId"])
-
-export const getMembers = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
-    const data = await prisma.member.findMany({
-        where: {
-            serverId
-        }
-    })
-    return data
-}), ["server", "serverId"])
-
-
-export const getRules = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
-    const data = await prisma.rule.findMany({
-        where: {
-            serverId
-        }
-    })
-    return data
-}), ["rule", "ruleId"])

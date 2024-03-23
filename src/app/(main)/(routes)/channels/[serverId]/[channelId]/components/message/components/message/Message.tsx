@@ -72,7 +72,7 @@ export default function ServerMessage({
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (
                         <div className="flex items-center">
-                            <div className="text-white hover:underline cursor-pointer w-fi relative -top-[0.2rem] ">{user?.userName}</div>
+                            <div className="text-white hover:underline cursor-pointer w-fi relative -top-[0.2rem] ">{user?.displayName}</div>
                             <span className="text-[#949BA4] mx-2 text-[0.8rem] cursor-default">
                                 {isToday(message.createdAt) ? "Today" : format(message.createdAt, "eeee")} at {messageDate}
                             </span>

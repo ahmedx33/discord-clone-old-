@@ -16,7 +16,7 @@ model User {
 
     email       String
     displayName String
-    userName    String
+    userName    String @unique
     Status      Status  @default(ONLINE)
     color       String  @default("#000000")
     haveNitro   Boolean @default(false)
@@ -54,6 +54,7 @@ model Server {
     id String @id @default(uuid())
 
     imgUrl String @db.Text
+    inviteLink  String @unique
 
     name String
 

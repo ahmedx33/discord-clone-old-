@@ -1,30 +1,34 @@
+import { Status } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
-
-
 
 interface UserInterFace {
     value: {
 
-        id: string
-        email: string
-        profileImg: string
-        displayName: string
-        userName: string
-        createdAt: Date
-        updatedAt: Date
+        id: string;
+        profileImg: string;
+        email: string;
+        displayName: string;
+        userName: string;
+        Status: Status
+        color: string;
+        haveNitro: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }
 }
 
 const initialState: UserInterFace = {
     value: {
-
-    id: "",
-    email: "",
-    profileImg: "",
-    displayName: "",
-    userName: "",
-    createdAt: new Date(),
-    updatedAt: new Date()
+        id: "",
+        email: "",
+        profileImg: "",
+        displayName: "",
+        userName: "",
+        Status: "ONLINE",
+        color: "",
+        haveNitro: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 }
 

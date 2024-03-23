@@ -12,10 +12,10 @@ export const POST = async (req: NextRequest) => {
 }
 
 
-export const GET = async (req: NextRequest) => {
-    const { searchParams } = new URL(req.url)
-    const channelId = searchParams.get("channelId")
-    const messages = await getMessages({ channelId: channelId as string })
+// export const GET = async (req: NextRequest) => {
+//     const { searchParams } = new URL(req.url)
+//     const channelId = searchParams.get("channelId")
+//     const messages = await getMessages({ channelId: channelId as string })
 
-    return Response.json({ messages }, { status: 200 })
-}
+//     return Response.json({ messages }, { status: 200 })
+// }

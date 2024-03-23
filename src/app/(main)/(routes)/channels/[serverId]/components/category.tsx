@@ -2,7 +2,13 @@ import AccordionBeta from "@/components/AccordionBeta";
 import { getChannels } from "@/db/channel";
 import Channel from "./Channel";
 
-export default async function ServerCategory({ categoryId, name, serverId }: { categoryId: string; name: string; serverId: string }) {
+interface ChannelProps {
+    categoryId: string;
+    name: string;
+    serverId: string;
+}
+
+export default async function ServerCategory({ categoryId, name, serverId }: ChannelProps) {
     const channels = await getChannels({ categoryId });
     return (
         <>
