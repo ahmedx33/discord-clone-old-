@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import ServerSidebar from "./_components/server-sidebar";
+import ServerSidebar from "./components/server-sidebar";
 import { prisma } from "@/db/prisma";
 import { ServerWithChildren } from "@/types/types";
 
@@ -28,9 +28,7 @@ export default async function page({ params: { serverId } }: { params: { serverI
 
     const channelId = server?.category[0].channels[0].id;
 
-    console.log(channelId);
+    if (!server) return redirect("/channels/");
 
-    if (!server) redirect("/channels/");
-
-    return null;
+    return redirect(`/channels/${serverId}/${channelId}`);
 }

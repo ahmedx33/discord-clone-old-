@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import ServerSidebar from "./_components/server-sidebar";
+import ServerSidebar from "./components/server-sidebar";
 
 export default function layout({ children, params: { serverId } }: { children: ReactNode; params: { serverId: string } }) {
     return (

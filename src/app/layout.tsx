@@ -20,12 +20,10 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <StoreProvider>
-                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-                    <body>
-                        {children}
-                        <Toaster richColors />
-                    </body>
-                </ThemeProvider>
+                <body className="dark">
+                    {children}
+                    <Toaster richColors />
+                </body>
             </StoreProvider>
         </html>
     );

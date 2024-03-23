@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import ServerMembersList from "../../../membersList/ServerMembersList";
 import { useLocalStoreage } from "@/hooks/useLocalStoreage";
+import { Channel, Member, Rule, User } from "@prisma/client";
 
-export default function Header({ channel, members, users, rules }: { channel: ChannelInterFace | null; members: MemberInterface[]; users: UserInterFace[]; rules: RuleInterface[] }) {
+export default function Header({ channel, members, users, rules }: { channel: Channel; members: Member[]; users: User[]; rules: Rule[] }) {
     const [storedValue, setValue] = useLocalStoreage("membersList", false);
     const [toggleMembersList, setToggleMembersList] = useState<boolean>(false);
 

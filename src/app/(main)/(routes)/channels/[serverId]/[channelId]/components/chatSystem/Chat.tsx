@@ -1,31 +1,37 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ioHandler } from "@/lib/prisma-client/io";
+
 import ServerMessage from "../message/components/message/Message";
 import MessagesGroup from "../message/components/MessagesGroup";
-import { FaCirclePlus } from "react-icons/fa6";
+
 import { differenceInMinutes } from "date-fns";
+
 import { IoIosCloseCircle } from "react-icons/io";
-import axios from "axios";;
-import { Socket } from "socket.io-client";
+import { FaCirclePlus } from "react-icons/fa6";
+
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store/store";
+
+import { ioHandler } from "@/lib/prisma-client/io";
+import { Socket } from "socket.io-client";
 import { Channel, Message, User } from "@prisma/client";
+
+import axios from "axios";
 
 export default function Chat({ channelId, dbMessages, channel, users }: { channelId: string; dbMessages: Message[]; channel: Channel; users: User[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<Message[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<Message | undefined>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
-    const [userTyping, setUserTyping] = useState<boolean>();
+
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
     const user = useSelector((state: RootState) => state.user.value);
 
-    const repliedUser: User | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
+    const repliedUser = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -41,7 +47,6 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
 
         if (value === "") return;
 
@@ -60,7 +65,6 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
         setIsReplying(false);
         setReplyTo(undefined);
         await axios.post("/auth/message/api/", data);
-        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -74,14 +78,6 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
 
     socket?.on("server/receive", (message: Message) => {
         setMessages([...messages, message]);
-    });
-
-    socket?.on("server/message/startTyping", (userId) => {
-        setUserTyping(true);
-    });
-
-    socket?.on("server/message/stopTyping", (userId) => {
-        setUserTyping(false);
     });
 
     return (
