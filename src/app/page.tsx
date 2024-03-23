@@ -10,19 +10,13 @@ export default function Home() {
 
     supabase.auth.onAuthStateChange((_, session) => {
         if (!session) {
-            redirect("/login");
+            return redirect("/login");
         }
 
         if (session?.access_token) {
-            redirect("/channels");
+            return redirect("/channels");
         }
     });
 
-    return (
-        <div className="min-h-screen w-full ">
-            <Header />
-            <Sections />
-            <Footer />
-        </div>
-    );
+    return redirect("/login");
 }
