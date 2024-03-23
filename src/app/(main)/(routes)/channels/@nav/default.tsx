@@ -1,4 +1,5 @@
-import ServersList from "../_components/sidebar/ServersList";
+import ServersList from "../[serverId]/_components/servers-list";
+
 
 export default function page() {
       return (

@@ -1,24 +1,23 @@
 "use client";
 
-import { FormEvent, Suspense, unstable_useCacheRefresh, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { ioHandler } from "@/lib/prisma-client/io";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Message from "../message/components/message/Message";
+import ServerMessage from "../message/components/message/Message";
 import MessagesGroup from "../message/components/MessagesGroup";
 import { FaCirclePlus } from "react-icons/fa6";
 import { differenceInMinutes } from "date-fns";
 import { IoIosCloseCircle } from "react-icons/io";
-import axios from "axios";
-import { SocketOptions } from "dgram";
+import axios from "axios";;
 import { Socket } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store/store";
+import { Channel, Message, User } from "@prisma/client";
 
-export default function Chat({ channelId, dbMessages, channel, users }: { channelId: string; dbMessages: MessageInterFace[]; channel: ChannelInterFace | null; users: UserInterFace[] }) {
+export default function Chat({ channelId, dbMessages, channel, users }: { channelId: string; dbMessages: Message[]; channel: Channel; users: User[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
-    const [messages, setMessages] = useState<MessageInterFace[]>(dbMessages);
-    const [replyTo, setReplyTo] = useState<MessageInterFace | undefined>();
+    const [messages, setMessages] = useState<Message[]>(dbMessages);
+    const [replyTo, setReplyTo] = useState<Message | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -26,7 +25,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
     const user = useSelector((state: RootState) => state.user.value);
 
-    const repliedUser: UserInterFace | null | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
+    const repliedUser: User | undefined = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -73,7 +72,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
         };
     }, []);
 
-    socket?.on("server/receive", (message: MessageInterFace) => {
+    socket?.on("server/receive", (message: Message) => {
         setMessages([...messages, message]);
     });
 
@@ -89,7 +88,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <Message
+                    <ServerMessage
                         key={message?.id}
                         message={message}
                         setReplyTo={setReplyTo}

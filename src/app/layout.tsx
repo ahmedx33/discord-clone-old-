@@ -18,15 +18,15 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <StoreProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-                <html lang="en">
+        <html lang="en">
+            <StoreProvider>
+                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
                     <body>
                         {children}
                         <Toaster richColors />
                     </body>
-                </html>
-            </ThemeProvider>
-        </StoreProvider>
+                </ThemeProvider>
+            </StoreProvider>
+        </html>
     );
 }

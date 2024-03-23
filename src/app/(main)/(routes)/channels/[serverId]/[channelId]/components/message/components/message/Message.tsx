@@ -13,8 +13,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import "./index.css";
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
+import { Message, User } from "@prisma/client";
 
-export default function Message({
+export default function ServerMessage({
     message,
     messages,
     isHovering,
@@ -23,16 +24,16 @@ export default function Message({
     setReplyTo,
     setIsReplying,
 }: {
-    message: MessageInterFace & {
+    message: Message & {
         isGrouped: boolean;
         isLoading?: boolean;
         isOwner: boolean;
     };
     isHovering: boolean;
-    messages?: MessageInterFace[];
-    users: UserInterFace[];
+    messages?: Message[];
+    users: User[];
     scrollToLastMessageById: string;
-    setReplyTo?: Dispatch<SetStateAction<MessageInterFace | undefined>>;
+    setReplyTo?: Dispatch<SetStateAction<Message | undefined>>;
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }) {
     const userData = useSelector((state: RootState) => state.user.value);

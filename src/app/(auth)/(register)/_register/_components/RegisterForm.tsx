@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { mainUser } from "../../../lib/store/features/user/userSlice";
+
 interface BarInterface {
     goBackButton?: boolean;
 }

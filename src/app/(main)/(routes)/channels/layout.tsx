@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { ReactNode } from "react";
 import AddUserProvider from "@/providers/AddUserProvider";
 
-
 export default async function layout({ children, nav }: { children: ReactNode; nav: ReactNode }) {
     const supabase = createServerComponentClient({ cookies: cookies });
     const { user } = (await supabase.auth.getUser()).data;
@@ -12,10 +11,10 @@ export default async function layout({ children, nav }: { children: ReactNode; n
 
     return (
         <div className="flex bg-[#313338]">
-
             <AddUserProvider user={currentUser} />
             {nav}
             {children}
+            
         </div>
     );
 }

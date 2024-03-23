@@ -1,9 +1,10 @@
-import SideBarInfo from "../_components/sidebar/SideBarInfo";
+import React, { ReactNode } from "react";
+import ServerSidebar from "./_components/server-sidebar";
 
-export default function layout({ params: { serverId }, children }: { params: { serverId: string }; children: string }) {
+export default function layout({ children, params: { serverId } }: { children: ReactNode; params: { serverId: string } }) {
     return (
         <div className="flex w-full overflow-hidden">
-            <SideBarInfo serverId={serverId} />
+            <ServerSidebar serverId={serverId} />
             {children}
             <div id="sidebar"></div>
         </div>

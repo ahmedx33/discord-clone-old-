@@ -17,17 +17,6 @@ export const getServers = unstable_cache(cache(async () => {
     return data
 }), ["server"])
 
-
-export const getServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
-    const data = await prisma.server.findUnique({
-        where: {
-            id: serverId
-        }
-    })
-    return data
-}), ["server", "serverId"])
-
-
 export const deleteServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
     const data = await prisma.server.delete({
         where: {

@@ -1,4 +1,4 @@
-import { createClientComponentClient, createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Footer from "./_components/footer/footer";
 import Header from "./_components/header/header";
 import Sections from "./_components/landing/sections";
