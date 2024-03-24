@@ -1,12 +1,12 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import Footer from "./_components/footer/footer";
-import Header from "./_components/header/header";
-import Sections from "./_components/landing/sections";
 import { redirect, useRouter } from "next/navigation";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export default function Home() {
     const supabase = createServerComponentClient({ cookies: cookies });
+
+    revalidatePath("/channels")
 
     supabase.auth.onAuthStateChange((_, session) => {
         if (!session) {

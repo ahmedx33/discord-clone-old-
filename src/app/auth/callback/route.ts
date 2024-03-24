@@ -12,6 +12,6 @@ export const GET = async (req: NextRequest) => {
         }
         return NextResponse.redirect(reqURL.origin)
     } catch (error) {
-        return new NextResponse("[REDIRECT] something went wrong.")
+        return new NextResponse(`[REDIRECT] ${error}`)
     }
 }

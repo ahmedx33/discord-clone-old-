@@ -1,21 +1,22 @@
 "use client";
 import { mainUser } from "@/lib/store/features/user/userSlice";
 import { User } from "@prisma/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function AddUserProvider({ user }: { user: User }) {
+export default function AddUserProvider({ user }: { user: User | null }) {
+    const [isMount, setIsMount] = useState<boolean>(false)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        let isMount = true;
+        setIsMount(true)
 
         if (isMount) dispatch(mainUser(user));
 
         return () => {
-            isMount = false;
+            setIsMount(false);
         };
-    }, [user, dispatch]);
+    }, [user, dispatch, isMount]);
 
     return null;
 }

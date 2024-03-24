@@ -10,12 +10,12 @@ export default function Profile() {
     return (
         <div className="w-full h-[60px] p-2 bg-[#232428] cursor-pointer overflow-hidden select-none">
             <div className="flex items-center gap-3">
-                <div className="w-[30px] h-[30px] rounded-full relative overflow-hidden">
-                    <Image src={loggedUser.profileImg} alt="userImg" width={30} height={30}/>
+                <div className="w-[30px] h-[30px] rounded-full relative">
+                    <Image className="rounded-full" src={loggedUser.profileImg} alt="userImg" width={30} height={30}/>
                     <span className="absolute bottom-0 right-[-2px] w-[13px] h-[13px] rounded-full bg-green-500 border-[2px] border-[#232428]"></span>
                 </div>
                 <div className="text-white flex flex-col justify-center">
-                    <h1 className="flex items-start">{loggedUser.displayName}</h1>
+                    <h1 className="flex items-start text-[15px]">{loggedUser.displayName}</h1>
                     <p className="text-[13px]">{loggedUser.Status}</p>
                 </div>
 

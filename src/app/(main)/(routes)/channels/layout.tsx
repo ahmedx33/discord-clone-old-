@@ -8,6 +8,7 @@ export default async function layout({ children, nav }: { children: ReactNode; n
     const supabase = createServerComponentClient({ cookies: cookies });
     const { user } = (await supabase.auth.getUser()).data;
     const currentUser = await getUser({ userId: user?.id as string });
+    console.log(user)
 
     return (
         <div className="flex bg-[#313338]">

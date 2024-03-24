@@ -5,9 +5,16 @@ import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import ServerMembersList from "../../../membersList/ServerMembersList";
 import { useLocalStoreage } from "@/hooks/useLocalStoreage";
-import { Channel, Member, Rule, User } from "@prisma/client";
+import { Channel, Member, Role, User } from "@prisma/client";
 
-export default function Header({ channel, members, users, rules }: { channel: Channel; members: Member[]; users: User[]; rules: Rule[] }) {
+interface HeaderProps {
+    channel: Channel;
+    members: Member[];
+    users: User[];
+    roles: Role[];
+}
+
+export default function Header({ channel, members, users, roles }: HeaderProps) {
     const [storedValue, setValue] = useLocalStoreage("membersList", false);
     const [toggleMembersList, setToggleMembersList] = useState<boolean>(false);
 
@@ -28,7 +35,7 @@ export default function Header({ channel, members, users, rules }: { channel: Ch
                 <GetIconProvider type={channel?.type as string} size={25} /> {channel?.name}{" "}
             </div>{" "}
             <BsPeopleFill size={22} className="text-[#B5BAC1] hover:text-[#DBDEE1] cursor-pointer" onClick={() => setToggleMembersList((prev) => !prev)} />
-            {toggleMembersList && <ServerMembersList users={users} rules={rules} members={members} />}
+            {toggleMembersList && <ServerMembersList users={users} roles={roles} members={members} />}
         </div>
     );
 }

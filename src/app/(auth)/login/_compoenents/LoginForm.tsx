@@ -10,7 +10,7 @@ export default function LoginForm() {
     const router = useRouter();
     const supabase = createClientComponentClient();
 
-    const signUpHandler = async (formData: FormData) => {
+    const loginHandler = async (formData: FormData) => {
         const res = {
             email: formData.get("email") as string,
             password: formData.get("pass") as string,
@@ -33,26 +33,24 @@ export default function LoginForm() {
             <div className="flex items-center flex-col flex-1">
                 <h1 className="text-[#EDEEF0] font-bold text-[24px] mt-7 mb-2">Welcome back!</h1>
                 <p className="text-[#A2A6AD] mb-[19px]">We&apos;re so excited to see you again!</p>
-                <form action={signUpHandler} className="w-full">
+                <form action={loginHandler} className="w-full">
                     <div className="flex flex-col gap-2 w-full mb-4">
                         <label htmlFor="email" className="text-[#A1A5AC] font-bold uppercase text-[0.8rem]">
                             Email
                         </label>
-                        <input required id="email" type="email" name="email" className={`rounded-[2.5px] py-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC] `} />
+                        <input required id="email" type="email" name="email" className={`rounded-[2.5px] p-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC]`} />
                         <label htmlFor="password" className="text-[#A1A5AC] font-bold uppercase text-[0.8rem]">
                             Password
                         </label>
-                        <input required id="password" type="password" name="pass" className={`rounded-[2.5px] py-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC]`} />
+                        <input required id="password" type="password" name="pass" className={`rounded-[2.5px] p-2 bg-[#1E1F22] border-none caret-white text-[#C6C9CC]`} />
                     </div>
                     <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">Forgot your password?</h1>
 
-                    <Button onClick={() => fetch("/api/auth/route.ts", {})} className="w-full rounded-[0] mb-2">
-                        login
-                    </Button>
+                    <Button className="w-full mb-2 rounded-[2.5px] bg-[#5865F2] hover:bg-[#4752C4]">login</Button>
                 </form>
 
                 <h1 className="text-[#A2A6AD] text-[0.9rem] w-full flex items-end">
-                    Need an account?{" "}
+                    Need an account?
                     <span className="text-[#00A8FC] cursor-pointer hover:underline mx-1">
                         <Link href="/register">Register</Link>
                     </span>

@@ -1,7 +1,7 @@
 import MemberProfile from "../MemberProfile";
 import { Member, User } from "@prisma/client";
 
-export default function ServerRule({
+export default function ServerRole({
     name,
     users,
     members,
@@ -11,7 +11,7 @@ export default function ServerRule({
     members: Member[]
 }) {
 
-    const filteredMembers = members?.filter(member => member.rules?.includes(name));
+    const filteredMembers = members?.filter(member => member.roles?.includes(name));
 
     const memberIds = filteredMembers?.map(member => member.autherId);
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -46,6 +46,8 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
         await axios.post("/auth/login/api/", userData);
         if (error?.message) {
             toast.error("Somthing went wrong!");
+        } else {
+            return router.push("/channels");
         }
     };
 
@@ -87,7 +89,7 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
                     </div>
                     <UpdatesAndTips />
 
-                    <Button className="w-full rounded-[2.5px] text-white">Continue</Button>
+                    <Button className="w-full rounded-[2.5px] text-white bg-[#5865F2] hover:bg-[#4752C4]">Continue</Button>
                 </form>
                 <p className="text-[#A2A6AD] text-[0.7rem] mt-3">
                     By registering, you agree to Discord&apos;s <span className="text-[#00A8FC] text-[0.8rem] cursor-pointer hover:underline"> Terms of Service</span> and{" "}

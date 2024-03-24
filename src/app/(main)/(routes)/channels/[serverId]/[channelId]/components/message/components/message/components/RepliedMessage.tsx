@@ -4,7 +4,7 @@ import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
 import { Message, User } from "@prisma/client";
 
-export default function RepliedMessage({ message, users }: { message: Message; users: User[] }) {
+export default function RepliedMessage({ message, users }: { message: Message | undefined; users: User[] }) {
     const user = useSelector((state: RootState) => state.user.value);
     const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
     const element = document.getElementById(message?.id as string);

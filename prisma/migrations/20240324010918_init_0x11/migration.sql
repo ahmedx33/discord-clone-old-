@@ -36,6 +36,7 @@ CREATE TABLE "FriendShip" (
 CREATE TABLE "Server" (
     "id" TEXT NOT NULL,
     "imgUrl" TEXT NOT NULL,
+    "inviteLink" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "autherId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -61,7 +62,7 @@ CREATE TABLE "Member" (
     "id" TEXT NOT NULL,
     "autherId" TEXT NOT NULL,
     "serverId" TEXT NOT NULL,
-    "rules" TEXT[],
+    "roles" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -69,23 +70,23 @@ CREATE TABLE "Member" (
 );
 
 -- CreateTable
-CREATE TABLE "Rule" (
+CREATE TABLE "Role" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "color" TEXT NOT NULL,
-    "CanViewChannels" BOOLEAN NOT NULL DEFAULT false,
-    "CanBan" BOOLEAN NOT NULL DEFAULT false,
-    "Members" TEXT[],
+    "canViewChannels" BOOLEAN NOT NULL DEFAULT false,
+    "canBan" BOOLEAN NOT NULL DEFAULT false,
+    "members" TEXT[],
     "isOwner" BOOLEAN NOT NULL DEFAULT false,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
-    "CanKick" BOOLEAN NOT NULL DEFAULT false,
-    "CanMute" BOOLEAN NOT NULL DEFAULT false,
-    "CanDeaf" BOOLEAN NOT NULL DEFAULT false,
-    "CanManageServer" BOOLEAN NOT NULL DEFAULT false,
+    "canKick" BOOLEAN NOT NULL DEFAULT false,
+    "canMute" BOOLEAN NOT NULL DEFAULT false,
+    "canDeaf" BOOLEAN NOT NULL DEFAULT false,
+    "canManageServer" BOOLEAN NOT NULL DEFAULT false,
     "serverId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Rule_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -113,10 +114,16 @@ CREATE TABLE "Category" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_userName_key" ON "User"("userName");
+
+-- CreateIndex
 CREATE INDEX "FriendShip_friendId_idx" ON "FriendShip"("friendId");
 
 -- CreateIndex
 CREATE INDEX "FriendShip_userId_idx" ON "FriendShip"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Server_inviteLink_key" ON "Server"("inviteLink");
 
 -- CreateIndex
 CREATE INDEX "Server_autherId_idx" ON "Server"("autherId");
@@ -131,7 +138,7 @@ CREATE INDEX "Member_autherId_idx" ON "Member"("autherId");
 CREATE INDEX "Member_serverId_idx" ON "Member"("serverId");
 
 -- CreateIndex
-CREATE INDEX "Rule_serverId_idx" ON "Rule"("serverId");
+CREATE INDEX "Role_serverId_idx" ON "Role"("serverId");
 
 -- CreateIndex
 CREATE INDEX "Message_memberId_idx" ON "Message"("memberId");
@@ -158,7 +165,7 @@ ALTER TABLE "Member" ADD CONSTRAINT "Member_autherId_fkey" FOREIGN KEY ("autherI
 ALTER TABLE "Member" ADD CONSTRAINT "Member_serverId_fkey" FOREIGN KEY ("serverId") REFERENCES "Server"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rule" ADD CONSTRAINT "Rule_serverId_fkey" FOREIGN KEY ("serverId") REFERENCES "Server"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Role" ADD CONSTRAINT "Role_serverId_fkey" FOREIGN KEY ("serverId") REFERENCES "Server"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE CASCADE ON UPDATE CASCADE;

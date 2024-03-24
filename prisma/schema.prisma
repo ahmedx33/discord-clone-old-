@@ -103,7 +103,7 @@ model Member {
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
     messages Message[]
-    rules    String[]
+    roles    String[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

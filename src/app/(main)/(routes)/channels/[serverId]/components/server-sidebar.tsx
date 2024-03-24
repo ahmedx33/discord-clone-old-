@@ -5,8 +5,10 @@ import { prisma } from "@/db/prisma";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { TbSquareRoundedArrowRightFilled } from "react-icons/tb";
+import { FaUserPlus } from "react-icons/fa";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { currentUser } from "@/lib/current-user";
 
 export default async function ServerSidebar({ serverId }: { serverId: string }) {
     const server = await prisma.server.findUnique({
@@ -28,16 +30,20 @@ export default async function ServerSidebar({ serverId }: { serverId: string }) 
                     auther: true,
                 },
                 orderBy: {
-                    rules: "asc",
+                    roles: "asc"
                 },
             },
         },
     });
 
-
     if (!server) return redirect("/channels/");
 
     const categories = server.category;
+    const user = await currentUser();
+
+    
+    const member = server.members.find(member => member.id === user?.id)
+    const role = member?.roles.map(role => role)
 
     return (
         <div className="h-screen min-w-[250px] bg-[#2B2D31] relative">
@@ -50,8 +56,13 @@ export default async function ServerSidebar({ serverId }: { serverId: string }) 
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem>
-                            <div className="text-red-500 px-3 flex items-center justify-between w-52 cursor-pointer">
+                        <DropdownMenuItem className="cursor-pointer">
+                            <div className="text-[#777fd3] px-3 flex items-center justify-between w-52 ">
+                                <p className="text-[1.1rem]">Invite People</p> <FaUserPlus size={25} />
+                            </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                            <div className="text-red-500 px-3 flex items-center justify-between w-52 ">
                                 <p className="text-[1.1rem]">Leave Server</p> <TbSquareRoundedArrowRightFilled size={25} />
                             </div>
                         </DropdownMenuItem>
