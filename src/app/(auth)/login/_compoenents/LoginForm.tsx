@@ -28,6 +28,8 @@ export default function LoginForm() {
             router.push("/channels");
         }
     });
+
+    
     return (
         <div className="select-none flex items-center justify-center gap-[4rem] w-[45rem] p-5 px-[2rem] bg-[#313338] rounded-[7px]">
             <div className="flex items-center flex-col flex-1">
@@ -46,7 +48,7 @@ export default function LoginForm() {
                     </div>
                     <h1 className="w-fit text-[#00A8FC] text-[0.9rem] cursor-pointer hover:underline mb-2">Forgot your password?</h1>
 
-                    <Button className="w-full mb-2 rounded-[2.5px] bg-[#5865F2] hover:bg-[#4752C4]">login</Button>
+                    <Button className="w-full mb-2 rounded-[2.5px] bg-[#5865F2] hover:bg-[#4752C4] text-white">login</Button>
                 </form>
 
                 <h1 className="text-[#A2A6AD] text-[0.9rem] w-full flex items-end">

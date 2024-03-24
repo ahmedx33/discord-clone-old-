@@ -5,9 +5,10 @@ import Image from "next/image";
 
 import { usePathname } from "next/navigation";
 
+import { HiPlus } from "react-icons/hi";
+
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Server } from "@prisma/client";
-
 
 import { cn } from "@/lib/utils";
 
@@ -26,7 +27,7 @@ export default function Servers({ servers }: { servers: Server[] }) {
                 </div>
             </Link>
             <Separator className="py-[1px] rounded-full bg-[#313338]" />
-            <div className="channels">
+            <div className="servers">
                 <ul className="flex flex-col gap-2">
                     {servers.map((server) => (
                         <li key={server.id}>
@@ -43,6 +44,12 @@ export default function Servers({ servers }: { servers: Server[] }) {
                         </li>
                     ))}
                 </ul>
+                <div
+                    className={cn(
+                        `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden text-[#23A559] bg-[#313338] hover:text-white hover:bg-[#23A559]`)}
+                >
+                 <HiPlus size={25} />  
+                </div>
             </div>
         </>
     );

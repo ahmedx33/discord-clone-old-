@@ -17,7 +17,7 @@ interface BarInterface {
 export default function RegisterForm({ goBackButton }: BarInterface) {
     const router = useRouter();
     const supabase = createClientComponentClient();
-    const dispatch = useDispatch();
+    
 
     const signUpHandler = async (formData: FormData) => {
         const res = {
@@ -29,7 +29,7 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
                     userName: formData.get("username") as string,
                 },
 
-                emailRedirectTo: `${location.origin}/auth/callback`,
+                emailRedirectTo: `${location.origin}/auth/callback/`,
             },
         };
 
@@ -44,10 +44,9 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
         };
 
         await axios.post("/auth/login/api/", userData);
+
         if (error?.message) {
-            toast.error("Somthing went wrong!");
-        } else {
-            return router.push("/channels");
+            toast.error("something went wrong!");
         }
     };
 
