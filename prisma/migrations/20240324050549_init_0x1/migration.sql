@@ -73,16 +73,7 @@ CREATE TABLE "Member" (
 CREATE TABLE "Role" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "color" TEXT NOT NULL,
-    "canViewChannels" BOOLEAN NOT NULL DEFAULT false,
-    "canBan" BOOLEAN NOT NULL DEFAULT false,
-    "members" TEXT[],
-    "isOwner" BOOLEAN NOT NULL DEFAULT false,
-    "isAdmin" BOOLEAN NOT NULL DEFAULT false,
-    "canKick" BOOLEAN NOT NULL DEFAULT false,
-    "canMute" BOOLEAN NOT NULL DEFAULT false,
-    "canDeaf" BOOLEAN NOT NULL DEFAULT false,
-    "canManageServer" BOOLEAN NOT NULL DEFAULT false,
+    "color" TEXT NOT NULL DEFAULT '#949BA4',
     "serverId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

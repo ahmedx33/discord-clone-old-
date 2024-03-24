@@ -12,7 +12,7 @@ datasource db {
 
 model User {
     id         String @id
-    profileImg String @db.Text @default("https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png")
+    profileImg String @db.Text
 
     email       String
     displayName String
@@ -53,7 +53,7 @@ model FriendShip {
 model Server {
     id String @id @default(uuid())
 
-    imgUrl String @db.Text
+    imgUrl String @db.Text 
     inviteLink  String @unique
 
     name String
@@ -115,21 +115,7 @@ model Member {
 model Role {
     id              String   @id @default(uuid())
     name            String
-    color           String
-    canViewChannels Boolean  @default(false)
-    canBan          Boolean  @default(false)
-    members         String[]
-    isOwner         Boolean  @default(false)
-
-    isAdmin Boolean @default(false)
-
-    canKick Boolean @default(false)
-
-    canMute Boolean @default(false)
-
-    canDeaf Boolean @default(false)
-
-    canManageServer Boolean @default(false)
+    color           String @default("#949BA4")
 
     serverId String
     server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)

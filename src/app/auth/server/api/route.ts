@@ -1,21 +1,55 @@
-import { getMessages } from "@/db/message";
-import { createServer } from "@/db/server";
+import { v4 as uuidv4 } from "uuid"
+import { prisma } from "@/db/prisma";
+import { currentUser } from "@/lib/current-user";
 import { revalidatePath } from "next/cache";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
 
 export const POST = async (req: NextRequest) => {
-    const data = await req.json()
-    const server = await createServer(data)
+    try {
 
-    revalidatePath("/channels")
-    return Response.json(data)
+        const { name, serverImg } = await req.json()
+        const user = await currentUser()
+
+        if (!user) return new NextResponse("Unauthorized", { status: 401 })
+
+        const server = await prisma.server.create({
+            data: {
+                autherId: user?.id,
+                name,
+                imgUrl: serverImg,
+                inviteLink: uuidv4(),
+                category: {
+                    create: [
+                        {
+                            title: "chat", channels: {
+                                create: [
+                                    { name: "general" }
+                                ]
+                            }
+                        },
+                    ],
+                },
+                members: {
+                    create: [
+                        { autherId: user?.id as string, roles: ["owner"] }
+                    ]
+                },
+
+                roles: {
+                    create: [
+                        { name: "onwer", color: "#949BA4" }
+                    ]
+                }
+            }
+        })
+
+        revalidatePath("/channels")
+
+        return Response.json(server)
+    } catch (error) {
+        return new NextResponse(`[SERVER_POST_ERR] ${error}`, { status: 500 })
+    }
 }
 
 
-// export const GET = async (req: NextRequest) => {
-//     const { searchParams } = new URL(req.url)
-//     const channelId = searchParams.get("channelId")
-//     const messages = await getMessages({ channelId: channelId as string })
-
-//     return Response.json({ messages }, { status: 200 })
-// }

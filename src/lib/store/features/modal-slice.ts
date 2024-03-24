@@ -20,3 +20,7 @@ export const modalSlice = createSlice({
         }
     }
 })
+
+export const { onOpen, onClose } = modalSlice.actions
+
+export default modalSlice.reducer

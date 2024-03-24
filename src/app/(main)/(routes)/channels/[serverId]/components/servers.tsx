@@ -11,9 +11,14 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Server } from "@prisma/client";
 
 import { cn } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { onOpen } from "@/lib/store/features/modal-slice";
+import ModalProvider from "@/providers/modal-provider";
+import CreateServerModal from "./create-server-modal";
 
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();
+    const dispatch = useDispatch()
     return (
         <>
             <Link href="/channels" className="main-icon">
@@ -45,12 +50,17 @@ export default function Servers({ servers }: { servers: Server[] }) {
                     ))}
                 </ul>
                 <div
+                onClick={() => dispatch(onOpen())}
                     className={cn(
                         `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden text-[#23A559] bg-[#313338] hover:text-white hover:bg-[#23A559]`)}
                 >
                  <HiPlus size={25} />  
                 </div>
             </div>
+            
+            <ModalProvider>
+                <CreateServerModal />
+            </ModalProvider>
         </>
     );
 }

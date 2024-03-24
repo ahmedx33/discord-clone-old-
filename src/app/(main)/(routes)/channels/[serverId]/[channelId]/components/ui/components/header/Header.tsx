@@ -1,6 +1,6 @@
 "use client";
 
-import GetIconProvider from "@/providers/GetIconProvider";
+import GetIconProvider from "@/providers/icon-provider";
 import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import ServerMembersList from "../../../membersList/ServerMembersList";
