@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Server } from "@prisma/client";
 import { useDispatch } from "react-redux";
 import { onOpen, setServerData } from "@/lib/store/slices/invite-modal-slice";
+import { useEffect, useState } from "react";
 
 interface ServerHeaderProps {
     server: Server;
@@ -15,6 +16,17 @@ interface ServerHeaderProps {
 
 export default function ServerHeader({ server }: ServerHeaderProps) {
     const dispatch = useDispatch();
+    const [isMount, setIsMount] = useState<boolean>(false)
+
+    useEffect(()=> {
+        setIsMount(true)
+
+        if (isMount) dispatch(setServerData(server))
+
+        return () => {
+            setIsMount(false)
+        }
+        }, [isMount, dispatch, server])
 
     return (
         <>
@@ -28,10 +40,7 @@ export default function ServerHeader({ server }: ServerHeaderProps) {
                 <DropdownMenuContent>
                     <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() => {
-                            dispatch(onOpen());
-                            dispatch(setServerData(server))
-                        }}
+                        onClick={() => dispatch(onOpen())}
                     >
                         <div className="text-[#777fd3] px-3 flex items-center justify-between w-52 ">
                             <p className="text-[1.1rem]">Invite People</p> <FaUserPlus size={25} />
@@ -44,6 +53,7 @@ export default function ServerHeader({ server }: ServerHeaderProps) {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
+            
         </>
     );
 }

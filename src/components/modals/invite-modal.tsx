@@ -65,12 +65,12 @@ export default function InviteModal() {
                         <DialogTitle>Server invite link</DialogTitle>
                     </DialogHeader>
                     <div className="flex items-center gap-x-4">
-                        <Input id="serverName" className="mt-2" type="text" value={inviteLink} />
+                        <Input id="serverName" className="mt-2" type="text" value={inviteLink} disabled={isLoading}/>
                         {!isCopied ? <IoCopyOutline onClick={copyHandler} size={20} className="cursor-pointer"/> : <FaCheck size={20} className="cursor-pointer"/>}
                     </div>
                     <DialogFooter className="flex items">
                         <div className="flex items-center w-full">
-                            <Button variant="link" onClick={generateLinkHandler}> Generate a new invite link</Button>
+                            <Button variant="link" onClick={generateLinkHandler} disabled={isLoading}> Generate a new invite link</Button>
                             <IoMdRefresh size={20} />
                         </div>
                     </DialogFooter>
