@@ -1,5 +1,43 @@
+import { prisma } from "@/db/prisma";
+import { currentUser } from "@/lib/current-user";
+import { redirect } from "next/navigation";
 import React from "react";
 
-export default function Page({ params: { inivteLink } }: { params: { inivteLink: string } }) {
-    return <div>page</div>;
+export default async function Page({ params: { inviteLink } }: { params: { inviteLink: string } }) {
+    const user = await currentUser();
+
+    if (!user) return redirect("/login");
+
+    const checkMemberInServer = await prisma.server.findFirst({
+        where: {
+            inviteLink,
+
+            members: {
+                some: {
+                    autherId: user.id,
+                },
+            },
+        },
+    });
+
+    const existServerId = checkMemberInServer?.id
+
+    const server = await prisma.server.update({
+        where: {
+            inviteLink
+        },
+        data: {
+            members: {
+                create: [
+                    {id: user.id, autherId: user.id, roles: ["online"]}
+                ]
+            }
+        }
+    })
+
+    if (checkMemberInServer) return redirect(`/channels/${existServerId}`)
+
+    if (server) return redirect(`/channels/${server.id}`);
+
+    return null
 }
