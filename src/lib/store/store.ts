@@ -1,12 +1,14 @@
 
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './features/user-slice'
-import modalReducer from './features/modal-slice'
+import userReducer from './slices/user-slice'
+import createServerModalReducer from './slices/create-server-modal-slice'
+import inviteModalReducer from './slices/invite-modal-slice'
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
-        modal: modalReducer
+        createServerModal: createServerModalReducer,
+        inviteModal: inviteModalReducer
     }
 })
 

@@ -8,7 +8,7 @@ import { ReactNode } from "react"
 
 export default function AccordionBeta({ children , name}: { children: ReactNode , name: string}) {
     return (
-        <Accordion type="single" collapsible>
+        <Accordion type="multiple">
             <AccordionItem value="item-1">
                 <AccordionTrigger className="text-[#80848E] text-[1rem]">{name}</AccordionTrigger>
                 <AccordionContent>

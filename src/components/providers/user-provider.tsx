@@ -1,5 +1,5 @@
 "use client";
-import { mainUser } from "@/lib/store/features/user-slice";
+import { mainUser } from "@/lib/store/slices/user-slice";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

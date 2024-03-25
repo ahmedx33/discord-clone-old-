@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
     try {
-
         const { name, serverImg } = await req.json()
         const user = await currentUser()
 
@@ -32,7 +31,7 @@ export const POST = async (req: NextRequest) => {
                 },
                 members: {
                     create: [
-                        { autherId: user?.id as string, roles: ["owner"] }
+                        { id: user.id, autherId: user?.id as string, roles: ["owner"] }
                     ]
                 },
 

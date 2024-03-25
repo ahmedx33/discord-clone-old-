@@ -7,8 +7,8 @@ const initialState = {
     isOpen: false
 }
 
-export const modalSlice = createSlice({
-    name: "modal",
+export const createServerModalSlice = createSlice({
+    name: "create-server-modal",
     initialState,
     reducers: {
         onOpen: (state) => {
@@ -21,6 +21,6 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { onOpen, onClose } = modalSlice.actions
+export const { onOpen, onClose } = createServerModalSlice.actions
 
-export default modalSlice.reducer
+export default createServerModalSlice.reducer

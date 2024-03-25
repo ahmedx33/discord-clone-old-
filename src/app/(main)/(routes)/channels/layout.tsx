@@ -2,7 +2,7 @@ import { getUser } from "@/db/user";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
-import AddUserProvider from "@/providers/user-provider";
+import AddUserProvider from "@/components/providers/user-provider";
 
 export default async function layout({ children, nav }: { children: ReactNode; nav: ReactNode }) {
     const supabase = createServerComponentClient({ cookies: cookies });
@@ -15,7 +15,6 @@ export default async function layout({ children, nav }: { children: ReactNode; n
             <AddUserProvider user={currentUser} />
             {nav}
             {children}
-           
         </div>
     );
 }

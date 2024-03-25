@@ -1,4 +1,4 @@
-import MemberProfile from "../MemberProfile";
+import MemberProfile from "../member-profile";
 import { Member, User } from "@prisma/client";
 
 export default function ServerRole({

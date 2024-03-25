@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-import ServerMessage from "../message/components/message/Message";
-import MessagesGroup from "../message/components/MessagesGroup";
+import ServerMessage from "../message/components/message/message";
+import MessagesGroup from "../message/components/message-group";
 
 import { differenceInMinutes } from "date-fns";
 
@@ -18,13 +18,14 @@ import { Socket } from "socket.io-client";
 import { Channel, Message, User } from "@prisma/client";
 
 import axios from "axios";
+import { Console } from "console";
 
 export default function Chat({ channelId, dbMessages, channel, users }: { channelId: string; dbMessages: Message[]; channel: Channel; users: User[] }) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<Message[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<Message | undefined>();
-
+   
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
 
@@ -47,11 +48,14 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
 
     const handleMessage = async (e: FormEvent) => {
         e.preventDefault();
+        const newMessageTitle = value.trim();
 
-        if (value === "") return;
+        if (newMessageTitle === "") return;
+        
+        const id = crypto.randomUUID();
 
         const data = {
-            id: crypto.randomUUID(),
+            id,
             memberId: user?.id as string,
             channelId: channelId,
             title: value,
@@ -59,7 +63,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
             createdAt: new Date(),
             updatedAt: new Date(),
         };
-
+     
         setValue("");
         socket?.emit("server/message", data, channelId);
         setIsReplying(false);
@@ -93,6 +97,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
                         isHovering={message.id === replyTo?.id}
                         users={users}
                         scrollToLastMessageById={messages.at(-1)?.id as string}
+                        isLoading={isLoading}
                     />
                 ))}
             </MessagesGroup>
@@ -100,7 +105,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
                 {isReplying && (
                     <div className="bg-[#2B2D31] w-full h-[40px] z-50 absolute top-[-104px] rounded-t-[8px] px-4 flex items-center">
                         <span className="text-[#B5BAC1] text-[14px]">
-                            Replying to{" "}
+                            Replying to
                             <span
                                 className="font-bold cursor-pointer"
                                 onClick={() => {

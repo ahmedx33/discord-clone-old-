@@ -1,9 +1,9 @@
 "use client";
 
-import GetIconProvider from "@/providers/icon-provider";
+import GetIconProvider from "@/components/providers/icon-provider";
 import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
-import ServerMembersList from "../../../membersList/ServerMembersList";
+import ServerMembersList from "../../../membersList/server-members-list";
 import { useLocalStoreage } from "@/hooks/useLocalStoreage";
 import { Channel, Member, Role, User } from "@prisma/client";
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { onClose } from "@/lib/store/features/modal-slice";
+import { onClose } from "@/lib/store/slices/create-server-modal-slice";
 import { RootState } from "@/lib/store/store";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function CreateServerModal() {
-    const { user, modal } = useSelector((state: RootState) => state);
+    const { user, createServerModal } = useSelector((state: RootState) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const serverNameRef = useRef<HTMLInputElement>(null);
@@ -25,7 +25,7 @@ export default function CreateServerModal() {
     const createServerHandler = async () => {
         const newServerName = serverNameRef.current?.value.trim();
 
-        if (newServerName === "") return toast.error("Please write server name!");
+        if (newServerName === "") return toast.error("Please write a server name!");
 
         const serverData = {
             name: newServerName,
@@ -40,7 +40,7 @@ export default function CreateServerModal() {
 
     return (
         <>
-            <Dialog open={modal.isOpen} onOpenChange={() => dispatch(onClose())}>
+            <Dialog open={createServerModal.isOpen} onOpenChange={() => dispatch(onClose())}>
                 <DialogContent>
                     <DialogHeader className="flex items-center justify-center">
                         <DialogTitle>Create Your Server</DialogTitle>
@@ -59,7 +59,6 @@ export default function CreateServerModal() {
                     </div>
                     <DialogFooter>
                         <Button onClick={createServerHandler} className="bg-[#5865F2] text-white hover:bg-[#4752C4]">
-                            {" "}
                             Create
                         </Button>
                     </DialogFooter>

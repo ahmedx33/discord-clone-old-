@@ -20,6 +20,7 @@ interface MessageProps {
         isGrouped: boolean;
     };
     isHovering: boolean;
+    isLoading: any;
     messages?: Message[];
     users: User[];
     scrollToLastMessageById: string;
@@ -27,7 +28,7 @@ interface MessageProps {
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ServerMessage({ message, messages, isHovering, users, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
+export default function ServerMessage({ message, messages, isHovering,isLoading, users, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
     const user = userData?.id === message?.memberId ? userData : users?.find((user) => user.id === message?.memberId);
 
@@ -75,7 +76,7 @@ export default function ServerMessage({ message, messages, isHovering, users, sc
                     )}
                 </div>
 
-                <div className={cn("text-[#DBDEE1] w-full relative  mx-4 ", message?.isGrouped && "px-[3.7rem] py-1", message.replyTo && "px-[1rem] mx-0", false && "text-[#6C6E73]")}>
+                <div className={cn("text-[#DBDEE1] w-full relative  mx-4 ", message?.isGrouped && "px-[3.7rem] py-1", message.replyTo && "px-[1rem] mx-0", message.id === isLoading.id && isLoading.isLoading ? "text-[#6C6E73]" : "")}>
                     {message.isGrouped && (
                         <span
                             className={cn(
