@@ -23,6 +23,9 @@ export default async function Page({ params: { inviteLink } }: { params: { invit
 
     const existServerId = checkMemberInServer?.id
 
+    if (checkMemberInServer) return redirect(`/channels/${existServerId}`)
+
+    
     const server = await prisma.server.update({
         where: {
             inviteLink
@@ -38,7 +41,6 @@ export default async function Page({ params: { inviteLink } }: { params: { invit
 
     revalidatePath("/channels")
 
-    if (checkMemberInServer) return redirect(`/channels/${existServerId}`)
 
     if (server) return redirect(`/channels/${server.id}`);
 

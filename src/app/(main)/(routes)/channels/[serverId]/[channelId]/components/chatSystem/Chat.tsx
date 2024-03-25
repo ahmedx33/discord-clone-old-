@@ -15,17 +15,25 @@ import { RootState } from "@/lib/store/store";
 
 import { ioHandler } from "@/lib/prisma-client/io";
 import { Socket } from "socket.io-client";
-import { Channel, Message, User } from "@prisma/client";
+import { Channel, Member, Message, User } from "@prisma/client";
 
 import axios from "axios";
 import { Console } from "console";
 
-export default function Chat({ channelId, dbMessages, channel, users }: { channelId: string; dbMessages: Message[]; channel: Channel; users: User[] }) {
+interface ChatProps {
+    channelId: string;
+    dbMessages: Message[];
+    channel: Channel;
+    users: User[];
+    members: Member[]
+}
+
+export default function Chat({ channelId, dbMessages, channel, users , members}: ChatProps) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<Message[]>(dbMessages);
     const [replyTo, setReplyTo] = useState<Message | undefined>();
-   
+
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
 
@@ -51,7 +59,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
         const newMessageTitle = value.trim();
 
         if (newMessageTitle === "") return;
-        
+
         const id = crypto.randomUUID();
 
         const data = {
@@ -63,12 +71,12 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
             createdAt: new Date(),
             updatedAt: new Date(),
         };
-     
+
         setValue("");
         socket?.emit("server/message", data, channelId);
         setIsReplying(false);
         setReplyTo(undefined);
-        await axios.post("/auth/message/api/", data);
+        await axios.post("/auth/message/", data);
     };
 
     useEffect(() => {
@@ -97,7 +105,7 @@ export default function Chat({ channelId, dbMessages, channel, users }: { channe
                         isHovering={message.id === replyTo?.id}
                         users={users}
                         scrollToLastMessageById={messages.at(-1)?.id as string}
-                        isLoading={isLoading}
+                        members={members}
                     />
                 ))}
             </MessagesGroup>

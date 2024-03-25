@@ -38,7 +38,7 @@ export default function CreateServerModal() {
                 serverImg: "",
             };
 
-            await axios.post("/auth/server/api/", serverData);
+            await axios.post("/auth/server/", serverData);
             toast.success("The server has been created successfully.");
 
             return dispatch(onClose());

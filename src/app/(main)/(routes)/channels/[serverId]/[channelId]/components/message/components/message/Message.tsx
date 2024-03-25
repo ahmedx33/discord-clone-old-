@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import "./index.css";
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
-import { Message, User } from "@prisma/client";
+import { Member, Message, User } from "@prisma/client";
 
 interface MessageProps {
     message: Message & {
@@ -23,21 +23,24 @@ interface MessageProps {
     isLoading: any;
     messages?: Message[];
     users: User[];
+    members: Member[];
     scrollToLastMessageById: string;
     setReplyTo?: Dispatch<SetStateAction<Message | undefined>>;
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ServerMessage({ message, messages, isHovering,isLoading, users, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
+export default function ServerMessage({ message, messages, isHovering, isLoading, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
-    const user = userData?.id === message?.memberId ? userData : users?.find((user) => user.id === message?.memberId);
+
+    const member = members.find((member) => member.id === message.memberId)
+    const user = userData?.id === member?.id ? userData : users?.find((user) => user.id === member?.id);
 
     const messageDate = format(message?.createdAt, "h:mm a");
-
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
 
     const isOwner = userData?.id === message.memberId;
     const lastMessage = window.document.getElementById(scrollToLastMessageById);
+
 
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
@@ -76,7 +79,14 @@ export default function ServerMessage({ message, messages, isHovering,isLoading,
                     )}
                 </div>
 
-                <div className={cn("text-[#DBDEE1] w-full relative  mx-4 ", message?.isGrouped && "px-[3.7rem] py-1", message.replyTo && "px-[1rem] mx-0", message.id === isLoading.id && isLoading.isLoading ? "text-[#6C6E73]" : "")}>
+                <div
+                    className={cn(
+                        "text-[#DBDEE1] w-full relative  mx-4 ",
+                        message?.isGrouped && "px-[3.7rem] py-1",
+                        message.replyTo && "px-[1rem] mx-0",
+                        false ? "text-[#6C6E73]" : ""
+                    )}
+                >
                     {message.isGrouped && (
                         <span
                             className={cn(

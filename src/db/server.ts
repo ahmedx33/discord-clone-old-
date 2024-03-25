@@ -14,6 +14,48 @@ export const getServers = unstable_cache(cache(async ({ autherId }: { autherId: 
     })
 
     revalidatePath("/channels");
-    
+
     return data
 }), ["server"])
+
+
+
+export const getServer = unstable_cache(cache(async ({ serverId }: { serverId: string }) => {
+  const server = await prisma.server.findUnique({
+        where: {
+            id: serverId,
+        },
+
+        include: {
+            category: {
+                include: {
+                    channels: {
+                        include: {
+                            messages: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "asc",
+                },
+            },
+            members: true,
+            roles: true,
+        },
+    });
+
+    revalidatePath(`/channels/${serverId}`);
+
+    return server
+}), ["serverUnique", "serverId"])
+
+
+export const getMember = unstable_cache(cache(async ({ memberId }: { memberId: string }) => {
+    const data = await prisma.member.findUnique({
+        where: {
+            id: memberId,
+        },
+    })
+
+    return data
+}), ["memberUnique", "memberId"])
