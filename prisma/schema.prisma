@@ -52,10 +52,8 @@ model FriendShip {
 
 model Server {
     id String @id @default(uuid())
-
     imgUrl String @db.Text 
     inviteLink  String @unique
-
     name String
 
     auther   User   @relation(fields: [autherId], references: [id], onDelete: Cascade)

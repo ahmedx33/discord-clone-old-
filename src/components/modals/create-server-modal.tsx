@@ -10,8 +10,11 @@ import { RootState } from "@/lib/store/store";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { FaCamera } from "react-icons/fa";
+import { revalidatePath } from "next/cache";
 import axios from "axios";
+
+import { FaCamera } from "react-icons/fa";
+
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -23,19 +26,27 @@ export default function CreateServerModal() {
     const dispatch = useDispatch();
 
     const createServerHandler = async () => {
-        const newServerName = serverNameRef.current?.value.trim();
+        try {
+            setIsLoading(true);
 
-        if (newServerName === "") return toast.error("Please write a server name!");
+            const newServerName = serverNameRef.current?.value.trim();
 
-        const serverData = {
-            name: newServerName,
-            serverImg: "",
-        };
+            if (newServerName === "") return toast.error("Please write a server name!");
 
-        await axios.post("/auth/server/api/", serverData);
-        toast.success("The server has been created successfully.");
+            const serverData = {
+                name: newServerName,
+                serverImg: "",
+            };
 
-        return dispatch(onClose());
+            await axios.post("/auth/server/api/", serverData);
+            toast.success("The server has been created successfully.");
+
+            return dispatch(onClose());
+        } catch (error) {
+            toast.error(`${error}`);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -50,16 +61,16 @@ export default function CreateServerModal() {
                             <Label htmlFor="file" className="absolute cursor-pointer">
                                 <FaCamera size={30} />
                             </Label>
-                            <Input id="file" type="file" className="p-3 rounded-full bg-transparent w-full h-full border border-white focus:outline-none hidden" />
+                            <Input id="file" type="file" className="p-3 rounded-full bg-transparent w-full h-full border border-white focus:outline-none hidden" disabled={isLoading}/>
                         </div>
                     </div>
                     <div>
                         <Label htmlFor="serverName">Server Name</Label>
-                        <Input ref={serverNameRef} id="serverName" className="mt-2" type="text" defaultValue={`${user.value.displayName}'s server`} />
+                        <Input ref={serverNameRef} id="serverName" className="mt-2" type="text" defaultValue={`${user.value.displayName}'s server`} disabled={isLoading} />
                     </div>
                     <DialogFooter>
-                        <Button onClick={createServerHandler} className="bg-[#5865F2] text-white hover:bg-[#4752C4]">
-                            Create
+                        <Button onClick={createServerHandler} className="bg-[#5865F2] text-white hover:bg-[#4752C4]" disabled={isLoading}>
+                            {isLoading ? "Creating..." : "Create"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

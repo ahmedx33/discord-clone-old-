@@ -1,5 +1,6 @@
 import { prisma } from "@/db/prisma";
 import { currentUser } from "@/lib/current-user";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,6 +22,8 @@ export const PATCH = async (req: NextRequest, { params: { serverId } }: { params
                 inviteLink
             }
         })
+
+        revalidatePath("/channels")
 
         return NextResponse.json(server)
     } catch (error) {

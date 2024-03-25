@@ -31,13 +31,13 @@ export const POST = async (req: NextRequest) => {
                 },
                 members: {
                     create: [
-                        { id: user.id, autherId: user?.id as string, roles: ["owner"] }
+                        { autherId: user?.id as string, roles: ["owner"] }
                     ]
                 },
 
                 roles: {
                     create: [
-                        { name: "onwer", color: "#949BA4" }
+                        { name: "owner", color: "#949BA4" }
                     ]
                 }
             }
