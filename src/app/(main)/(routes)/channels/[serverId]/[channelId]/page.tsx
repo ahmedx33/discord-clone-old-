@@ -1,5 +1,5 @@
 import Chat from "./components/chatSystem/chat";
-import Header from "./components/ui/components/header/Header";
+import Header from "./components/ui/components/header/header";
 
 import { revalidatePath } from "next/cache";
 

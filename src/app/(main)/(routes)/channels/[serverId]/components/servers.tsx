@@ -18,6 +18,7 @@ import ModalProvider from "@/components/providers/modal-provider";
 import CreateServerModal from "@/components/modals/create-server-modal";
 import InviteModal from "@/components/modals/invite-modal";
 
+
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();
     const dispatch = useDispatch();
