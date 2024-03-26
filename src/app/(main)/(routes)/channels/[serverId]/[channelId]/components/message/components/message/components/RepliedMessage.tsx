@@ -2,11 +2,17 @@ import Image from "next/image";
 import "../index.css";
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
-import { Message, User } from "@prisma/client";
+import { Message, User , Member} from "@prisma/client";
 
-export default function RepliedMessage({ message, users }: { message: Message | undefined; users: User[] }) {
+interface RepliedMessageProps {
+    member: Member
+    message: Message
+    users: User[]
+}
+
+export default function RepliedMessage({ message, users, member }: RepliedMessageProps) {
     const user = useSelector((state: RootState) => state.user.value);
-    const getRepliedMember = user?.id === message?.memberId ? user : users?.find((user) => user.id === message?.memberId);
+    const getRepliedMember = user?.id === member?.autherId ? user : users?.find((user) => user.id === member?.autherId);
     const element = document.getElementById(message?.id as string);
 
     // const observer = new IntersectionObserver((entries) => {

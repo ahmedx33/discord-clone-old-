@@ -20,7 +20,7 @@ import axios from "axios";
 
 export default function InviteModal() {
     const { isOpen, server } = useSelector((state: RootState) => state.inviteModal);
-
+    console.log(server.id)
     const [isCopied, setIsCopied] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 

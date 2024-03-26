@@ -20,7 +20,7 @@ interface ServerHeaderProps {
 export default function ServerHeader({ server, member, serverId }: ServerHeaderProps) {
     const dispatch = useDispatch();
     const [isMount, setIsMount] = useState<boolean>(false);
-    console.log(serverId);
+    console.log(server);
     useEffect(() => {
         setIsMount(true);
 

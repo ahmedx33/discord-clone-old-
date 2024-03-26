@@ -41,7 +41,6 @@ export default async function Page({ params: { inviteLink } }: { params: { invit
 
     revalidatePath("/channels")
 
-
     if (server) return redirect(`/channels/${server.id}`);
 
     return null

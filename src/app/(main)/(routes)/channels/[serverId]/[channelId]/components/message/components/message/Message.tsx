@@ -29,18 +29,18 @@ interface MessageProps {
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ServerMessage({ message, messages, isHovering, isLoading, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
+export default function ServerMessage({ message, messages, isHovering, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
 
-    const member = members.find((member) => member.id === message.memberId)
-    const user = userData?.id === member?.id ? userData : users?.find((user) => user.id === member?.id);
+    const member = members.find((member) => member.id === message.memberId);
+
+    const user = userData?.id === member?.autherId ? userData : users?.find((user) => user.id === member?.autherId);
 
     const messageDate = format(message?.createdAt, "h:mm a");
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
 
     const isOwner = userData?.id === message.memberId;
     const lastMessage = window.document.getElementById(scrollToLastMessageById);
-
 
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
@@ -66,7 +66,7 @@ export default function ServerMessage({ message, messages, isHovering, isLoading
             )}
 
             <div className="flex flex-col justify-center w-[90%]">
-                {message.replyTo && <RepliedMessage message={repliedMessage} users={users} />}
+                {message.replyTo && <RepliedMessage member={member as Member} message={repliedMessage as Message} users={users} />}
 
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (
@@ -79,14 +79,7 @@ export default function ServerMessage({ message, messages, isHovering, isLoading
                     )}
                 </div>
 
-                <div
-                    className={cn(
-                        "text-[#DBDEE1] w-full relative  mx-4 ",
-                        message?.isGrouped && "px-[3.7rem] py-1",
-                        message.replyTo && "px-[1rem] mx-0",
-                        false ? "text-[#6C6E73]" : ""
-                    )}
-                >
+                <div className={cn("text-[#DBDEE1] w-full relative  mx-4 ", message?.isGrouped && "px-[3.7rem] py-1", message.replyTo && "px-[1rem] mx-0", false ? "text-[#6C6E73]" : "")}>
                     {message.isGrouped && (
                         <span
                             className={cn(

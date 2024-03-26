@@ -42,6 +42,8 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
 
     const repliedUser = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
 
+    const member = members.find((member) => member.autherId === user.id)
+
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
         const isOwner = oldMessage?.memberId === message.memberId;
@@ -64,7 +66,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
 
         const data = {
             id,
-            memberId: user?.id as string,
+            memberId: member?.id,
             channelId: channelId,
             title: value,
             replyTo: replyTo?.id,
@@ -105,8 +107,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
                         isHovering={message.id === replyTo?.id}
                         users={users}
                         scrollToLastMessageById={messages.at(-1)?.id as string}
-                        members={members}
-                    />
+                        members={members} isLoading={undefined}                    />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-full relative bg-[#313338]">

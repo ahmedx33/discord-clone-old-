@@ -13,7 +13,9 @@ import { useState } from "react";
 export default function LeaveServerModal() {
     const { isOpen, data } = useSelector((state: RootState) => state.leaveServerModal);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const { serverId, memberId } = data;
+    
     const dispatch = useDispatch();
     const router = useRouter();
 
