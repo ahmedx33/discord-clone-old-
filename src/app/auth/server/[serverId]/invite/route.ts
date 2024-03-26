@@ -25,7 +25,7 @@ export const PATCH = async (req: NextRequest, { params: { serverId } }: { params
 
         revalidatePath("/channels")
 
-        return NextResponse.json(server)
+        return NextResponse.json({ server }, { status: 200 })
     } catch (error) {
         return new NextResponse(`[PATCH_SERVER_ID] ${error}`, { status: 500 })
     }

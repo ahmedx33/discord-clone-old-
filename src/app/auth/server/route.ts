@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
     try {
         const { name, serverImg } = await req.json()
+        
         const user = await currentUser()
 
         if (!user) return new NextResponse("Unauthorized", { status: 401 })
