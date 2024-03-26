@@ -24,6 +24,8 @@ export const PATCH = async (req: NextRequest, { params: { serverId } }: { params
             }
         })
 
+        
+
         if (!server) return redirect("/channels")
         
 

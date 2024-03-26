@@ -1,14 +1,21 @@
+import { Member } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
 
 
 interface InitialState {
-    memberId: string,
+    data: {
+        memberId: string,
+        serverId: string,
+    }
     isOpen: boolean
 }
 
 
 const initialState: InitialState = {
-    memberId: "",
+    data: {
+        memberId: "",
+        serverId: ""
+    },
     isOpen: false,
 }
 
@@ -17,15 +24,15 @@ export const leaveServerModalSlice = createSlice({
     initialState,
     reducers: {
 
-        setMemberId: (state, action) => {
-            state.memberId = action.payload
+        setLeaveData: (state, action) => {
+            state.data = action.payload
         },
 
-        onOpen: (state) => {
+        onOpenLeave: (state) => {
             state.isOpen = true
         },
 
-        onClose: (state) => {
+        onCloseLeave: (state) => {
             state.isOpen = false
         }
     }
@@ -33,6 +40,6 @@ export const leaveServerModalSlice = createSlice({
 
 
 
-export const { setMemberId, onOpen, onClose } = leaveServerModalSlice.actions
+export const { setLeaveData, onOpenLeave, onCloseLeave } = leaveServerModalSlice.actions
 
 export default leaveServerModalSlice.reducer

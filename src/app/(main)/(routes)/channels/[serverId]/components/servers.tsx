@@ -17,6 +17,7 @@ import { onOpen } from "@/lib/store/slices/create-server-modal-slice";
 import ModalProvider from "@/components/providers/modal-provider";
 import CreateServerModal from "@/components/modals/create-server-modal";
 import InviteModal from "@/components/modals/invite-modal";
+import LeaveServerModal from "@/components/modals/leave-server-modal";
 
 
 export default function Servers({ servers }: { servers: Server[] }) {
@@ -66,6 +67,7 @@ export default function Servers({ servers }: { servers: Server[] }) {
             <ModalProvider>
                 <CreateServerModal />
                 <InviteModal />
+                <LeaveServerModal />
             </ModalProvider>
         </>
     );

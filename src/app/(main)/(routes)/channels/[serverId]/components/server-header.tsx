@@ -5,28 +5,31 @@ import { TbSquareRoundedArrowRightFilled } from "react-icons/tb";
 import { FaUserPlus } from "react-icons/fa";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Server } from "@prisma/client";
+import { Member, Server } from "@prisma/client";
 import { useDispatch } from "react-redux";
 import { onOpen, setServerData } from "@/lib/store/slices/invite-modal-slice";
 import { useEffect, useState } from "react";
+import { onOpenLeave, setLeaveData } from "@/lib/store/slices/leave-server-modal-slice";
 
 interface ServerHeaderProps {
     server: Server;
+    member: Member;
+    serverId: string;
 }
 
-export default function ServerHeader({ server }: ServerHeaderProps) {
+export default function ServerHeader({ server, member, serverId }: ServerHeaderProps) {
     const dispatch = useDispatch();
-    const [isMount, setIsMount] = useState<boolean>(false)
+    const [isMount, setIsMount] = useState<boolean>(false);
+    console.log(serverId);
+    useEffect(() => {
+        setIsMount(true);
 
-    useEffect(()=> {
-        setIsMount(true)
-
-        if (isMount) dispatch(setServerData(server))
+        if (isMount) dispatch(setServerData(server));
 
         return () => {
-            setIsMount(false)
-        }
-        }, [isMount, dispatch, server])
+            setIsMount(false);
+        };
+    }, [isMount, dispatch, server]);
 
     return (
         <>
@@ -38,22 +41,24 @@ export default function ServerHeader({ server }: ServerHeaderProps) {
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem
-                        className="cursor-pointer"
-                        onClick={() => dispatch(onOpen())}
-                    >
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => dispatch(onOpen())}>
                         <div className="text-[#777fd3] px-3 flex items-center justify-between w-52 ">
                             <p className="text-[1.1rem]">Invite People</p> <FaUserPlus size={25} />
                         </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => {
+                            dispatch(setLeaveData({ serverId: serverId, memberId: member.id }));
+                            dispatch(onOpenLeave());
+                        }}
+                    >
                         <div className="text-red-500 px-3 flex items-center justify-between w-52 ">
                             <p className="text-[1.1rem]">Leave Server</p> <TbSquareRoundedArrowRightFilled size={25} />
                         </div>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            
         </>
     );
 }

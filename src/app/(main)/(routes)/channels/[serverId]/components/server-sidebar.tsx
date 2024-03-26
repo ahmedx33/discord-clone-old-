@@ -7,6 +7,7 @@ import { prisma } from "@/db/prisma";
 
 import { currentUser } from "@/lib/current-user";
 import ServerHeader from "./server-header";
+import { Member } from "@prisma/client";
 
 
 export default async function ServerSidebar({ serverId }: { serverId: string }) {
@@ -47,7 +48,7 @@ export default async function ServerSidebar({ serverId }: { serverId: string }) 
     return (
         <div className="h-screen min-w-[250px] bg-[#2B2D31] relative">
             <div className="select-none w-full">
-                <ServerHeader server={server}/>
+                <ServerHeader server={server} member={member as Member} serverId={serverId}/>
                 <div className="px-3">
                     {categories?.map((category) => (
                         <ServerCategory key={category.id} categoryId={category.id} serverId={category.serverId} name={category.title} />
