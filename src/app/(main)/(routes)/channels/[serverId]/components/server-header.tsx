@@ -49,8 +49,8 @@ export default function ServerHeader({ server, member, serverId }: ServerHeaderP
                     <DropdownMenuItem
                         className="cursor-pointer"
                         onClick={() => {
-                            dispatch(setLeaveData({ serverId: serverId, memberId: member.id }));
                             dispatch(onOpenLeave());
+                            dispatch(setLeaveData({ serverId: serverId, memberId: member.id }));
                         }}
                     >
                         <div className="text-red-500 px-3 flex items-center justify-between w-52 ">

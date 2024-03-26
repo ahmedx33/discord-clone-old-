@@ -12,19 +12,20 @@ import { useState } from "react";
 
 export default function LeaveServerModal() {
     const { isOpen, data } = useSelector((state: RootState) => state.leaveServerModal);
-    const [isLoading,  setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { serverId, memberId } = data;
     const dispatch = useDispatch();
     const router = useRouter();
 
     const leaveServerHandler = async () => {
         try {
-            setIsLoading(true)
+            setIsLoading(true);
             await axios.patch(`/auth/server/${serverId}/leave/`, { memberId });
         } catch (error) {
             return toast.error(`${error}`);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
+            dispatch(onCloseLeave());
             router.push("/channels");
         }
     };
@@ -37,7 +38,7 @@ export default function LeaveServerModal() {
                         <DialogTitle>Are you sure ?</DialogTitle>
                     </DialogHeader>
                     <div className="flex items-center justify-between px-3">
-                        <Button className="bg-red-500 text-white " onClick={leaveServerHandler}  disabled={isLoading}>
+                        <Button className="bg-red-500 hover:bg-red-600 text-white " onClick={leaveServerHandler} disabled={isLoading}>
                             {isLoading ? "Leaving..." : "Leave"}
                         </Button>
                         <Button variant="ghost" onClick={() => dispatch(onCloseLeave())} disabled={isLoading}>
