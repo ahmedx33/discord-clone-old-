@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import "../index.css";
 import { RootState } from "@/lib/store/store";
