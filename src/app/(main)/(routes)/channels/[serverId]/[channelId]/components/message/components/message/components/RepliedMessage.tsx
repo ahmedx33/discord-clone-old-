@@ -12,7 +12,11 @@ interface RepliedMessageProps {
 
 export default function RepliedMessage({ message, users, member }: RepliedMessageProps) {
     const user = useSelector((state: RootState) => state.user.value);
-    const getRepliedMember = user?.id === member?.autherId ? user : users?.find((user) => user.id === member?.autherId);
+    const messageOwner = member.id !== message.memberId ? member : null
+
+    console.log(messageOwner)
+
+    const getRepliedMember = user?.id === messageOwner?.autherId ? user : users?.find((user) => user.id === messageOwner?.autherId);
     const element = document.getElementById(message?.id as string);
 
     // const observer = new IntersectionObserver((entries) => {

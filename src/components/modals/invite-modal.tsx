@@ -14,13 +14,13 @@ import { FaCheck } from "react-icons/fa6";
 import { useState } from "react";
 import { useOrigin } from "@/hooks/use-orgin";
 
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid";
 
 import axios from "axios";
 
 export default function InviteModal() {
     const { isOpen, server } = useSelector((state: RootState) => state.inviteModal);
-    console.log(server.id)
+    console.log(server.id);
     const [isCopied, setIsCopied] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -34,28 +34,28 @@ export default function InviteModal() {
         navigator.clipboard.writeText(inviteLink);
 
         setTimeout(() => {
-            setIsCopied(false)
-        }, 1000)
+            setIsCopied(false);
+        }, 1000);
     };
-
 
     const generateLinkHandler = async () => {
         try {
-            setIsLoading(true)
-            
+            setIsLoading(true);
+
             const data = {
-                inviteLink: uuidv4()
-            }
-            
-            const res = await axios.patch(`/auth/server/${server.id}/invite/`, data)
-            
-            dispatch(setServerData(res.data))
-        } catch(error) {
-            throw new Error(`[GENERATE_PATCH] ${error}`)
+                inviteLink: uuidv4(),
+            };
+
+            const res = await axios.patch(`/auth/server/${server.id}/invite/`, data);
+            const serverData = res.data.server;
+
+            if (serverData) dispatch(setServerData(serverData));
+        } catch (error) {
+            throw new Error(`[GENERATE_PATCH] ${error}`);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
     return (
         <>
@@ -65,12 +65,15 @@ export default function InviteModal() {
                         <DialogTitle>Server invite link</DialogTitle>
                     </DialogHeader>
                     <div className="flex items-center gap-x-4">
-                        <Input id="serverName" className="mt-2" type="text" value={inviteLink} disabled={isLoading}/>
-                        {!isCopied ? <IoCopyOutline onClick={copyHandler} size={20} className="cursor-pointer"/> : <FaCheck size={20} className="cursor-pointer"/>}
+                        <Input id="serverName" className="mt-2" type="text" value={inviteLink} disabled={isLoading} />
+                        {!isCopied ? <IoCopyOutline onClick={copyHandler} size={20} className="cursor-pointer" /> : <FaCheck size={20} className="cursor-pointer" />}
                     </div>
                     <DialogFooter className="flex items">
                         <div className="flex items-center w-full">
-                            <Button variant="link" onClick={generateLinkHandler} disabled={isLoading}> Generate a new invite link</Button>
+                            <Button variant="link" onClick={generateLinkHandler} disabled={isLoading}>
+                                {" "}
+                                Generate a new invite link
+                            </Button>
                             <IoMdRefresh size={20} />
                         </div>
                     </DialogFooter>
