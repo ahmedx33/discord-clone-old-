@@ -1,12 +1,8 @@
 "use client";
 
 import GetIconProvider from "@/components/providers/icon-provider";
-import { useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import { Channel, Member, Role, User } from "@prisma/client";
-import MemberListProvider from "@/components/providers/member-list-provider";
-import ServerMembersList from "../../../membersList/server-members-list";
-import { useLocalStoreage } from "@/hooks/useLocalStoreage";
 import { useDispatch } from "react-redux";
 import { onToggle, setMembersListData } from "@/lib/store/slices/members-list-slice";
 

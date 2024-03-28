@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-import ServerMessage from "../message/components/message/message";
-import MessagesGroup from "../message/components/message-group";
+import ServerMessage from "../message/message";
+import MessagesGroup from "../message/message-group";
 
 import { differenceInMinutes } from "date-fns";
 

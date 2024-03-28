@@ -1,19 +1,24 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { format, isToday } from "date-fns";
 import Image from "next/image";
+
 import { HiReply } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaFaceSmile, FaPen } from "react-icons/fa6";
-import { Dispatch, SetStateAction, useState } from "react";
-import RepliedMessage from "./components/RepliedMessage";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-import "./index.css";
+import RepliedMessage from "./RepliedMessage";
+
+import { cn } from "@/lib/utils";
+import { format, isToday } from "date-fns";
+
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
+
+import { Dispatch, SetStateAction } from "react"
 import { Member, Message, User } from "@prisma/client";
+
+
+import "./index.css";
 
 interface MessageProps {
     message: Message & {

@@ -1,9 +1,13 @@
 "use client"
+
 import Image from "next/image";
-import "../index.css";
+
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
+
 import { Message, User , Member} from "@prisma/client";
+
+import "../index.css";
 
 interface RepliedMessageProps {
     member: Member

@@ -1,13 +1,12 @@
-import Chat from "./components/chatSystem/chat";
-import Header from "./components/ui/components/header/header";
-
 import { revalidatePath } from "next/cache";
 
 import { getUsers } from "@/db/user";
-import { prisma } from "@/db/prisma";
-import { ChannelWithMessages } from "@/types/types";
-import { Channel, Member, Message, Role } from "@prisma/client";
 import { getServer } from "@/db/server";
+
+import { Channel, Member, Message, Role } from "@prisma/client";
+
+import Header from "./(chat)/ui/header/header";
+import Chat from "./(chat)/chat/chat";
 
 export default async function MainServerPage({ params: { serverId, channelId } }: { params: { serverId: string; channelId: string } }) {
     const server = await getServer({ serverId });
