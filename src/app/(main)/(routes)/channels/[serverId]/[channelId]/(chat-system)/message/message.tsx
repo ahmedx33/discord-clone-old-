@@ -15,26 +15,26 @@ import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
 
 import { Dispatch, SetStateAction } from "react"
-import { Member, Message, User } from "@prisma/client";
+import { Member, Message as MessageType, User } from "@prisma/client";
 
 
 import "./index.css";
 
 interface MessageProps {
-    message: Message & {
+    message: MessageType & {
         isGrouped: boolean;
     };
     isHovering: boolean;
     isLoading: any;
-    messages?: Message[];
+    messages?: MessageType[];
     users: User[];
     members: Member[];
     scrollToLastMessageById: string;
-    setReplyTo?: Dispatch<SetStateAction<Message | undefined>>;
+    setReplyTo?: Dispatch<SetStateAction<MessageType | undefined>>;
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ServerMessage({ message, messages, isHovering, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
+export default function Message({ message, messages, isHovering, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
 
     const member = members.find((member) => member.id === message.memberId);
@@ -71,7 +71,7 @@ export default function ServerMessage({ message, messages, isHovering, users, me
             )}
 
             <div className="flex flex-col justify-center w-[90%]">
-                {message.replyTo && <RepliedMessage member={member as Member} message={repliedMessage as Message} users={users} />}
+                {message.replyTo && <RepliedMessage member={member as Member} message={repliedMessage as MessageType} users={users} />}
 
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (

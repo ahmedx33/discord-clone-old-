@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-import ServerMessage from "../message/message";
+import Message from "../message/message";
 import MessagesGroup from "../message/message-group";
 
 import { differenceInMinutes } from "date-fns";
@@ -15,14 +15,14 @@ import { RootState } from "@/lib/store/store";
 
 import { ioHandler } from "@/lib/prisma-client/io";
 import { Socket } from "socket.io-client";
-import { Channel, Member, Message, User } from "@prisma/client";
+import { Channel, Member, Message as MessageType, User } from "@prisma/client";
 
 import axios from "axios";
 import { Console } from "console";
 
 interface ChatProps {
     channelId: string;
-    dbMessages: Message[];
+    dbMessages: MessageType[];
     channel: Channel;
     users: User[];
     members: Member[]
@@ -31,8 +31,8 @@ interface ChatProps {
 export default function Chat({ channelId, dbMessages, channel, users , members}: ChatProps) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
-    const [messages, setMessages] = useState<Message[]>(dbMessages);
-    const [replyTo, setReplyTo] = useState<Message | undefined>();
+    const [messages, setMessages] = useState<MessageType[]>(dbMessages);
+    const [replyTo, setReplyTo] = useState<MessageType | undefined>();
 
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -90,7 +90,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
         };
     }, []);
 
-    socket?.on("server/receive", (message: Message) => {
+    socket?.on("server/receive", (message: MessageType) => {
         setMessages([...messages, message]);
     });
 
@@ -98,7 +98,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
-                    <ServerMessage
+                    <Message
                         key={message?.id}
                         message={message}
                         setReplyTo={setReplyTo}
