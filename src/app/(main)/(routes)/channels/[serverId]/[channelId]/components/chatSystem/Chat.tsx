@@ -78,7 +78,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
         socket?.emit("server/message", data, channelId);
         setIsReplying(false);
         setReplyTo(undefined);
-        await axios.post("/auth/message/", data);
+        await axios.post("/api/message/", data);
     };
 
     useEffect(() => {

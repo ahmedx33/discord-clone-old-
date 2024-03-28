@@ -29,7 +29,7 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
                     userName: formData.get("username") as string,
                 },
 
-                emailRedirectTo: `${location.origin}/auth/callback/`,
+                emailRedirectTo: `${location.origin}/api/callback/`,
             },
         };
 
@@ -43,7 +43,7 @@ export default function RegisterForm({ goBackButton }: BarInterface) {
             userName: formData.get("username"),
         };
 
-        await axios.post("/auth/login/", userData);
+        await axios.post("/api/login/", userData);
 
         if (error?.message) {
             toast.error("something went wrong!");

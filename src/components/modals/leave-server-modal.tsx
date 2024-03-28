@@ -22,7 +22,7 @@ export default function LeaveServerModal() {
     const leaveServerHandler = async () => {
         try {
             setIsLoading(true);
-            await axios.patch(`/auth/server/${serverId}/leave/`, { memberId });
+            await axios.patch(`/api/server/${serverId}/leave/`, { memberId });
         } catch (error) {
             console.log(error)
             return toast.error("Sorry you can't leave your server!");

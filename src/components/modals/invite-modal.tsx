@@ -46,7 +46,7 @@ export default function InviteModal() {
                 inviteLink: uuidv4(),
             };
 
-            const res = await axios.patch(`/auth/server/${server.id}/invite/`, data);
+            const res = await axios.patch(`/api/server/${server.id}/invite/`, data);
             const serverData = res.data.server;
 
             if (serverData) dispatch(setServerData(serverData));
