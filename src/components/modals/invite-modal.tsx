@@ -66,7 +66,7 @@ export default function InviteModal() {
                     </DialogHeader>
                     <div className="flex items-center gap-x-4">
                         <Input id="serverName" className="mt-2" type="text" value={inviteLink} disabled={isLoading} />
-                        {!isCopied ? <IoCopyOutline onClick={copyHandler} size={20} className="cursor-pointer" /> : <FaCheck size={20} className="cursor-pointer" />}
+                        {!isCopied && <Button onClick={copyHandler}>Copy</Button>}
                     </div>
                     <DialogFooter className="flex items">
                         <div className="flex items-center w-full">

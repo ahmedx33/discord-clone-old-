@@ -13,6 +13,7 @@ import { Server } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { onOpen } from "@/lib/store/slices/create-server-modal-slice";
+import {onClose as onCloseMemberList} from "@/lib/store/slices/members-list-slice"
 
 import ModalProvider from "@/components/providers/modal-provider";
 import CreateServerModal from "@/components/modals/create-server-modal";
@@ -41,7 +42,7 @@ export default function Servers({ servers }: { servers: Server[] }) {
                 <ul className="flex flex-col gap-2">
                     {servers.map((server) => (
                         <li key={server.id}>
-                            <Link href={`/channels/${server.id}/`}>
+                            <Link href={`/channels/${server.id}/`} onClick={()=> dispatch(onCloseMemberList())}>
                                 <div
                                     className={cn(
                                         `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden `,

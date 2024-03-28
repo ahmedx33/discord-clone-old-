@@ -24,6 +24,7 @@ export default function Header({ channel, members, users, roles }: HeaderProps) 
         roles,
         members,
     }
+    
     return (
         <div className="w-full h-[50px] border-b border-[#1F2124] flex items-center justify-between px-4 pr-[23rem] fixed top-0 z-50 bg-[#313338] text-white font-bold gap-2">
             <div className="flex items-center gap-2">

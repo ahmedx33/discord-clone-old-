@@ -39,7 +39,7 @@ export const POST = async (req: NextRequest) => {
                 roles: {
                     create: [
                         { name: "owner", color: "#949BA4" },
-                        { name: "online", color: "#949BA4" }
+                        { name: "member", color: "#949BA4" }
                     ]
                 }
             }

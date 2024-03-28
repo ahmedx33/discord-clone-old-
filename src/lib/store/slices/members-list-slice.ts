@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { User, Role, Member } from "prisma/prisma-client"
 
 
+
 interface InitialState {
     data: {
         users: User[],
@@ -31,11 +32,18 @@ const membersListSlice = createSlice({
         onToggle: (state) => {
             state.isOpen = !state.isOpen
         },
+        onOpen: (state) => {
+            state.isOpen = true
+        },
+
+        onClose: (state) => {
+            state.isOpen = false
+        },
     }
 
 })
 
 
-export const { onToggle, setMembersListData } = membersListSlice.actions
+export const { onOpen, onClose,onToggle, setMembersListData } = membersListSlice.actions
 
 export default membersListSlice.reducer
