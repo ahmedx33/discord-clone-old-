@@ -71,7 +71,7 @@ export default function InviteModal() {
                     <DialogFooter className="flex items">
                         <div className="flex items-center w-full">
                             <Button variant="link" onClick={generateLinkHandler} disabled={isLoading}>
-                                {" "}
+                                
                                 Generate a new invite link
                             </Button>
                             <IoMdRefresh size={20} />

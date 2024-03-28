@@ -24,7 +24,8 @@ export default function LeaveServerModal() {
             setIsLoading(true);
             await axios.patch(`/auth/server/${serverId}/leave/`, { memberId });
         } catch (error) {
-            return toast.error(`${error}`);
+            console.log(error)
+            return toast.error("Sorry you can't leave your server!");
         } finally {
             setIsLoading(false);
             dispatch(onCloseLeave());
