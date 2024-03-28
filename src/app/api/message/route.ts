@@ -1,4 +1,4 @@
-import { createMessage } from "@/db/message";
+import { createMessage } from "@/db/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {

@@ -1,5 +1,5 @@
 import AccordionBeta from "@/components/AccordionBeta";
-import { getChannels } from "@/db/channel";
+import { getChannels } from "@/db/server";
 import Channel from "./channel";
 
 interface ChannelProps {
