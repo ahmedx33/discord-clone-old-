@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-import Message from "../message/message";
-import MessagesGroup from "../message/message-group";
+import Message from "./message/message";
+import MessagesGroup from "./message/message-group";
 
 import { differenceInMinutes } from "date-fns";
 
@@ -17,18 +17,18 @@ import { ioHandler } from "@/lib/prisma-client/io";
 import { Socket } from "socket.io-client";
 import { Channel, Member, Message as MessageType, User } from "@prisma/client";
 
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { Console } from "console";
 
 interface ChatProps {
     channelId: string;
     dbMessages: MessageType[];
     channel: Channel;
     users: User[];
-    members: Member[]
+    members: Member[];
 }
 
-export default function Chat({ channelId, dbMessages, channel, users , members}: ChatProps) {
+export default function Chat({ channelId, dbMessages, channel, users, members }: ChatProps) {
     const [value, setValue] = useState("");
     const [socket, setSocket] = useState<Socket>();
     const [messages, setMessages] = useState<MessageType[]>(dbMessages);
@@ -42,7 +42,7 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
 
     const repliedUser = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
 
-    const member = members.find((member) => member.autherId === user.id)
+    const member = members.find((member) => member.autherId === user.id);
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -62,10 +62,8 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
 
         if (newMessageTitle === "") return;
 
-        const id = crypto.randomUUID();
-
         const data = {
-            id,
+            id: uuidv4,
             memberId: member?.id,
             channelId: channelId,
             title: value,
@@ -107,7 +105,9 @@ export default function Chat({ channelId, dbMessages, channel, users , members}:
                         isHovering={message.id === replyTo?.id}
                         users={users}
                         scrollToLastMessageById={messages.at(-1)?.id as string}
-                        members={members} isLoading={undefined}                    />
+                        members={members}
+                        isLoading={undefined}
+                    />
                 ))}
             </MessagesGroup>
             <div className="px-5 w-full relative bg-[#313338]">
