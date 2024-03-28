@@ -4,9 +4,9 @@ import { getUsers } from "@/db/user";
 import { getServer } from "@/db/server";
 
 import { Channel, Member, Message, Role } from "@prisma/client";
+import Header from "./(chat-system)/ui/header/header";
+import Chat from "./(chat-system)/chat/chat";
 
-import Header from "./(chat)/ui/header/header";
-import Chat from "./(chat)/chat/chat";
 
 export default async function MainServerPage({ params: { serverId, channelId } }: { params: { serverId: string; channelId: string } }) {
     const server = await getServer({ serverId });
