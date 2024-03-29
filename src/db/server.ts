@@ -4,9 +4,6 @@ import { cache } from "react"
 
 import { Message } from "@prisma/client"
 
-
-// chnages for new day
-
 export const getServers = unstable_cache(cache(async ({ autherId }: { autherId: string }) => {
     const data = await prisma.server.findMany({
         where: {
