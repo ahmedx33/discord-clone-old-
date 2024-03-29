@@ -4,6 +4,7 @@ import { currentUser } from "@/lib/current-user";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
+
 export const POST = async (req: NextRequest) => {
     try {
         const { name, serverImg } = await req.json()
