@@ -10,43 +10,42 @@ import { Toaster, toast } from "sonner";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
-interface BarInterface {
+interface RegisterFormProps {
     goBackButton?: boolean;
 }
 
-export default function RegisterForm({ goBackButton }: BarInterface) {
+export default function RegisterForm({ goBackButton }: RegisterFormProps) {
     const router = useRouter();
     const supabase = createClientComponentClient();
-    
 
     const signUpHandler = async (formData: FormData) => {
-        const res = {
-            email: formData.get("email") as string,
-            password: formData.get("pass") as string,
-            options: {
-                data: {
-                    DisplayName: formData.get("displayName") as string,
-                    userName: formData.get("username") as string,
+        try {
+            const res = {
+                email: formData.get("email") as string,
+                password: formData.get("pass") as string,
+                options: {
+                    data: {
+                        DisplayName: formData.get("displayName") as string,
+                        userName: formData.get("username") as string,
+                    },
+
+                    emailRedirectTo: `${location.origin}/api/callback/`,
                 },
+            };
 
-                emailRedirectTo: `${location.origin}/api/callback/`,
-            },
-        };
+            const { data, error } = await supabase.auth.signUp(res);
 
-        const { data, error } = await supabase.auth.signUp(res);
+            const userData = {
+                userId: data.user?.id,
+                email: formData.get("email") as string,
+                profileImg: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
+                displayName: formData.get("displayName"),
+                userName: formData.get("username"),
+            };
 
-        const userData = {
-            userId: data.user?.id,
-            email: formData.get("email") as string,
-            profileImg: "https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/profiles/default/avatar.png",
-            displayName: formData.get("displayName"),
-            userName: formData.get("username"),
-        };
-
-        await axios.post("/api/login/", userData);
-
-        if (error?.message) {
-            toast.error("something went wrong!");
+            await axios.post("/api/login/", userData);
+        } catch (error) {
+            toast.error(`${error}`);
         }
     };
 

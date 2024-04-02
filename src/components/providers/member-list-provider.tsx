@@ -1,6 +1,7 @@
 "use client";
 
-import ServerMembersList from "@/app/(main)/(routes)/channels/[serverId]/[channelId]/components/membersList/server-members-list";
+
+import ServerMembersList from "@/app/(main)/(routes)/channels/[serverId]/[channelId]/(chat-system)/membersList/server-members-list";
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
 
