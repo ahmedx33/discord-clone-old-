@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "socket.io": "^4.7.4"
+  },
+  "name": "discord-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
