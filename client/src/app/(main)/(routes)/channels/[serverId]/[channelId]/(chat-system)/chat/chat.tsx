@@ -39,10 +39,11 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
 
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
     const user = useSelector((state: RootState) => state.user.value);
-
-    const repliedUser = user?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
-
+    
     const member = members.find((member) => member.autherId === user.id);
+
+    const repliedUser = member?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
+
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -122,7 +123,7 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
                                     element?.scrollIntoView({ behavior: "smooth", block: "center" });
                                 }}
                             >
-                                {repliedUser?.userName}
+                                {repliedUser?.displayName}
                             </span>
                         </span>
                         <IoIosCloseCircle

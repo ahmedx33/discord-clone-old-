@@ -1,4 +1,4 @@
-import AccordionBeta from "@/components/AccordionBeta";
+import { ActionAccordion } from "@/components/action-accordion";
 import { getChannels } from "@/db/server";
 import Channel from "./channel";
 
@@ -12,11 +12,11 @@ export default async function ServerCategory({ categoryId, name, serverId }: Cha
     const channels = await getChannels({ categoryId });
     return (
         <>
-            <AccordionBeta name={name}>
+            <ActionAccordion name={name}>
                 {channels.map(({ name, id, type }) => (
                     <Channel key={id} name={name} id={id} serverId={serverId} type={type} />
                 ))}
-            </AccordionBeta>
+            </ActionAccordion>
         </>
     );
 }

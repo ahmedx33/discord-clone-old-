@@ -50,6 +50,7 @@ export default function Message({ message, messages, isHovering, users, members,
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
     }
+    console.log(isHovering)
 
     return (
         <div

@@ -13,13 +13,13 @@ import { Server } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { onOpen } from "@/lib/store/slices/create-server-modal-slice";
-import {onClose as onCloseMemberList} from "@/lib/store/slices/members-list-slice"
+import { onClose as onCloseMemberList } from "@/lib/store/slices/members-list-slice";
 
 import ModalProvider from "@/components/providers/modal-provider";
 import CreateServerModal from "@/components/modals/create-server-modal";
 import InviteModal from "@/components/modals/invite-modal";
 import LeaveServerModal from "@/components/modals/leave-server-modal";
-
+import { ActionTooltip } from "@/components/action-tooltip";
 
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();
@@ -41,25 +41,27 @@ export default function Servers({ servers }: { servers: Server[] }) {
             <div className="servers">
                 <ul className="flex flex-col gap-2">
                     {servers.map((server) => (
-                        <li key={server.id}>
-                            <Link href={`/channels/${server.id}/`} onClick={()=> dispatch(onCloseMemberList())}>
-                                <div
-                                    className={cn(
-                                        `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden `,
-                                        pathname.includes(server.id as string) ? "!rounded-[17px]" : ""
-                                    )}
-                                >
-                                    <Image className="absolute" src="/voll.png" alt="icon" draggable={false} width={60} height={60} />
-                                </div>
-                            </Link>
-                        </li>
+                        <ActionTooltip key={server.id} label={server.name} side="right" align="center">
+                            <li key={server.id}>
+                                <Link href={`/channels/${server.id}/`} onClick={() => dispatch(onCloseMemberList())}>
+                                    <div
+                                        className={cn(
+                                            `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden `,
+                                            pathname.includes(server.id as string) ? "!rounded-[17px]" : ""
+                                        )}
+                                    >
+                                        <Image className="absolute" src="/voll.png" alt="icon" draggable={false} width={60} height={60} />
+                                    </div>
+                                </Link>
+                            </li>
+                        </ActionTooltip>
                     ))}
                 </ul>
                 <div
                     onClick={() => dispatch(onOpen())}
-                    className={cn(
-                        `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden text-[#23A559] bg-[#313338] hover:text-white hover:bg-[#23A559]`
-                    )}
+                    className={
+                        "flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden text-[#23A559] bg-[#313338] hover:text-white hover:bg-[#23A559] mt-2"
+                    }
                 >
                     <HiPlus size={25} />
                 </div>
