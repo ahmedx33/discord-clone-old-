@@ -17,10 +17,12 @@ import { FaCamera } from "react-icons/fa";
 
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function CreateServerModal() {
     const { user, createServerModal } = useSelector((state: RootState) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const router = useRouter()
 
     const serverNameRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
@@ -39,11 +41,14 @@ export default function CreateServerModal() {
             };
 
             await axios.post("/api/server/", serverData);
+
+            router.refresh()
             toast.success("The server has been created successfully.");
 
             return dispatch(onClose());
         } catch (error) {
-            toast.error(`${error}`);
+            console.error(error)
+            toast.error("Something went wrong! Please try again later.");
         } finally {
             setIsLoading(false);
         }

@@ -2,7 +2,6 @@ import { prisma } from "@/db/prisma";
 import { currentUser } from "@/lib/current-user";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import React from "react";
 
 export default async function Page({ params: { inviteLink } }: { params: { inviteLink: string } }) {
     const user = await currentUser();
