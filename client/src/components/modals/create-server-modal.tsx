@@ -58,7 +58,7 @@ export default function CreateServerModal() {
 
             const newServerName = serverNameRef.current?.value.trim();
 
-            if (newServerName === "") return toast.error("Please write a server name!");
+            if (newServerName === "") return toast.error("Server name cannot be empty.");
 
             const serverData = {
                 name: newServerName,

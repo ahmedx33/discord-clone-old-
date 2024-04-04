@@ -30,7 +30,7 @@ export default function Servers({ servers }: { servers: Server[] }) {
             <Link href="/channels" className="main-icon">
                 <div
                     className={cn(
-                        "main-blue flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden",
+                        "main-blue bg-[#313338] flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full  mk-Smooth cursor-pointer overflow-hidden",
                         pathname === "/channels" ? "!rounded-[17px] !bg-blue" : ""
                     )}
                 >
@@ -46,11 +46,12 @@ export default function Servers({ servers }: { servers: Server[] }) {
                                 <Link href={`/channels/${server.id}/`} onClick={() => dispatch(onCloseMemberList())}>
                                     <div
                                         className={cn(
-                                            `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] rounded-full mk-Smooth cursor-pointer overflow-hidden `,
-                                            pathname.includes(server.id as string) ? "!rounded-[17px]" : ""
+                                            `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] mk-Smooth rounded-full cursor-pointer`,
+                                            pathname.includes(server.id as string) ? "!rounded-[18px]" : ""
                                         )}
                                     >
-                                        <Image className="absolute" src={server.imgUrl} alt="icon" draggable={false} width={60} height={60} />
+                                        <Image className="absolute rounded-full h-[50px]" src={server.imgUrl} alt="icon" draggable={false} width={50} height={50} />
+                                        <div className={cn("absolute w-[12px] h-[12px] bg-white rounded-full -left-[16px] duration-150   ",  pathname.includes(server.id as string) ? "h-[45px]" : "group-hover:h-[22.5px]")}></div>
                                     </div>
                                 </Link>
                             </li>
