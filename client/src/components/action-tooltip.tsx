@@ -12,8 +12,8 @@ export function ActionTooltip({ label, children, side, align }: ActionTooltipPro
     return (
         <>
             <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>{children}</TooltipTrigger>
+                <Tooltip delayDuration={50}>
+                    <TooltipTrigger asChild >{children}</TooltipTrigger>
                     <TooltipContent side={side} align={align}>
                         {label}
                     </TooltipContent>
