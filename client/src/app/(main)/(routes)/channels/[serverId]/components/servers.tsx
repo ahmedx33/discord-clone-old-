@@ -50,7 +50,7 @@ export default function Servers({ servers }: { servers: Server[] }) {
                                             pathname.includes(server.id as string) ? "!rounded-[17px]" : ""
                                         )}
                                     >
-                                        <Image className="absolute" src="/voll.png" alt="icon" draggable={false} width={60} height={60} />
+                                        <Image className="absolute" src={server.imgUrl} alt="icon" draggable={false} width={60} height={60} />
                                     </div>
                                 </Link>
                             </li>

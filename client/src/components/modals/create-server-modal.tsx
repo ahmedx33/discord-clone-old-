@@ -20,10 +20,12 @@ import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { uplaodFile } from "@/lib/upload-file";
+import Image from "next/image";
 
 export default function CreateServerModal() {
     const { user, createServerModal } = useSelector((state: RootState) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [serverImgUrl, setServerImgUrl] = useState<string>("")
 
     const router = useRouter();
 
@@ -41,9 +43,9 @@ export default function CreateServerModal() {
                     path: `serverImg-${uuidv4()}`,
                 };
 
-                const req = await uplaodFile(data);
-
-                console.log(req);
+                const req = await uplaodFile(data)
+                setServerImgUrl(req?.path as string)
+                
             }
         } catch (error) {
             throw new Error(`${error}`);
@@ -60,7 +62,7 @@ export default function CreateServerModal() {
 
             const serverData = {
                 name: newServerName,
-                serverImg: `https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/$[]`,
+                serverImg: `https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/servers/${serverImgUrl}`,
             };
 
             await axios.post("/api/server/", serverData);
@@ -85,9 +87,9 @@ export default function CreateServerModal() {
                         <DialogTitle>Create Your Server</DialogTitle>
                     </DialogHeader>
                     <div className="flex items-center justify-center">
-                        <div className="relative  rounded-full bg-transparent w-24 h-24 flex items-center justify-center  p-3 border border-white">
+                        <div className="relative  rounded-full bg-transparent w-24 h-24 flex items-center justify-center  p-3 border border-white overflow-hidden">
                             <Label htmlFor="file" className="absolute cursor-pointer">
-                                <FaCamera size={30} />
+                                {serverImgUrl !== "" ? <Image src={`https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/servers/${serverImgUrl}`} alt="icon" width={90} height={90}/> : <FaCamera size={30} />}
                             </Label>
                             <Input
                                 onChange={uploadImgHandler}

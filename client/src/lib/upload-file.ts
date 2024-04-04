@@ -14,8 +14,8 @@ export async function uplaodFile({ file, path, bucket }: UploadFileProps) {
     const supabase = createClientComponentClient()
     const user = (await supabase.auth.getUser()).data.user
 
-    if (!user ) return null
-   
+    if (!user) return null
+
 
     const { data } = await supabase
         .storage
@@ -25,6 +25,6 @@ export async function uplaodFile({ file, path, bucket }: UploadFileProps) {
             upsert: false
         })
 
-    console.log(data)
 
+    return data
 }
