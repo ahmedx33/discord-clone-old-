@@ -14,10 +14,10 @@ export function ActionTooltip({ label, children, side, align }: ActionTooltipPro
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>{children}</TooltipTrigger>
+                    <TooltipContent side={side} align={align}>
+                        {label}
+                    </TooltipContent>
                 </Tooltip>
-                <TooltipContent side={side} align={align}>
-                    {label}
-                </TooltipContent>
             </TooltipProvider>
         </>
     );
