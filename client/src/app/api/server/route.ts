@@ -24,10 +24,18 @@ export const POST = async (req: NextRequest) => {
                         {
                             title: "chat", channels: {
                                 create: [
-                                    { name: "general" }
+                                    { name: "general", type: "TEXT"}
                                 ]
                             }
                         },
+
+                        {
+                            title: "voice", channels: {
+                                create: [
+                                    {name: "general", type: "VOICE"}
+                                ]
+                            }
+                        }
                     ],
                 },
                 members: {
