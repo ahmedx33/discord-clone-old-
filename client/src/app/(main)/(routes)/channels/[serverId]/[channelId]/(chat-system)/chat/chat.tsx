@@ -74,9 +74,9 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
         };
 
         setValue("");
+        setReplyTo(undefined);
         socket?.emit("server/message", data, channelId);
         setIsReplying(false);
-        setReplyTo(undefined);
         await axios.post("/api/message/", data);
     };
 
@@ -92,6 +92,8 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
     socket?.on("server/receive", (message: MessageType) => {
         setMessages([...messages, message]);
     });
+
+    console.log(replyTo?.id)
 
     return (
         <div className="w-full h-full flex flex-col justify-between">
