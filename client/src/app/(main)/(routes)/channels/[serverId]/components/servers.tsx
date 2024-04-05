@@ -46,12 +46,19 @@ export default function Servers({ servers }: { servers: Server[] }) {
                                 <Link href={`/channels/${server.id}/`} onClick={() => dispatch(onCloseMemberList())}>
                                     <div
                                         className={cn(
-                                            `flex items-center relative justify-center w-[50px] h-[50px] p-[10px] mk-Smooth rounded-full cursor-pointer`,
-                                            pathname.includes(server.id as string) ? "!rounded-[18px]" : ""
+                                            "flex items-center relative justify-center w-[50px] h-[50px] group cursor-pointer rounded-full"
+                                            
                                         )}
                                     >
-                                        <Image className="absolute rounded-full h-[50px]" src={server.imgUrl} alt="icon" draggable={false} width={50} height={50} />
-                                        <div className={cn("absolute w-[12px] h-[12px] bg-white rounded-full -left-[16px] duration-150   ",  pathname.includes(server.id as string) ? "h-[45px]" : "group-hover:h-[22.5px]")}></div>
+                                        <div className={cn("flex items-center justify-center w-full h-full rounded-full mk-Smooth overflow-hidden", pathname.includes(server.id as string) ? "!rounded-[18px]" : "")}>
+                                            <Image src={server.imgUrl} alt="icon" draggable={false} width={50} height={50} />
+                                        </div>
+                                        <div
+                                            className={cn(
+                                                "absolute w-[12px] h-[12px] bg-white rounded-full -left-[16px] duration-150   ",
+                                                pathname.includes(server.id as string) ? "h-[45px]" : "group-hover:h-[22.5px]"
+                                            )}
+                                        ></div>
                                     </div>
                                 </Link>
                             </li>
