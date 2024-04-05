@@ -41,7 +41,8 @@ export const POST = async (req: NextRequest) => {
                         { name: "owner", color: "#949BA4" },
                         { name: "members", color: "#949BA4" }
                     ]
-                }
+                },
+                
             }
         })
 

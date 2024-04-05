@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 
 interface UploadFileProps {
-    file: File | null,
+    file: File | undefined,
     path: string,
     bucket: string
 }

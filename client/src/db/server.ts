@@ -10,8 +10,11 @@ export const getServers = unstable_cache(cache(async ({ autherId }: { autherId: 
             members: {
                 some: {
                     autherId
-                }
+                },
+            
             }
+        }, orderBy: {
+            createdAt: "asc"
         }
     })
 

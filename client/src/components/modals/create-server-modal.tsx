@@ -26,44 +26,45 @@ export default function CreateServerModal() {
     const { user, createServerModal } = useSelector((state: RootState) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [serverImgUrl, setServerImgUrl] = useState<string>("")
+    const [objectFile, setObjectFile] = useState<File>()
 
     const router = useRouter();
 
     const serverNameRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
 
-    const uploadImgHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-        try {
+    const uploadImgHandler = (e: ChangeEvent<HTMLInputElement>) => {
+     
             if (e.target.files?.item(0)) {
-                const file = e.target.files.item(0);
+                const file = e.target.files[0]
+                const imgUrl = URL.createObjectURL(file)
+                setServerImgUrl(imgUrl)
+                setObjectFile(file)
+            }
+        };
+        
+        const createServerHandler = async () => {
+            try {
+                setIsLoading(true);
+                
+                const newServerName = serverNameRef.current?.value.trim();
+                
+                if (newServerName === "") return toast.error("Server name cannot be empty.");
 
                 const data = {
-                    file: file,
+                    file: objectFile,
                     bucket: "servers",
                     path: `serverImg-${uuidv4()}`,
                 };
 
                 const req = await uplaodFile(data)
-                setServerImgUrl(req?.path as string)
-                
-            }
-        } catch (error) {
-            throw new Error(`${error}`);
-        }
-    };
 
-    const createServerHandler = async () => {
-        try {
-            setIsLoading(true);
+                const serverData = {
+                    name: newServerName,
+                    serverImg: `https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/servers/${req?.path}`,
+                };
+               
 
-            const newServerName = serverNameRef.current?.value.trim();
-
-            if (newServerName === "") return toast.error("Server name cannot be empty.");
-
-            const serverData = {
-                name: newServerName,
-                serverImg: `https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/servers/${serverImgUrl}`,
-            };
 
             await axios.post("/api/server/", serverData);
 
@@ -89,7 +90,7 @@ export default function CreateServerModal() {
                     <div className="flex items-center justify-center">
                         <div className="relative  rounded-full bg-transparent w-24 h-24 flex items-center justify-center  p-3 border border-white overflow-hidden">
                             <Label htmlFor="file" className="absolute cursor-pointer">
-                                {serverImgUrl !== "" ? <Image src={`https://ecsgjdvnggcyvhhseqso.supabase.co/storage/v1/object/public/servers/${serverImgUrl}`} alt="icon" width={90} height={90}/> : <FaCamera size={30} />}
+                                {serverImgUrl !== "" ? <Image src={serverImgUrl} alt="icon" width={90} height={90}/> : <FaCamera size={30} />}
                             </Label>
                             <Input
                                 onChange={uploadImgHandler}
