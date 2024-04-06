@@ -39,11 +39,10 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
 
     const timeOutRef = useRef<ReturnType<typeof setTimeout>>();
     const user = useSelector((state: RootState) => state.user.value);
-    
+
     const member = members.find((member) => member.autherId === user.id);
 
     const repliedUser = member?.id === replyTo?.memberId ? user : users?.find((user) => user.id === replyTo?.memberId);
-
 
     const groupedMessages = messages.map((message, idx) => {
         const oldMessage = messages[idx - 1];
@@ -64,7 +63,7 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
         if (newMessageTitle === "") return;
 
         const data = {
-            id: uuidv4,
+            id: uuidv4(),
             memberId: member?.id,
             channelId: channelId,
             title: value,
@@ -74,8 +73,8 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
         };
 
         setValue("");
-        setReplyTo(undefined);
         socket?.emit("server/message", data, channelId);
+        setReplyTo(undefined);
         setIsReplying(false);
         await axios.post("/api/message/", data);
     };
@@ -93,19 +92,20 @@ export default function Chat({ channelId, dbMessages, channel, users, members }:
         setMessages([...messages, message]);
     });
 
-    console.log(replyTo?.id)
+    console.log(replyTo?.id);
 
     return (
         <div className="w-full h-full flex flex-col justify-between">
             <MessagesGroup>
                 {groupedMessages.map((message) => (
+                   
                     <Message
                         key={message?.id}
                         message={message}
                         setReplyTo={setReplyTo}
                         setIsReplying={setIsReplying}
                         messages={messages}
-                        isHovering={message.id === replyTo?.id}
+                        isReplying={message.id === replyTo?.id}
                         users={users}
                         scrollToLastMessageById={messages.at(-1)?.id as string}
                         members={members}

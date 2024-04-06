@@ -24,7 +24,7 @@ interface MessageProps {
     message: MessageType & {
         isGrouped: boolean;
     };
-    isHovering: boolean;
+    isReplying: boolean;
     isLoading: any;
     messages?: MessageType[];
     users: User[];
@@ -34,7 +34,7 @@ interface MessageProps {
     setIsReplying?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Message({ message, messages, isHovering, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
+export default function Message({ message, messages, isReplying, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
 
     const member = members.find((member) => member.id === message.memberId);
@@ -58,7 +58,7 @@ export default function Message({ message, messages, isHovering, users, members,
                 "hover:bg-[#2E3035] w-full  relative group  flex items-center ",
                 !message?.isGrouped && "my-2",
                 message.replyTo && "mt-4",
-                isHovering ? "hovering" : "",
+                isReplying && "hovering",
                 repliedMessage?.memberId === userData?.id && repliedMessage?.memberId !== user?.id ? "highlighted" : ""
             )}
         >

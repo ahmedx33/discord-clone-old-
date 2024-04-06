@@ -24,15 +24,15 @@ export default function RepliedMessage({ message, users, member }: RepliedMessag
     const getRepliedMember = user?.id === messageOwner?.autherId ? user : users?.find((user) => user.id === messageOwner?.autherId);
     const element = document.getElementById(message?.id as string);
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            entry.target.classList.toggle("highlight", entry.isIntersecting);
-        });
-    });
+    // const observer = new IntersectionObserver((entries) => {
+    //     entries.forEach((entry) => {
+    //         entry.target.classList.toggle("highlight", entry.isIntersecting);
+    //     });
+    // });
     
-    if (element && element instanceof Element) {
-        observer.observe(element);
-    }
+    // if (element && element instanceof Element) {
+    //     observer.observe(element);
+    // }
     return (
         <div className="flex items-center gap-2 select-none mb-2 relative repliedPath">
             {message?.id ? (
