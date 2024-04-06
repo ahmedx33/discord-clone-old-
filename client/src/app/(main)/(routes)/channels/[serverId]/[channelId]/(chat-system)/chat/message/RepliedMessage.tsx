@@ -11,13 +11,14 @@ import "./index.css";
 
 interface RepliedMessageProps {
     member: Member
+    members: Member[]
     message: Message
     users: User[]
 }
 
-export default function RepliedMessage({ message, users, member }: RepliedMessageProps) {
+export default function RepliedMessage({ message, users, member , members}: RepliedMessageProps) {
     const user = useSelector((state: RootState) => state.user.value);
-    const messageOwner = member.id !== message.memberId ? member : null
+    const messageOwner = member.id === message.memberId ? member : members.find(member => member.id === message.memberId)
 
     console.log(messageOwner)
 

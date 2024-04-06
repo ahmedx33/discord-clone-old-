@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { HiPlus } from "react-icons/hi";
 
@@ -25,6 +25,10 @@ import LeaveServerModal from "@/components/modals/leave-server-modal";
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();
     const dispatch = useDispatch();
+    const router = useRouter()
+
+
+    router.refresh()
 
     return (
         <>

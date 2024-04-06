@@ -71,7 +71,7 @@ export default function Message({ message, messages, isReplying, users, members,
             )}
 
             <div className="flex flex-col justify-center w-[90%]">
-                {message.replyTo && <RepliedMessage member={member as Member} message={repliedMessage as MessageType} users={users} />}
+                {message.replyTo && <RepliedMessage member={member as Member} message={repliedMessage as MessageType} users={users} members={members} />}
 
                 <div className="px-[1rem] w-full relative pr-10">
                     {(!message?.isGrouped || message.replyTo) && (
