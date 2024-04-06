@@ -1,5 +1,5 @@
 import Image from "next/image";
-import RegisterForm from "./_components/RegisterForm";
+import RegisterForm from "./_components/register-form";
 
 interface RegisterPageInterface {
     goBackBtn?: boolean

@@ -32,7 +32,7 @@ export default async function Page({ params: { inviteLink } }: { params: { invit
         data: {
             members: {
                 create: [
-                    {id: user.id, autherId: user.id, roles: ["online"]}
+                    {id: user.id, autherId: user.id, roles: ["members"]}
                 ]
             }
         }

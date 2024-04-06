@@ -25,10 +25,6 @@ import LeaveServerModal from "@/components/modals/leave-server-modal";
 export default function Servers({ servers }: { servers: Server[] }) {
     const pathname = usePathname();
     const dispatch = useDispatch();
-    const router = useRouter()
-
-
-    router.refresh()
 
     return (
         <>

@@ -5,10 +5,10 @@ import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+
 
 interface RegisterFormProps {
     goBackButton?: boolean;
@@ -19,7 +19,7 @@ export default function RegisterForm({ goBackButton }: RegisterFormProps) {
     const supabase = createClientComponentClient();
 
     const signUpHandler = async (formData: FormData) => {
-        try {
+        
             const res = {
                 email: formData.get("email") as string,
                 password: formData.get("pass") as string,
@@ -35,6 +35,8 @@ export default function RegisterForm({ goBackButton }: RegisterFormProps) {
 
             const { data, error } = await supabase.auth.signUp(res);
 
+            if (error) return toast.error(error.message)
+
             const userData = {
                 userId: data.user?.id,
                 email: formData.get("email") as string,
@@ -44,9 +46,7 @@ export default function RegisterForm({ goBackButton }: RegisterFormProps) {
             };
 
             await axios.post("/api/login/", userData);
-        } catch (error) {
-            toast.error(`${error}`);
-        }
+       
     };
 
     supabase.auth.onAuthStateChange(async (_, session) => {
