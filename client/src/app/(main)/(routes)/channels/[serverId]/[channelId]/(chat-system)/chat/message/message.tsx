@@ -36,16 +36,17 @@ interface MessageProps {
 
 export default function Message({ message, messages, isReplying, users, members, scrollToLastMessageById, setReplyTo, setIsReplying }: MessageProps) {
     const userData = useSelector((state: RootState) => state.user.value);
-
+    
     const member = members.find((member) => member.id === message.memberId);
-
     const user = userData?.id === member?.autherId ? userData : users?.find((user) => user.id === member?.autherId);
-
-    const messageDate = format(message?.createdAt, "h:mm a");
+    
     const repliedMessage = messages?.find((repliedMessage) => message.replyTo === repliedMessage.id);
-
+    const repliedMember = member?.id === repliedMessage?.memberId ? member : members.find(member => member.id === repliedMessage?.memberId)
+    
+    
     const isOwner = userData?.id === message.memberId;
     const lastMessage = window.document.getElementById(scrollToLastMessageById);
+    const messageDate = format(message?.createdAt, "h:mm a");
 
     if (lastMessage) {
         lastMessage.scrollIntoView({ block: "end", inline: "nearest" });
@@ -59,7 +60,7 @@ export default function Message({ message, messages, isReplying, users, members,
                 !message?.isGrouped && "my-2",
                 message.replyTo && "mt-4",
                 isReplying && "hovering",
-                repliedMessage?.memberId === userData?.id && repliedMessage?.memberId !== user?.id ? "highlighted" : ""
+                repliedMember?.autherId === userData?.id && repliedMember?.autherId !== user?.id ? "highlighted" : ""
             )}
         >
             {(!message?.isGrouped || message.replyTo) && (
