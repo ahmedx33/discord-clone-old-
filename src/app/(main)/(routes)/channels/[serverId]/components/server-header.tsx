@@ -20,7 +20,7 @@ interface ServerHeaderProps {
 export default function ServerHeader({ server, member, serverId }: ServerHeaderProps) {
     const dispatch = useDispatch();
     const [isMount, setIsMount] = useState<boolean>(false);
-    console.log(server);
+    const isOwner = member?.id === server.autherId
     useEffect(() => {
         setIsMount(true);
 
@@ -46,7 +46,7 @@ export default function ServerHeader({ server, member, serverId }: ServerHeaderP
                             <p className="text-[1.1rem]">Invite People</p> <FaUserPlus size={25} />
                         </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem
+                   {isOwner && <DropdownMenuItem
                         className="cursor-pointer"
                         onClick={() => {
                             dispatch(onOpenLeave());
@@ -56,7 +56,7 @@ export default function ServerHeader({ server, member, serverId }: ServerHeaderP
                         <div className="text-red-500 px-3 flex items-center justify-between w-52 ">
                             <p className="text-[1.1rem]">Leave Server</p> <TbSquareRoundedArrowRightFilled size={25} />
                         </div>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem>}
                 </DropdownMenuContent>
             </DropdownMenu>
         </>
